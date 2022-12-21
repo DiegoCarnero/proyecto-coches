@@ -1,5 +1,6 @@
 package com.mygdx.proyectocoches.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -27,18 +28,17 @@ public class TestDrive implements Screen {
     private final OrthographicCamera miCam;
     private final Viewport miViewport;
     private final Body jugador;
-    private Slider accSlider;
-    private Label accLabel;
-    private Skin skin;
-
     private TestOsd osd;
 
-    public TestDrive() {
+    public TestDrive(Game juego) {
+
+        osd = new TestOsd(juego);
+
         this.miBatch = new SpriteBatch();
         this.miWorld = new World(new Vector2(0,0),true);
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new OrthographicCamera();
-        this.miViewport = new FitViewport(800F/PPM,480F/PPM,miCam);
+        this.miViewport = new FitViewport(1440F/PPM,720F/PPM,miCam);
 
         // definir body
         final BodyDef bdef = new BodyDef();
@@ -55,23 +55,21 @@ public class TestDrive implements Screen {
 
         jugador.createFixture(fdef);
 
-        osd = new TestOsd();
     }
 
 
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(osd.getMultiplexer());
     }
 
     @Override
     public void render(float delta) {
 
-        Gdx.gl.glClearColor(0,0,0,1);
-
         update(delta);
         draw();
 
+        osd.render(delta);
     }
 
     private void update(float delta) {
@@ -111,5 +109,6 @@ public class TestDrive implements Screen {
         miBatch.dispose();
         miWorld.dispose();
         miB2dr.dispose();
+        osd.dispose();
     }
 }
