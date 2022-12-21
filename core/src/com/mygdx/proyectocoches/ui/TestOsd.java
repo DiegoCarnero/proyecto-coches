@@ -27,11 +27,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class TestOsd implements Screen {
 
-    private float PPM = 10;
+    private float PPM = 50;
 
-    private Viewport vp;
-
-    private Stage gameStage;
     private Stage UIStage;
 
     private InputMultiplexer multiplexer;
@@ -41,7 +38,6 @@ public class TestOsd implements Screen {
     private Label accLabel;
     private Label steerLabel;
 
-    private TextureAtlas tAtlas;
     private Skin skin;
 
 
@@ -52,20 +48,30 @@ public class TestOsd implements Screen {
         multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(UIStage);
 
+        int screenW, screenH;
+        screenW = Gdx.graphics.getWidth();
+        screenH = Gdx.graphics.getHeight();
+
+        UIStage.getViewport().getCamera().position.set(screenW/2, 0, 0);
+
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-        accLabel = new Label("A",skin,"default");
-        steerLabel = new Label("B",skin,"default");
+        Gdx.app.log("slider",skin.getDrawable("default-slider").getBottomHeight()+"");
+
+        accLabel = new Label("acc",skin,"default");
+        accLabel.setPosition(screenW/2,screenH/3);
+        steerLabel = new Label("steer",skin,"default");
+        steerLabel.setPosition(screenW/20,screenH/3);
         accSlider = new Slider(0F,100F, (float) 0.1,false, skin);
 
-//        accSlider.setAnimateInterpolation(Interpolation.smooth);
-        accSlider.setHeight(Gdx.graphics.getHeight()*0.4f);
-        accSlider.setWidth(Gdx.graphics.getWidth()*0.4f);
-        accSlider.setPosition(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+        accSlider.setHeight(screenH*0.1f);
+        accSlider.setWidth(screenW*0.4f);
+        accSlider.setPosition(screenW/2,screenH/4);
 
         accSlider.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                Gdx.app.log("acc-dragged",pointer+" "+x+" "+y);
+                Gdx.app.log("acc-dragged",accSlider.getValue()+"");
+                accLabel.setText(String.format("%.2f",accSlider.getValue()));
                 super.touchDragged(event, x, y, pointer);
             }
 
@@ -86,14 +92,15 @@ public class TestOsd implements Screen {
         steerSlider = new Slider(0F,100F, (float) 0.1,false, skin);
 
 //        steerSlider.setAnimateInterpolation(Interpolation.smooth);
-        steerSlider.setHeight(Gdx.graphics.getHeight()*0.4f);
-        steerSlider.setWidth(Gdx.graphics.getWidth()*0.4f);
-        steerSlider.setPosition(Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()/2);
+        steerSlider.setHeight(screenH*0.1f);
+        steerSlider.setWidth(screenW*0.4f);
+        steerSlider.setPosition(screenW/20,screenH/4);
 
         steerSlider.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 Gdx.app.log("steer-dragged",pointer+" "+x+" "+y);
+                steerLabel.setText(String.format("%.2f",steerSlider.getValue()));
                 super.touchDragged(event, x, y, pointer);
             }
 
@@ -118,6 +125,10 @@ public class TestOsd implements Screen {
 
     }
 
+    public InputMultiplexer getMultiplexer(){
+        return multiplexer;
+    }
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(multiplexer);
@@ -126,10 +137,7 @@ public class TestOsd implements Screen {
     @Override
     public void render(float delta) {
 
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         UIStage.act();
-
         UIStage.draw();
 
     }
