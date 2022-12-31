@@ -7,16 +7,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.proyectocoches.formas.Coche;
 import com.mygdx.proyectocoches.ui.TestOsd;
 
 public class TestDrive implements Screen {
@@ -40,20 +35,7 @@ public class TestDrive implements Screen {
         this.miCam = new OrthographicCamera();
         this.miViewport = new FitViewport(1440F/PPM,720F/PPM,miCam);
 
-        // definir body
-        final BodyDef bdef = new BodyDef();
-        bdef.position.set(200,200);
-        bdef.type = BodyDef.BodyType.DynamicBody;
-        jugador = miWorld.createBody(bdef);
-
-        //definir fixture
-        final PolygonShape shape = new PolygonShape();
-        shape.setAsBox(50F/PPM,100F/PPM);
-        final FixtureDef fdef= new FixtureDef();
-        fdef.shape = shape;
-        fdef.density = 0.4F;
-
-        jugador.createFixture(fdef);
+        this.jugador = Coche.generaCoche(new Vector2(200,200),miWorld,new Vector2(50,100));
 
     }
 
