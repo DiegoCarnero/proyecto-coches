@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="1" nextlayerid="7" nextobjectid="48">
+ <objectgroup id="4" name="Muros" offsetx="-481.333" offsety="0">
+  <object id="20" x="-301.667" y="581.667">
+   <polygon points="0,0 1,-45 606,-43 607,0"/>
+  </object>
+  <object id="21" x="-253.801" y="767.667">
+   <polygon points="0,0 -0.865546,-64 514.134,-64 513.269,2"/>
+  </object>
+  <object id="22" x="-302.667" y="882.667">
+   <polygon points="0,0 614.25,-1.75 606,34 -3,34"/>
+  </object>
+  <object id="33" x="307.667" y="881.333">
+   <polygon points="0,0 66,-18 63.3333,28.6667"/>
+  </object>
+  <object id="34" x="369.333" y="866">
+   <polygon points="0,0 29.3333,-34 78,21.3333"/>
+  </object>
+  <object id="35" x="396.667" y="836">
+   <polygon points="0,0 10.6667,-48.6667 75.3333,-10"/>
+  </object>
+  <object id="36" x="407.333" y="792">
+   <polygon points="0,0 2,-97.3333 67.3333,-34.3529"/>
+  </object>
+  <object id="37" x="298" y="581.333">
+   <polygon points="0,0 97.3333,24.6667 75.3333,-22.6667"/>
+  </object>
+  <object id="38" x="356.667" y="592">
+   <polygon points="0,0 48,42.6667 86,6"/>
+  </object>
+  <object id="39" x="395.333" y="626">
+   <polygon points="0,0 15.3333,77.3333 70.6667,40.6667"/>
+  </object>
+  <object id="40" x="-287.667" y="580.333">
+   <polygon points="0,0 -66,18 -63.3333,-28.6667"/>
+  </object>
+  <object id="41" x="-349.333" y="595.666">
+   <polygon points="0,0 -29.3333,34 -78,-21.3333"/>
+  </object>
+  <object id="42" x="-376.667" y="625.666">
+   <polygon points="0,0 -10.6667,48.6667 -75.3333,10"/>
+  </object>
+  <object id="43" x="-387.333" y="669.666">
+   <polygon points="0,0 -2,97.3333 -67.3333,34.3529"/>
+  </object>
+  <object id="44" x="-278" y="880.333">
+   <polygon points="5.33333,8.66667 -97.3333,-24.6667 -75.3333,22.6667"/>
+  </object>
+  <object id="45" x="-336.667" y="869.666">
+   <polygon points="0,0 -48,-42.6667 -86,-6"/>
+  </object>
+  <object id="46" x="-375.333" y="835.666">
+   <polygon points="0,0 -15.3333,-77.3333 -70.6667,-40.6667"/>
+  </object>
+ </objectgroup>
+</map>

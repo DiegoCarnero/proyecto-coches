@@ -1,5 +1,7 @@
 package com.mygdx.proyectocoches.screens;
 
+import static com.mygdx.proyectocoches.Constantes.PPM;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,18 +14,21 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.proyectocoches.formas.Coche;
+import com.mygdx.proyectocoches.formas.GeneradorCircuito;
 import com.mygdx.proyectocoches.ui.TestOsd;
+
+import java.util.ArrayList;
 
 public class TestDrive implements Screen {
 
-    private float PPM = 50;
     private final SpriteBatch miBatch;
     private final World miWorld;
     private final Box2DDebugRenderer miB2dr;
     private final OrthographicCamera miCam;
     private final Viewport miViewport;
     private final Body jugador;
-    private TestOsd osd;
+    private final ArrayList<Body> circuito;
+    private final TestOsd osd;
 
     public TestDrive(Game juego) {
 
@@ -33,10 +38,11 @@ public class TestDrive implements Screen {
         this.miWorld = new World(new Vector2(0,0),true);
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new OrthographicCamera();
+        miCam.zoom = 1.5F;
         this.miViewport = new FitViewport(1440F/PPM,720F/PPM,miCam);
 
-        this.jugador = Coche.generaCoche(new Vector2(200,200),miWorld,new Vector2(50,100));
-
+        this.circuito = GeneradorCircuito.Cargar(miWorld,"worlds/test_loop.tmx");
+        this.jugador = Coche.generaCoche(new Vector2(0,0),miWorld,new Vector2(5,10));
     }
 
 
