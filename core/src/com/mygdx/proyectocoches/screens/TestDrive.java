@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.proyectocoches.formas.Coche;
 import com.mygdx.proyectocoches.formas.GeneradorCircuito;
 import com.mygdx.proyectocoches.ui.TestOsd;
+import com.mygdx.proyectocoches.utils.InputManager;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,7 @@ public class TestDrive implements Screen {
     private final Body jugador;
     private final ArrayList<Body> circuito;
     private final TestOsd osd;
+    private final InputManager im;
 
     public TestDrive(Game juego) {
 
@@ -43,6 +45,8 @@ public class TestDrive implements Screen {
 
         this.circuito = GeneradorCircuito.Cargar(miWorld,"worlds/test_loop.tmx");
         this.jugador = Coche.generaCoche(new Vector2(0,0),miWorld,new Vector2(5,10));
+
+        im = new InputManager(osd,jugador);
     }
 
 
@@ -56,14 +60,13 @@ public class TestDrive implements Screen {
 
         update(delta);
         draw();
-
+        im.update();
         osd.render(delta);
     }
 
     private void update(float delta) {
         miCam.position.set(jugador.getPosition(),0);
         miCam.update();
-
         miWorld.step(delta,6,2);
     }
 

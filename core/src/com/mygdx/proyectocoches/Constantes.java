@@ -9,4 +9,6 @@ public class Constantes {
     public static final float TILE_SIZE = 32F;
     public static final String LAYER_MUROS = "Muros";
     public static final String LAYER_JUGADOR = "Jugador";
+    public static final float MAX_VELOCIDAD_FORW = 50.0f;
+    public static final float MAX_VELOCIDAD_BACK = 10.0f;
 }

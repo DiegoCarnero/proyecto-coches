@@ -61,8 +61,8 @@ public class TestOsd implements Screen {
         accLabel.setPosition(screenW/2,screenH/3);
         steerLabel = new Label("steer",skin,"default");
         steerLabel.setPosition(screenW/20,screenH/3);
-        accSlider = new Slider(0F,100F, (float) 0.1,false, skin);
 
+        accSlider = new Slider(0F,100F, (float) 0.1,false, skin);
         accSlider.setHeight(screenH*0.1f);
         accSlider.setWidth(screenW*0.4f);
         accSlider.setPosition(screenW/2,screenH/4);
@@ -70,49 +70,40 @@ public class TestOsd implements Screen {
         accSlider.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                Gdx.app.log("acc-dragged",accSlider.getValue()+"");
-                accLabel.setText(String.format("%.2f",accSlider.getValue()));
                 super.touchDragged(event, x, y, pointer);
             }
 
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("acc-up",pointer+" "+x+" "+y);
+                accSlider.setValue(0f);
                 super.touchUp(event,x,y,pointer,button);
             }
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("acc-down",pointer+" "+x+" "+y);
-
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
                 super.touchUp(event,x,y,pointer,button);
                 return true;
             }
             });
 
         steerSlider = new Slider(0F,100F, (float) 0.1,false, skin);
-
-//        steerSlider.setAnimateInterpolation(Interpolation.smooth);
         steerSlider.setHeight(screenH*0.1f);
         steerSlider.setWidth(screenW*0.4f);
         steerSlider.setPosition(screenW/20,screenH/4);
+        steerSlider.setValue(50.0f);
 
         steerSlider.addListener(new InputListener(){
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                Gdx.app.log("steer-dragged",pointer+" "+x+" "+y);
-                steerLabel.setText(String.format("%.2f",steerSlider.getValue()));
                 super.touchDragged(event, x, y, pointer);
             }
 
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("steer-up",pointer+" "+x+" "+y);
+                steerSlider.setValue(50.0f);
                 super.touchUp(event,x,y,pointer,button);
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("steer-down",pointer+" "+x+" "+y);
-
                 super.touchUp(event,x,y,pointer,button);
                 return true;
             }
@@ -123,6 +114,14 @@ public class TestOsd implements Screen {
         UIStage.addActor(accLabel);
         UIStage.addActor(steerLabel);
 
+    }
+
+    public float getAccValue(){
+        return accSlider.getValue();
+    }
+
+    public float getSteerValue(){
+        return steerSlider.getValue();
     }
 
     public InputMultiplexer getMultiplexer(){
