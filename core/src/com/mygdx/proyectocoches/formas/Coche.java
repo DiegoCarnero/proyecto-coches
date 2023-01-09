@@ -30,7 +30,7 @@ public class Coche{
         fDef.density = DENSIDAD_COCHE;
 
         body.createFixture(fDef);
-
+        body.setLinearDamping(0.7f);
         return body;
     }
 }
