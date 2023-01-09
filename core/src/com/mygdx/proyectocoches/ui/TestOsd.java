@@ -1,47 +1,33 @@
 package com.mygdx.proyectocoches.ui;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class TestOsd implements Screen {
 
     private float PPM = 50;
 
+    private boolean accelerating = false;
     private Stage UIStage;
 
     private InputMultiplexer multiplexer;
 
     private Slider accSlider;
     private Slider steerSlider;
-    private Label accLabel;
-    private Label steerLabel;
 
     private Skin skin;
 
 
-    public TestOsd(Game miGame){
+    public TestOsd(Game miGame) {
 
         UIStage = new Stage(new ScreenViewport());
 
@@ -52,79 +38,79 @@ public class TestOsd implements Screen {
         screenW = Gdx.graphics.getWidth();
         screenH = Gdx.graphics.getHeight();
 
-        UIStage.getViewport().getCamera().position.set(screenW/2, 0, 0);
+        UIStage.getViewport().getCamera().position.set(screenW / 2f, 0, 0);
 
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-        Gdx.app.log("slider",skin.getDrawable("default-slider").getBottomHeight()+"");
 
-        accLabel = new Label("acc",skin,"default");
-        accLabel.setPosition(screenW/2,screenH/3);
-        steerLabel = new Label("steer",skin,"default");
-        steerLabel.setPosition(screenW/20,screenH/3);
+        accSlider = new Slider(0F, 100F, (float) 0.1, false, skin);
+        accSlider.setHeight(screenH * 0.2f);
+        accSlider.setWidth(screenW * 0.4f);
+        accSlider.setPosition(screenW/2f,screenH/3f);
 
-        accSlider = new Slider(0F,100F, (float) 0.1,false, skin);
-        accSlider.setHeight(screenH*0.1f);
-        accSlider.setWidth(screenW*0.4f);
-        accSlider.setPosition(screenW/2,screenH/4);
-
-        accSlider.addListener(new InputListener(){
+        accSlider.addListener(new InputListener() {
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                accelerating = true;
                 super.touchDragged(event, x, y, pointer);
             }
 
             @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                accSlider.setValue(0f);
-                super.touchUp(event,x,y,pointer,button);
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                accSlider.setValue(0.0f);
+                accelerating = false;
+                super.touchUp(event, x, y, pointer, button);
             }
+
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
-                super.touchUp(event,x,y,pointer,button);
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                accelerating = true;
+                super.touchUp(event, x, y, pointer, button);
                 return true;
             }
-            });
+        });
 
-        steerSlider = new Slider(0F,100F, (float) 0.1,false, skin);
-        steerSlider.setHeight(screenH*0.1f);
-        steerSlider.setWidth(screenW*0.4f);
-        steerSlider.setPosition(screenW/20,screenH/4);
+        steerSlider = new Slider(0F, 100F, (float) 0.1, false, skin);
+        steerSlider.setHeight(screenH * 0.2f);
+        steerSlider.setWidth(screenW * 0.4f);
+        steerSlider.setPosition(screenW/20f,screenH/3f);
         steerSlider.setValue(50.0f);
 
-        steerSlider.addListener(new InputListener(){
+        steerSlider.addListener(new InputListener() {
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 super.touchDragged(event, x, y, pointer);
             }
 
             @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 steerSlider.setValue(50.0f);
-                super.touchUp(event,x,y,pointer,button);
+                super.touchUp(event, x, y, pointer, button);
             }
+
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                super.touchUp(event,x,y,pointer,button);
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                super.touchUp(event, x, y, pointer, button);
                 return true;
             }
         });
 
         UIStage.addActor(accSlider);
         UIStage.addActor(steerSlider);
-        UIStage.addActor(accLabel);
-        UIStage.addActor(steerLabel);
-
     }
 
-    public float getAccValue(){
+    public boolean isAccelerating(){
+        return accelerating;
+    }
+
+    public float getAccValue() {
         return accSlider.getValue();
     }
 
-    public float getSteerValue(){
+    public float getSteerValue() {
         return steerSlider.getValue();
     }
 
-    public InputMultiplexer getMultiplexer(){
+    public InputMultiplexer getMultiplexer() {
         return multiplexer;
     }
 
