@@ -1,14 +1,14 @@
 package com.mygdx.proyectocoches.utils;
 
+import static com.mygdx.proyectocoches.Constantes.DAMPING_DEFAULT;
+import static com.mygdx.proyectocoches.Constantes.DAMPING_FRENANDO;
 import static com.mygdx.proyectocoches.Constantes.DERRAPE;
+import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_BACK;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_FORW;
-
-import static java.lang.Math.sqrt;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Box2D;
 import com.mygdx.proyectocoches.ui.TestOsd;
 
 public class InputManager {
@@ -42,11 +42,27 @@ public class InputManager {
 
     public void update() {
         Vector2 v = new Vector2(0, 0);
+        float max_velo;
+        int direccion;
 
-        if (inputOsd.isAccelerating()) {
-            // normalizar a la velocidad maxima
-            nuevAcc = inputOsd.getAccValue() * MAX_VELOCIDAD_FORW / 100f;
-            v.set(0, nuevAcc * (MAX_VELOCIDAD_FORW * 0.01f));
+        if (inputOsd.isAdelante()) {
+            max_velo = MAX_VELOCIDAD_FORW;
+            direccion = 1;
+        } else {
+            max_velo = MAX_VELOCIDAD_BACK;
+            direccion = -1;
+        }
+
+        if (inputOsd.isFrenando()) {
+            jugador.setLinearDamping(DAMPING_FRENANDO);
+        } else {
+            jugador.setLinearDamping(DAMPING_DEFAULT);
+
+            if (inputOsd.isAcelerando()) {
+                // normalizar a la velocidad maxima
+                nuevAcc = direccion * inputOsd.getAccValue() * max_velo / 100f;
+                v.set(0, nuevAcc * (max_velo * 0.01f));
+            }
         }
 
         // normalizar  entre -50 y 50. Cambiar signo para que se corresponda drcha e izq en el control y el coche
@@ -59,9 +75,9 @@ public class InputManager {
         }
 
         float velActual = jugador.getLinearVelocity().len();
-        float maxVeloPorInput = inputOsd.getAccValue() * MAX_VELOCIDAD_FORW / 100f;
+        float maxVeloPorInput = inputOsd.getAccValue() * max_velo / 100f;
 
-        if (velActual < maxVeloPorInput && velActual < MAX_VELOCIDAD_FORW && !v.isZero()) {
+        if (velActual < maxVeloPorInput && velActual < max_velo && !v.isZero()) {
             jugador.applyForceToCenter(jugador.getWorldVector(v), true);
         }
 

@@ -7,22 +7,29 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class TestOsd implements Screen {
 
     private float PPM = 50;
 
-    private boolean accelerating = false;
+    private boolean acelerando = false;
+    private boolean adelante = true;
+    private boolean frenando = false;
     private Stage UIStage;
 
     private InputMultiplexer multiplexer;
 
     private Slider accSlider;
     private Slider steerSlider;
+
+    private Button btnD;
+    private Button btnR;
+    private Button btnB;
 
     private Skin skin;
 
@@ -42,28 +49,72 @@ public class TestOsd implements Screen {
 
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
+        btnD = new TextButton("D",skin);
+        btnD.setHeight(screenH * 0.1f);
+        btnD.setWidth(screenH * 0.1f);
+        btnD.setPosition(screenW / 2f, screenH / 4f);
+        btnD.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                adelante = true;
+                return true;
+            }
+        });
+
+        btnR = new TextButton("R",skin);
+        btnR.setHeight(screenH * 0.1f);
+        btnR.setWidth(screenH * 0.1f);
+        btnR.setPosition(screenW / 2f + screenH * 0.13f, screenH / 4f);
+        btnR.setChecked(true);
+        btnR.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                adelante = false;
+                return true;
+            }
+        });
+
+        btnB = new TextButton("B",skin);
+        btnB.setHeight(screenH * 0.1f);
+        btnB.setWidth(screenH * 0.1f);
+        btnB.setPosition(screenW / 3f, screenH / 4f);
+        btnB.setChecked(true);
+        btnB.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                frenando = true;
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                frenando = false;
+                super.touchUp(event, x, y, pointer, button);
+            }
+        });
+
         accSlider = new Slider(0F, 100F, (float) 0.1, false, skin);
         accSlider.setHeight(screenH * 0.2f);
         accSlider.setWidth(screenW * 0.4f);
-        accSlider.setPosition(screenW/2f,screenH/3f);
+        accSlider.setPosition(screenW / 2f, screenH / 3f);
 
         accSlider.addListener(new InputListener() {
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                accelerating = true;
+                acelerando = true;
                 super.touchDragged(event, x, y, pointer);
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 accSlider.setValue(0.0f);
-                accelerating = false;
+                acelerando = false;
                 super.touchUp(event, x, y, pointer, button);
             }
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                accelerating = true;
+                acelerando = true;
                 super.touchUp(event, x, y, pointer, button);
                 return true;
             }
@@ -72,7 +123,7 @@ public class TestOsd implements Screen {
         steerSlider = new Slider(0F, 100F, (float) 0.1, false, skin);
         steerSlider.setHeight(screenH * 0.2f);
         steerSlider.setWidth(screenW * 0.4f);
-        steerSlider.setPosition(screenW/20f,screenH/3f);
+        steerSlider.setPosition(screenW / 20f, screenH / 3f);
         steerSlider.setValue(50.0f);
 
         steerSlider.addListener(new InputListener() {
@@ -96,10 +147,21 @@ public class TestOsd implements Screen {
 
         UIStage.addActor(accSlider);
         UIStage.addActor(steerSlider);
+        UIStage.addActor(btnD);
+        UIStage.addActor(btnR);
+        UIStage.addActor(btnB);
     }
 
-    public boolean isAccelerating(){
-        return accelerating;
+    public boolean isAcelerando() {
+        return acelerando;
+    }
+
+    public boolean isAdelante(){
+        return adelante;
+    }
+
+    public boolean isFrenando() {
+        return frenando;
     }
 
     public float getAccValue() {
