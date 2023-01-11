@@ -10,6 +10,7 @@ import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_FORW;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.MassData;
 import com.mygdx.proyectocoches.ui.TestOsd;
 
 public class InputManager {
@@ -66,13 +67,13 @@ public class InputManager {
             }
         }
 
-        // normalizar  entre -50 y 50. Cambiar signo para que se corresponda drcha e izq en el control y el coche
-        nuevSteer = -(inputOsd.getSteerValue() - 50.0f);
+        // normalizar  entre -2.5 y 2.5. Cambiar signo para que se corresponda drcha e izq en el control y el coche
+        nuevSteer = -(inputOsd.getSteerValue() - 50.0f)  * 0.05f;
 
         if (nuevSteer == 0 || jugador.getLinearVelocity().len() < 0.1) {
             jugador.setAngularVelocity(0.0f);
         } else {
-            jugador.setAngularVelocity(nuevSteer * 0.05f);
+            jugador.setAngularVelocity(nuevSteer);
         }
 
         float velActual = jugador.getLinearVelocity().len();
@@ -86,10 +87,13 @@ public class InputManager {
         Vector2 veloFrente = VeloFrenteDeCuerpo(jugador);
         Vector2 veloLateral = VeloLateralDeCuerpo(jugador);
         float derrape;
+        MassData b2dmd = jugador.getMassData();
 
         if(Math.abs(jugador.getAngularVelocity()) > 1.5f && (jugador.getLinearVelocity().len() > MAX_VELOCIDAD_FORW/2)){
+            b2dmd.center.set(0,-4);
             derrape = DERRAPE_ALTO;
         } else {
+            b2dmd.center.set(0,0);
             derrape = DERRAPE_BAJO;
         }
 
