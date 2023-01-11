@@ -2,7 +2,8 @@ package com.mygdx.proyectocoches.utils;
 
 import static com.mygdx.proyectocoches.Constantes.DAMPING_DEFAULT;
 import static com.mygdx.proyectocoches.Constantes.DAMPING_FRENANDO;
-import static com.mygdx.proyectocoches.Constantes.DERRAPE;
+import static com.mygdx.proyectocoches.Constantes.DERRAPE_ALTO;
+import static com.mygdx.proyectocoches.Constantes.DERRAPE_BAJO;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_BACK;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_FORW;
 
@@ -84,7 +85,15 @@ public class InputManager {
         // derrape
         Vector2 veloFrente = VeloFrenteDeCuerpo(jugador);
         Vector2 veloLateral = VeloLateralDeCuerpo(jugador);
-        jugador.setLinearVelocity(veloFrente.x + veloLateral.x * DERRAPE, veloFrente.y + veloLateral.y * DERRAPE);
+        float derrape;
+
+        if(Math.abs(jugador.getAngularVelocity()) > 1.5f && (jugador.getLinearVelocity().len() > MAX_VELOCIDAD_FORW/2)){
+            derrape = DERRAPE_ALTO;
+        } else {
+            derrape = DERRAPE_BAJO;
+        }
+
+        jugador.setLinearVelocity(veloFrente.x + veloLateral.x * derrape, veloFrente.y + veloLateral.y * derrape);
         nuevAcc = 0;
     }
 
