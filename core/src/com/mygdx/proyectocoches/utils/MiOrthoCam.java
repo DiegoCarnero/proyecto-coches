@@ -7,10 +7,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public class MiOrthoCam extends OrthographicCamera {
 
-    private static final float ZOOM_BAJO = 0.4f;
-    private static final float ZOOM_ALTO = 0.8f;
-    private static final float VELO_LIM_BAJO = 4f;
-    private static final float VELO_LIM_ALTO = 6f;
+    private static final float ZOOM_BAJO = 0.1f;
+    private static final float ZOOM_ALTO = 0.4f;
+    private static final float VELO_LIM_BAJO = 2f;
+    private static final float VELO_LIM_ALTO = 3f;
 
     private float ultimaVelo;
 
@@ -22,14 +22,14 @@ public class MiOrthoCam extends OrthographicCamera {
     public void AdjustaZoomPorVelo(Body jugador) {
 
         float velo = jugador.getLinearVelocity().len();
-        float variacionMin = 0.1f;
-        boolean minimoSuperado;
+        float variacionMin = 0.05f;
+        boolean variacionMinSuperada;
 
-        minimoSuperado = Math.abs(ultimaVelo - velo) >variacionMin;
+        variacionMinSuperada = Math.abs(ultimaVelo - velo) > variacionMin;
 
-        if(minimoSuperado && ultimaVelo > velo){
+        if(variacionMinSuperada && ultimaVelo > velo){
             this.zoom -= 0.02f;
-        } else if (minimoSuperado && velo > VELO_LIM_BAJO) {
+        } else if (variacionMinSuperada && velo > VELO_LIM_BAJO) {
             this.zoom += 0.01f;
         }
 
