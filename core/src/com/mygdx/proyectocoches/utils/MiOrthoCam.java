@@ -7,10 +7,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public class MiOrthoCam extends OrthographicCamera {
 
-    private static final float ZOOM_BAJO = 0.1f;
-    private static final float ZOOM_ALTO = 0.4f;
-    private static final float VELO_LIM_BAJO = 2f;
-    private static final float VELO_LIM_ALTO = 3f;
+    private static final float ZOOM_BAJO = 0.4f;
+    private static final float ZOOM_ALTO = 0.8f;
+    private static final float VELO_LIM_BAJO = 4f;
+    private static final float VELO_LIM_ALTO = 6f;
 
     private float ultimaVelo;
 

@@ -80,7 +80,7 @@ public class Circuito {
             oponentes = maxOponentes;
         }
 
-        Vector2 tamCoche = new Vector2(2, 4);
+        Vector2 tamCoche = new Vector2(5, 10);
         Vector2 posCoche = null;
         boolean jugInit = false;
         float angulo;
