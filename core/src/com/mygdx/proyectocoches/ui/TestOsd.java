@@ -15,8 +15,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class TestOsd implements Screen {
 
-    private float PPM = 50;
-
     private boolean acelerando = false;
     private boolean adelante = true;
     private boolean frenando = false;
@@ -77,7 +75,7 @@ public class TestOsd implements Screen {
         btnB = new TextButton("B",skin);
         btnB.setHeight(screenH * 0.1f);
         btnB.setWidth(screenH * 0.1f);
-        btnB.setPosition(screenW / 3f, screenH / 4f);
+        btnB.setPosition(screenW / 2f + screenH * 0.4f, screenH / 4f);
         btnB.setChecked(true);
         btnB.addListener(new InputListener(){
             @Override
