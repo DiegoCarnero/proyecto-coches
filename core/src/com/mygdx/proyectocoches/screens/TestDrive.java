@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.proyectocoches.formas.Coche;
-import com.mygdx.proyectocoches.formas.GeneradorCircuito;
+import com.mygdx.proyectocoches.formas.Circuito;
 import com.mygdx.proyectocoches.ui.TestOsd;
 import com.mygdx.proyectocoches.utils.InputManager;
 import com.mygdx.proyectocoches.utils.MiOrthoCam;
@@ -28,7 +28,7 @@ public class TestDrive implements Screen {
     private final MiOrthoCam miCam;
     private final Viewport miViewport;
     private final Body jugador;
-    private final ArrayList<Body> circuito;
+    private final Circuito circuito;
     private final TestOsd osd;
     private final InputManager im;
 
@@ -42,8 +42,9 @@ public class TestDrive implements Screen {
         this.miCam = new MiOrthoCam();
         this.miViewport = new FitViewport(1440F/PPM,720F/PPM,miCam);
 
-        this.circuito = GeneradorCircuito.Cargar(miWorld,"worlds/test_loop.tmx");
-        this.jugador = Coche.generaCoche(new Vector2(0,0),miWorld,new Vector2(5,10));
+        this.circuito = new Circuito(miWorld,"worlds/test_loop.tmx");
+        circuito.Cargar();
+        this.jugador = circuito.prepararParrilla(0,0);
 
         im = new InputManager(osd,jugador);
     }

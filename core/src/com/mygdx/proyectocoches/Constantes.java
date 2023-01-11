@@ -8,7 +8,7 @@ public class Constantes {
     public static final float DENSIDAD_COCHE = 1f;
     public static final float TILE_SIZE = 32F;
     public static final String LAYER_MUROS = "Muros";
-    public static final String LAYER_JUGADOR = "Jugador";
+    public static final String LAYER_GRID = "Grid";
     public static final float MAX_VELOCIDAD_FORW = 13.0f;
     public static final float MAX_VELOCIDAD_BACK = 4.0f;
     public static final float DERRAPE_BAJO = 0.5f;
