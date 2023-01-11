@@ -1,5 +1,6 @@
 package com.mygdx.proyectocoches.formas;
 
+import static com.mygdx.proyectocoches.Constantes.DAMPING_DEFAULT;
 import static com.mygdx.proyectocoches.Constantes.DENSIDAD_COCHE;
 import static com.mygdx.proyectocoches.Constantes.PPM;
 
@@ -30,7 +31,7 @@ public class Coche{
         fDef.density = DENSIDAD_COCHE;
 
         body.createFixture(fDef);
-        body.setLinearDamping(0.7f);
+        body.setLinearDamping(DAMPING_DEFAULT);
         return body;
     }
 }
