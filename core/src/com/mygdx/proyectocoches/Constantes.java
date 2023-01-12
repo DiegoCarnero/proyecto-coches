@@ -1,5 +1,7 @@
 package com.mygdx.proyectocoches;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class Constantes {
 
     private Constantes(){}
@@ -15,4 +17,10 @@ public class Constantes {
     public static final float DERRAPE_ALTO = 0.9f;
     public static final float DAMPING_FRENANDO = 5.0f;
     public static final float DAMPING_DEFAULT = 0.7F;
+
+    public static final short CAT_COCHE_JUG = 0x3;
+    public static final short CAT_CIRCUITO_MUROS = 0x3;
+
+    public static final Vector2[] test_loop_vGrid = {new Vector2(0,-5)};
+    public static final float test_loop_ang = -90;
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="1" nextlayerid="9" nextobjectid="51">
- <objectgroup id="4" name="Muros" offsetx="-481.333" offsety="0">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="1" nextlayerid="10" nextobjectid="57">
+ <objectgroup id="4" name="Muros">
   <object id="20" x="-301.667" y="581.667">
    <polygon points="0,0 1,-45 606,-43 607,0"/>
   </object>
@@ -53,12 +53,12 @@
    <polygon points="0,0 -15.3333,-77.3333 -70.6667,-40.6667"/>
   </object>
  </objectgroup>
- <objectgroup id="7" name="Grid">
-  <properties>
-   <property name="maxOponentes" type="int" value="0"/>
-  </properties>
-  <object id="50" x="-526.667" y="833.333" rotation="90">
-   <polygon points="0,0 25.3333,-16.6667 25.3333,12.6667"/>
+ <objectgroup id="9" name="Meta">
+  <object id="55" x="-141.333" y="888">
+   <polyline points="0,0 1.33333,-129.333"/>
+  </object>
+  <object id="56" x="-154.667" y="888">
+   <polyline points="0,0 -1.33333,-132"/>
   </object>
  </objectgroup>
 </map>

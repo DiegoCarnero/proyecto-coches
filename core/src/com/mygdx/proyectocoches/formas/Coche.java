@@ -1,7 +1,9 @@
 package com.mygdx.proyectocoches.formas;
 
+import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_MUROS;
 import static com.mygdx.proyectocoches.Constantes.DAMPING_DEFAULT;
 import static com.mygdx.proyectocoches.Constantes.DENSIDAD_COCHE;
+import static com.mygdx.proyectocoches.Constantes.CAT_COCHE_JUG;
 import static com.mygdx.proyectocoches.Constantes.PPM;
 
 import com.badlogic.gdx.math.Vector2;
@@ -29,6 +31,8 @@ public class Coche{
         FixtureDef fDef= new FixtureDef();
         fDef.shape = pShape;
         fDef.density = DENSIDAD_COCHE;
+        fDef.filter.categoryBits = CAT_COCHE_JUG;
+        fDef.filter.maskBits = CAT_CIRCUITO_MUROS;
 
         body.createFixture(fDef);
         body.setLinearDamping(DAMPING_DEFAULT);

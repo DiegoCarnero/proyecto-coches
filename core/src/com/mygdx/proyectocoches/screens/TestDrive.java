@@ -12,13 +12,12 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.proyectocoches.formas.Coche;
 import com.mygdx.proyectocoches.formas.Circuito;
 import com.mygdx.proyectocoches.ui.TestOsd;
 import com.mygdx.proyectocoches.utils.InputManager;
 import com.mygdx.proyectocoches.utils.MiOrthoCam;
-
-import java.util.ArrayList;
+import com.mygdx.proyectocoches.utils.miContactFilter;
+import com.mygdx.proyectocoches.utils.miContactListener;
 
 public class TestDrive implements Screen {
 
@@ -38,11 +37,13 @@ public class TestDrive implements Screen {
 
         this.miBatch = new SpriteBatch();
         this.miWorld = new World(new Vector2(0,0),true);
+        miWorld.setContactFilter(new miContactFilter());
+        miWorld.setContactListener(new miContactListener());
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new MiOrthoCam();
         this.miViewport = new FitViewport(1440F/PPM,720F/PPM,miCam);
 
-        this.circuito = new Circuito(miWorld,"worlds/test_loop.tmx");
+        this.circuito = new Circuito(miWorld,"test_loop");
         circuito.Cargar();
         this.jugador = circuito.prepararParrilla(0,0);
 
