@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="1" nextlayerid="10" nextobjectid="57">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="1" nextlayerid="10" nextobjectid="59">
  <objectgroup id="4" name="Muros">
   <object id="20" x="-301.667" y="581.667">
    <polygon points="0,0 1,-45 606,-43 607,0"/>
@@ -54,11 +54,11 @@
   </object>
  </objectgroup>
  <objectgroup id="9" name="Meta">
-  <object id="55" x="-141.333" y="888">
-   <polyline points="0,0 1.33333,-129.333"/>
+  <object id="57" x="-126.667" y="890.667">
+   <polygon points="0,0 0,-133.333 -4.33337,-132.667 -4.33333,-0.333337"/>
   </object>
-  <object id="56" x="-154.667" y="888">
-   <polyline points="0,0 -1.33333,-132"/>
+  <object id="58" x="-132.333" y="891.333">
+   <polygon points="0,0 0,-133.333 -4.33337,-132.667 -4.33333,-0.333337"/>
   </object>
  </objectgroup>
 </map>

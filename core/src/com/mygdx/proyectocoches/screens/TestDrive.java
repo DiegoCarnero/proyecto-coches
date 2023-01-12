@@ -41,10 +41,11 @@ public class TestDrive implements Screen {
         miWorld.setContactListener(new miContactListener());
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new MiOrthoCam();
-        this.miViewport = new FitViewport(1440F/PPM,720F/PPM,miCam);
+        this.miViewport = new FitViewport(Gdx.graphics.getWidth()/PPM,Gdx.graphics.getHeight()/PPM,miCam);
 
         this.circuito = new Circuito(miWorld,"test_loop");
-        circuito.Cargar();
+        circuito.cargarMuros();
+        circuito.cargarMeta();
         this.jugador = circuito.prepararParrilla(0,0);
 
         im = new InputManager(osd,jugador);

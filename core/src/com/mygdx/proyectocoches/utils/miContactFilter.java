@@ -1,5 +1,6 @@
 package com.mygdx.proyectocoches.utils;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.ContactFilter;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -16,11 +17,13 @@ public class miContactFilter implements ContactFilter {
         Filter dataA = fixtureA.getFilterData();
         Filter dataB = fixtureB.getFilterData();
 
-        if((dataA.categoryBits & dataB.maskBits) == 0x3){// coche->circuito
+        Gdx.app.log("shouldCollide",(dataA.categoryBits & dataB.maskBits)+"");
+
+        if((dataA.categoryBits & dataB.maskBits) == 0x1){// jugador->circuito,meta
             return true;
-        } if((dataA.categoryBits & dataB.maskBits) == 0x10){ // jugador->oponente
+        } else if((dataB.categoryBits & dataA.maskBits) == 0x1){// jugador->circuito,meta
             return true;
-        } else {
+        }else{
             return false;
         }
     }
