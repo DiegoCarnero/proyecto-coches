@@ -1,8 +1,12 @@
 package com.mygdx.proyectocoches.formas;
 
+import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP1;
+import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP2;
+import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP3;
 import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_META;
 import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_MUROS;
 import static com.mygdx.proyectocoches.Constantes.CAT_COCHE_JUG;
+import static com.mygdx.proyectocoches.Constantes.LAYER_CHECKP;
 import static com.mygdx.proyectocoches.Constantes.LAYER_META;
 import static com.mygdx.proyectocoches.Constantes.LAYER_MUROS;
 import static com.mygdx.proyectocoches.Constantes.TILE_SIZE;
@@ -12,7 +16,6 @@ import static com.mygdx.proyectocoches.Constantes.test_loop_vGrid;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
-import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
@@ -26,7 +29,10 @@ import java.util.ArrayList;
 
 enum TipoPoly {
     Muros,
-    Meta
+    Meta,
+    Checkpoint1,
+    Checkpoint2,
+    Checkpoint3
 }
 
 public class Circuito {
@@ -73,6 +79,22 @@ public class Circuito {
                 fDef.filter.maskBits = CAT_COCHE_JUG;
                 fDef.isSensor = true;
                 break;
+            case Checkpoint1:
+                fDef.filter.categoryBits = CAT_CIRCUITO_CHECKP1;
+                fDef.filter.maskBits = CAT_COCHE_JUG;
+                fDef.isSensor = true;
+                break;
+            case Checkpoint2:
+                fDef.filter.categoryBits = CAT_CIRCUITO_CHECKP2;
+                fDef.filter.maskBits = CAT_COCHE_JUG;
+                fDef.isSensor = true;
+                break;
+            case Checkpoint3:
+                fDef.filter.categoryBits = CAT_CIRCUITO_CHECKP3;
+                fDef.filter.maskBits = CAT_COCHE_JUG;
+                fDef.isSensor = true;
+                break;
+
         }
         body.createFixture(fDef);
         pShape.dispose();
@@ -104,10 +126,32 @@ public class Circuito {
 
         for (MapObject o : metaMapObjs) {
             if (o instanceof PolygonMapObject) {
-               getPolygon((PolygonMapObject) o, TipoPoly.Meta);
+                getPolygon((PolygonMapObject) o, TipoPoly.Meta);
             }
         }
 
+        miTiledMap.dispose();
+    }
+
+    public void cargarCheckpoints() {
+
+        TiledMap miTiledMap = new TmxMapLoader().load("worlds/" + nomCircuito + ".tmx");
+        for (int i = 1; i < 4; i++) {
+
+            MapObjects metaMapObjs = miTiledMap.getLayers().get(LAYER_CHECKP + i).getObjects();
+
+            for (MapObject o : metaMapObjs) {
+                if (o instanceof PolygonMapObject) {
+                    if (i == 1) {
+                        getPolygon((PolygonMapObject) o, TipoPoly.Checkpoint1);
+                    } else if (i == 2) {
+                        getPolygon((PolygonMapObject) o, TipoPoly.Checkpoint2);
+                    } else if (i == 3) {
+                        getPolygon((PolygonMapObject) o, TipoPoly.Checkpoint3);
+                    }
+                }
+            }
+        }
         miTiledMap.dispose();
     }
 

@@ -10,10 +10,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.proyectocoches.TimeTrialManager;
 import com.mygdx.proyectocoches.formas.Circuito;
 import com.mygdx.proyectocoches.ui.TestOsd;
+import com.mygdx.proyectocoches.ui.TimeTrialOsd;
 import com.mygdx.proyectocoches.utils.InputManager;
 import com.mygdx.proyectocoches.utils.MiOrthoCam;
 import com.mygdx.proyectocoches.utils.miContactFilter;
@@ -29,16 +32,23 @@ public class TestDrive implements Screen {
     private final Body jugador;
     private final Circuito circuito;
     private final TestOsd osd;
+    private final TimeTrialOsd ttOsd;
     private final InputManager im;
+    private final TimeTrialManager rlm;
+
+    private Skin skin;
 
     public TestDrive(Game juego) {
 
-        osd = new TestOsd(juego);
+        skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+        osd = new TestOsd(juego,skin);
 
         this.miBatch = new SpriteBatch();
         this.miWorld = new World(new Vector2(0,0),true);
         miWorld.setContactFilter(new miContactFilter());
-        miWorld.setContactListener(new miContactListener());
+        this.rlm = new TimeTrialManager();
+        miWorld.setContactListener(new miContactListener(rlm));
+        this.ttOsd = new TimeTrialOsd(skin,rlm);
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new MiOrthoCam();
         this.miViewport = new FitViewport(Gdx.graphics.getWidth()/PPM,Gdx.graphics.getHeight()/PPM,miCam);
@@ -46,6 +56,7 @@ public class TestDrive implements Screen {
         this.circuito = new Circuito(miWorld,"test_loop");
         circuito.cargarMuros();
         circuito.cargarMeta();
+        circuito.cargarCheckpoints();
         this.jugador = circuito.prepararParrilla(0,0);
 
         im = new InputManager(osd,jugador);
@@ -64,6 +75,7 @@ public class TestDrive implements Screen {
         draw();
         im.update();
         osd.render(delta);
+        ttOsd.render(delta);
     }
 
     private void update(float delta) {
@@ -104,5 +116,6 @@ public class TestDrive implements Screen {
         miWorld.dispose();
         miB2dr.dispose();
         osd.dispose();
+        ttOsd.dispose();
     }
 }
