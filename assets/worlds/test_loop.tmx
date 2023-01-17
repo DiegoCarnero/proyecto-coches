@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="1" nextlayerid="10" nextobjectid="59">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="1" nextlayerid="13" nextobjectid="72">
  <objectgroup id="4" name="Muros">
   <object id="20" x="-301.667" y="581.667">
    <polygon points="0,0 1,-45 606,-43 607,0"/>
@@ -54,11 +54,23 @@
   </object>
  </objectgroup>
  <objectgroup id="9" name="Meta">
-  <object id="57" x="-126.667" y="890.667">
+  <object id="57" x="20.333" y="895.334">
    <polygon points="0,0 0,-133.333 -4.33337,-132.667 -4.33333,-0.333337"/>
   </object>
-  <object id="58" x="-132.333" y="891.333">
+ </objectgroup>
+ <objectgroup id="10" name="Checkpoint1">
+  <object id="63" x="18" y="896.333">
    <polygon points="0,0 0,-133.333 -4.33337,-132.667 -4.33333,-0.333337"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="11" name="Checkpoint2">
+  <object id="70" x="-369" y="613">
+   <polygon points="0,0 125,102 129,96 2,-8"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="12" name="Checkpoint3">
+  <object id="71" x="250" y="707">
+   <polygon points="0,0 108.667,-119.333 110.667,-116 4,5.33333"/>
   </object>
  </objectgroup>
 </map>

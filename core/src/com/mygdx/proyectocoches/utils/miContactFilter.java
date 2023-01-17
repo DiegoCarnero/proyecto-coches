@@ -14,17 +14,6 @@ public class miContactFilter implements ContactFilter {
     @Override
     public boolean shouldCollide(Fixture fixtureA, Fixture fixtureB) {
 
-        Filter dataA = fixtureA.getFilterData();
-        Filter dataB = fixtureB.getFilterData();
-
-        Gdx.app.log("shouldCollide",(dataA.categoryBits & dataB.maskBits)+"");
-
-        if((dataA.categoryBits & dataB.maskBits) == 0x1){// jugador->circuito,meta
-            return true;
-        } else if((dataB.categoryBits & dataA.maskBits) == 0x1){// jugador->circuito,meta
-            return true;
-        }else{
-            return false;
-        }
+        return true;
     }
 }

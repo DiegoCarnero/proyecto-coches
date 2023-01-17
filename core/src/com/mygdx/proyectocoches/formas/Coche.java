@@ -1,5 +1,8 @@
 package com.mygdx.proyectocoches.formas;
 
+import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP1;
+import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP2;
+import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP3;
 import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_META;
 import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_MUROS;
 import static com.mygdx.proyectocoches.Constantes.DAMPING_DEFAULT;
@@ -33,7 +36,7 @@ public class Coche{
         fDef.shape = pShape;
         fDef.density = DENSIDAD_COCHE;
         fDef.filter.categoryBits = CAT_COCHE_JUG;
-        fDef.filter.maskBits = CAT_CIRCUITO_MUROS | CAT_CIRCUITO_META;
+        fDef.filter.maskBits = CAT_CIRCUITO_MUROS | CAT_CIRCUITO_META | CAT_CIRCUITO_CHECKP1 | CAT_CIRCUITO_CHECKP2 | CAT_CIRCUITO_CHECKP3;
 
         body.createFixture(fDef);
         body.setLinearDamping(DAMPING_DEFAULT);

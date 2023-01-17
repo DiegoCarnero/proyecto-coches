@@ -11,6 +11,7 @@ public class Constantes {
     public static final float TILE_SIZE = 32F;
     public static final String LAYER_MUROS = "Muros";
     public static final String LAYER_META = "Meta";
+    public static final String LAYER_CHECKP = "Checkpoint";
     public static final float MAX_VELOCIDAD_FORW = 13.0f;
     public static final float MAX_VELOCIDAD_BACK = 4.0f;
     public static final float DERRAPE_BAJO = 0.5f;
@@ -19,9 +20,12 @@ public class Constantes {
     public static final float DAMPING_DEFAULT = 0.7F;
 
     public static final short CAT_COCHE_JUG = 0x1;
-    public static final short CAT_CIRCUITO_MUROS = 0x3;
-    public static final short CAT_CIRCUITO_META = 0x5;
+    public static final short CAT_CIRCUITO_MUROS = 0x2;
+    public static final short CAT_CIRCUITO_META = 0x4;
+    public static final short CAT_CIRCUITO_CHECKP1 = 0x10;
+    public static final short CAT_CIRCUITO_CHECKP2 = 0x20;
+    public static final short CAT_CIRCUITO_CHECKP3 = 0x30;
 
-    public static final Vector2[] test_loop_vGrid = {new Vector2(0,-5)};
+    public static final Vector2[] test_loop_vGrid = {new Vector2(2,-5)};
     public static final float test_loop_ang = -90;
 }
