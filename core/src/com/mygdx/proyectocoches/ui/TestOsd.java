@@ -29,10 +29,7 @@ public class TestOsd implements Screen {
     private Button btnR;
     private Button btnB;
 
-    private Skin skin;
-
-
-    public TestOsd(Game miGame) {
+    public TestOsd(Game miGame,Skin skin) {
 
         UIStage = new Stage(new ScreenViewport());
 
@@ -44,8 +41,6 @@ public class TestOsd implements Screen {
         screenH = Gdx.graphics.getHeight();
 
         UIStage.getViewport().getCamera().position.set(screenW / 2f, 0, 0);
-
-        skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
         btnD = new TextButton("D",skin);
         btnD.setHeight(screenH * 0.1f);
