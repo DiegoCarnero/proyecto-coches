@@ -27,6 +27,9 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.ArrayList;
 
+/**
+ * Tipos de objetos Body que pueden existir en el circuito
+ */
 enum TipoPoly {
     Muros,
     Meta,
@@ -35,6 +38,16 @@ enum TipoPoly {
     Checkpoint3
 }
 
+/**
+ * Objeto que contiene todas las entidades en el mundo:
+ * <ul>
+ *   <li>Muros</li>
+ *   <li>Puntos de control</li>
+ *   <li>Linea de meta</li>
+ *   <li>Competidores IA</li>
+ *   <li>Jugador</li>
+ * </ul>
+ */
 public class Circuito {
 
     final private ArrayList<Body> competidores;
@@ -42,6 +55,11 @@ public class Circuito {
     final private String nomCircuito;
     final private World mundo;
 
+    /**
+     * Genera un nuevo objeto Circuito
+     * @param mundo World a utilizar para crear los polígonos tipo Body que conformarán el circuito
+     * @param nomCircuito nombre del circuito. Debe coincidir con el nombre del archivo donde se encuentran los polígonos deeste circuito, y éste estar assets/worlds
+     */
     public Circuito(World mundo, String nomCircuito) {
         this.mundo = mundo;
         this.circuitoMuros = new ArrayList<>();
@@ -49,6 +67,12 @@ public class Circuito {
         this.nomCircuito = nomCircuito;
     }
 
+    /**
+     * Extrae el polígono desde un PolygonMapObject y lo añade al World de este Circuito
+     * @param p polígono que se va a añadir al World de este Circuito
+     * @param t tipo de polígono. Determina el filtro de colisiones
+     * @return Body creado
+     */
     private Body getPolygon(PolygonMapObject p, TipoPoly t) {
         float[] vertices;
         vertices = p.getPolygon().getTransformedVertices();
@@ -101,9 +125,11 @@ public class Circuito {
         return body;
     }
 
-    // tiene que estar formado por poligonos exclusivamente
-    // Box2D no permite formas concavas
-    // tambien falla con rectangulos con las esquinas redondeadas
+    /**
+     * Añade los muros límite del circuito desde un archivo, dado por nomCircuito.
+     * Los muros deben estar en una capa con el nombre 'Muros'.
+     * Todos los elementos relevantes en esta capa deben ser polígonos no cóncavos.
+     */
     public void cargarMuros() {
 
         TiledMap miTiledMap = new TmxMapLoader().load("worlds/" + nomCircuito + ".tmx");
@@ -118,7 +144,11 @@ public class Circuito {
         miTiledMap.dispose();
     }
 
-    // meta está formada por dos poligonos pa
+    /**
+     * Añade la meta del circuito desde un archivo, dado por nomCircuito.
+     * La meta debe estar en una capa con el nombre 'Meta'.
+     * Todos los elementos relevantes en esta capa deben ser polígonos no cóncavos.
+     */
     public void cargarMeta() {
 
         TiledMap miTiledMap = new TmxMapLoader().load("worlds/" + nomCircuito + ".tmx");
@@ -133,6 +163,11 @@ public class Circuito {
         miTiledMap.dispose();
     }
 
+    /**
+     * Añade los puntos de control del circuito desde un archivo, dado por nomCircuito.
+     * Los puntos de control deben estar en una capa con el nombre 'Checkpoint'. Dicha capa debe haber 3 puntos de control.
+     * Todos los elementos relevantes en esta capa deben ser polígonos no cóncavos.
+     */
     public void cargarCheckpoints() {
 
         TiledMap miTiledMap = new TmxMapLoader().load("worlds/" + nomCircuito + ".tmx");
@@ -155,6 +190,13 @@ public class Circuito {
         miTiledMap.dispose();
     }
 
+    /**
+     * Crea y posiciona en el World de este Circuito los objetos tipo Body que representan a los competidores.
+     * Las posiciones son determinadas por nomCircuito.
+     * @param oponentes numero de competidores IA
+     * @param posJug posición en parrila donde irá el jugador
+     * @return Body del jugador
+     */
     public Body prepararParrilla(int oponentes, int posJug) {
 
         Body jugador = null;
