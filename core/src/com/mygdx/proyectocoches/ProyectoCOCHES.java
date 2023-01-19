@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.proyectocoches.screens.ScreenSelector;
 import com.mygdx.proyectocoches.screens.TestDrive;
 import com.mygdx.proyectocoches.screens.TestIA;
 import com.mygdx.proyectocoches.ui.TestOsd;
@@ -13,7 +14,7 @@ public class ProyectoCOCHES extends Game {
 	
 	@Override
 	public void create () {
-		setScreen(new TestIA(this));
+		setScreen(new ScreenSelector(this));
 	}
 
 	@Override

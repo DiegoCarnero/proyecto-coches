@@ -38,9 +38,9 @@ public class TestDrive implements Screen {
 
     private Skin skin;
 
-    public TestDrive(Game juego) {
+    public TestDrive(Game juego,Skin skin) {
 
-        skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+        this.skin = skin;
         osd = new TestOsd(juego,skin);
 
         this.miBatch = new SpriteBatch();

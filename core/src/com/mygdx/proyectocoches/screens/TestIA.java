@@ -32,8 +32,8 @@ public class TestIA implements Screen {
 
     private Skin skin;
 
-    public TestIA(Game juego) {
-        skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+    public TestIA(Game juego, Skin skin) {
+        this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
         this.miBatch = new SpriteBatch();
         this.miWorld = new World(new Vector2(0, 0), true);
