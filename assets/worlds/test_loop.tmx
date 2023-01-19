@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="1" nextlayerid="13" nextobjectid="72">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="1" nextlayerid="15" nextobjectid="75">
  <objectgroup id="4" name="Muros">
   <object id="20" x="-301.667" y="581.667">
    <polygon points="0,0 1,-45 606,-43 607,0"/>
@@ -53,24 +53,34 @@
    <polygon points="0,0 -15.3333,-77.3333 -70.6667,-40.6667"/>
   </object>
  </objectgroup>
- <objectgroup id="9" name="Meta">
+ <objectgroup id="9" name="Meta" visible="0">
   <object id="57" x="20.333" y="895.334">
    <polygon points="0,0 0,-133.333 -4.33337,-132.667 -4.33333,-0.333337"/>
   </object>
  </objectgroup>
- <objectgroup id="10" name="Checkpoint1">
-  <object id="63" x="18" y="896.333">
+ <objectgroup id="10" name="Checkpoint1" visible="0">
+  <object id="63" x="19" y="896.333">
    <polygon points="0,0 0,-133.333 -4.33337,-132.667 -4.33333,-0.333337"/>
   </object>
  </objectgroup>
- <objectgroup id="11" name="Checkpoint2">
+ <objectgroup id="11" name="Checkpoint2" visible="0">
   <object id="70" x="-369" y="613">
    <polygon points="0,0 125,102 129,96 2,-8"/>
   </object>
  </objectgroup>
- <objectgroup id="12" name="Checkpoint3">
+ <objectgroup id="12" name="Checkpoint3" visible="0">
   <object id="71" x="250" y="707">
    <polygon points="0,0 108.667,-119.333 110.667,-116 4,5.33333"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="13" name="Path1">
+  <object id="72" x="-232.482" y="810.932">
+   <polygon points="-3.10801,2.05225 -78.5177,-64.3052 8.51396,-136.932 240.092,-138.887 469.04,-131.67 552.097,-62.8265 478.872,0.111442 235.821,6.63344"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="14" name="Path2">
+  <object id="74" x="-281.387" y="847.077">
+   <polygon points="8.35314,-1.75798 -80.1308,-102.697 43.3234,-207.891 281.718,-220.631 537.027,-200.057 641.151,-101.454 557.897,-7.80585 284.707,10.2232"/>
   </object>
  </objectgroup>
 </map>
