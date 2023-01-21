@@ -10,7 +10,6 @@ import static com.mygdx.proyectocoches.Constantes.LAYER_CHECKP;
 import static com.mygdx.proyectocoches.Constantes.LAYER_META;
 import static com.mygdx.proyectocoches.Constantes.LAYER_MUROS;
 import static com.mygdx.proyectocoches.Constantes.LAYER_PATH;
-import static com.mygdx.proyectocoches.Constantes.PPM;
 import static com.mygdx.proyectocoches.Constantes.TEST_LOOP_PATHS;
 import static com.mygdx.proyectocoches.Constantes.TILE_SIZE;
 import static com.mygdx.proyectocoches.Constantes.test_loop_ang;
@@ -22,7 +21,6 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.Bezier;
 import com.badlogic.gdx.math.CatmullRomSpline;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -30,6 +28,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.proyectocoches.entidades.CocheIA;
+import com.mygdx.proyectocoches.entidades.Competidor;
+import com.mygdx.proyectocoches.entidades.Jugador;
 
 import java.util.ArrayList;
 
@@ -56,8 +57,7 @@ enum TipoPoly {
  */
 public class Circuito {
 
-    final private ArrayList<Body> competidores;
-    final private ArrayList<Body> circuitoMuros;
+    final private ArrayList<Competidor> competidores;
     final private String nomCircuito;
     final private World mundo;
 
@@ -69,7 +69,6 @@ public class Circuito {
      */
     public Circuito(World mundo, String nomCircuito) {
         this.mundo = mundo;
-        this.circuitoMuros = new ArrayList<>();
         this.competidores = new ArrayList<>();
         this.nomCircuito = nomCircuito;
     }
@@ -79,9 +78,8 @@ public class Circuito {
      *
      * @param p polígono que se va a añadir al World de este Circuito
      * @param t tipo de polígono. Determina el filtro de colisiones
-     * @return Body creado
      */
-    private Body getPolygon(PolygonMapObject p, TipoPoly t) {
+    private void getPolygon(PolygonMapObject p, TipoPoly t) {
         float[] vertices;
         vertices = p.getPolygon().getTransformedVertices();
 
@@ -130,7 +128,6 @@ public class Circuito {
         }
         body.createFixture(fDef);
         pShape.dispose();
-        return body;
     }
 
     /**
@@ -145,7 +142,7 @@ public class Circuito {
 
         for (MapObject o : murosMapObjs) {
             if (o instanceof PolygonMapObject) {
-                circuitoMuros.add(getPolygon((PolygonMapObject) o, TipoPoly.Muros));
+                getPolygon((PolygonMapObject) o, TipoPoly.Muros);
             }
         }
 
@@ -206,9 +203,9 @@ public class Circuito {
      * @param posJug    posición en parrila donde irá el jugador
      * @return Body del jugador
      */
-    public Body prepararParrilla(int oponentes, int posJug) {
+    public Jugador prepararParrilla(int oponentes, int posJug) {
 
-        Body jugador = null;
+        Jugador jugador = null;
         int maxOponentes = 0;
         Vector2[] vGrid;
         float angulo;
@@ -237,21 +234,21 @@ public class Circuito {
             }
 
             if (cont == posJug) {
-                jugador = Coche.generaCoche(v, mundo, tamCoche);
-                jugador.setTransform(v, (float) -(angulo * Math.PI / 180));
+                jugador = new Jugador(Coche.generaCoche(v, mundo, tamCoche));
+                jugador.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
                 competidores.add(jugador);
                 jugInit = true;
             } else {
-                Body c = Coche.generaCoche(v, mundo, tamCoche);
-                c.setTransform(v, (float) -(angulo * Math.PI / 180));
+                CocheIA c = new CocheIA(Coche.generaCoche(v, mundo, tamCoche));
+                c.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
                 competidores.add(c);
             }
             cont++;
         }
 
         if (!jugInit) {
-            jugador = Coche.generaCoche(vGrid[vGrid.length - 1], mundo, tamCoche);
-            jugador.setTransform(jugador.getPosition(), (float) -(angulo * Math.PI / 180));
+            jugador = new Jugador(Coche.generaCoche(vGrid[vGrid.length - 1], mundo, tamCoche));
+            jugador.getBody().setTransform(jugador.getWorldPosition(), (float) -(angulo * Math.PI / 180));
         }
 
         return jugador;
@@ -280,6 +277,10 @@ public class Circuito {
         }
 
         return rutas;
+    }
+
+    public ArrayList<Competidor> getCompetidores(){
+        return competidores;
     }
 
 }
