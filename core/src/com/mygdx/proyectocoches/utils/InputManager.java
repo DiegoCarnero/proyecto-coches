@@ -62,7 +62,7 @@ public class InputManager {
             jugador.setLinearDamping(DAMPING_DEFAULT);
 
             if (input.isAcelerando()) {
-                nuevAcc = direccion * max_velo * input.getAccValue() / 100f;
+                nuevAcc = direccion * max_velo * input.getAccValue();
                 v.set(0, nuevAcc * max_velo * 0.01f);
             }
         }
@@ -76,7 +76,7 @@ public class InputManager {
         }
 
         float velActual = jugador.getLinearVelocity().len();
-        float maxVeloPorInput = input.getAccValue() * max_velo / 100f;
+        float maxVeloPorInput = input.getAccValue() * max_velo;
 
         if (velActual < maxVeloPorInput && velActual < max_velo && !v.isZero()) {
             jugador.applyForceToCenter(jugador.getWorldVector(v), true);

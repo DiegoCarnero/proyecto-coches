@@ -159,7 +159,7 @@ public class TestOsd implements Screen, PlayerInput {
     }
 
     public float getAccValue() {
-        return accSlider.getValue();
+        return accSlider.getValue() / 100f;
     }
 
     public float getSteerValue() {
