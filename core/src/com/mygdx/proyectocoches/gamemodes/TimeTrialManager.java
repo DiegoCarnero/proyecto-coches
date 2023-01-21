@@ -1,4 +1,4 @@
-package com.mygdx.proyectocoches;
+package com.mygdx.proyectocoches.gamemodes;
 
 public class TimeTrialManager {
 

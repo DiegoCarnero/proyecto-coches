@@ -6,16 +6,16 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.mygdx.proyectocoches.TimeTrialManager;
+import com.mygdx.proyectocoches.gamemodes.TimeTrialManager;
 
 public class TimeTrialOsd implements Screen {
 
     private final Stage UIStage;
-    private Label lblSector1;
-    private Label lblSector2;
-    private Label lblSector3;
-    private Label lblVueltaActual;
-    private Label lblMejorVuelta;
+    private final Label lblSector1;
+    private final Label lblSector2;
+    private final Label lblSector3;
+    private final Label lblVueltaActual;
+    private final Label lblMejorVuelta;
     private final TimeTrialManager rlm;
 
     public TimeTrialOsd(Skin skin, TimeTrialManager rlm) {
