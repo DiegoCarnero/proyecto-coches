@@ -11,18 +11,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.MassData;
+import com.mygdx.proyectocoches.entidades.Jugador;
 import com.mygdx.proyectocoches.ui.TestOsd;
 
 public class InputManager {
 
-    TestOsd inputOsd;
+    PlayerInput input;
     Body jugador;
     float nuevAcc;
     float nuevSteer = 0;
 
-    public InputManager(TestOsd osd, Body jugador) {
-        inputOsd = osd;
-        this.jugador = jugador;
+    public InputManager(PlayerInput input, Jugador jugador) {
+        this.input = input;
+        this.jugador = jugador.getBody();
 
     }
 
@@ -47,7 +48,7 @@ public class InputManager {
         float max_velo;
         int direccion;
 
-        if (inputOsd.isAdelante()) {
+        if (input.isAdelante()) {
             max_velo = MAX_VELOCIDAD_FORW;
             direccion = 1;
         } else {
@@ -55,20 +56,18 @@ public class InputManager {
             direccion = -1;
         }
 
-        if (inputOsd.isFrenando()) {
+        if (input.isFrenando()) {
             jugador.setLinearDamping(DAMPING_FRENANDO);
         } else {
             jugador.setLinearDamping(DAMPING_DEFAULT);
 
-            if (inputOsd.isAcelerando()) {
-                // normalizar a la velocidad maxima
-                nuevAcc = direccion * inputOsd.getAccValue() * max_velo / 100f;
-                v.set(0, nuevAcc * (max_velo * 0.01f));
+            if (input.isAcelerando()) {
+                nuevAcc = direccion * max_velo * input.getAccValue() / 100f;
+                v.set(0, nuevAcc * max_velo * 0.01f);
             }
         }
 
-        // normalizar  entre -2.5 y 2.5. Cambiar signo para que se corresponda drcha e izq en el control y el coche
-        nuevSteer = -(inputOsd.getSteerValue() - 50.0f)  * 0.05f;
+        nuevSteer = input.getSteerValue() * 0.05f;
 
         if (nuevSteer == 0 || jugador.getLinearVelocity().len() < 0.1) {
             jugador.setAngularVelocity(0.0f);
@@ -77,7 +76,7 @@ public class InputManager {
         }
 
         float velActual = jugador.getLinearVelocity().len();
-        float maxVeloPorInput = inputOsd.getAccValue() * max_velo / 100f;
+        float maxVeloPorInput = input.getAccValue() * max_velo / 100f;
 
         if (velActual < maxVeloPorInput && velActual < max_velo && !v.isZero()) {
             jugador.applyForceToCenter(jugador.getWorldVector(v), true);
@@ -89,11 +88,11 @@ public class InputManager {
         float derrape;
         MassData b2dmd = jugador.getMassData();
 
-        if(Math.abs(jugador.getAngularVelocity()) > 1.5f && (jugador.getLinearVelocity().len() > MAX_VELOCIDAD_FORW/2)){
-            b2dmd.center.set(0,-4);
+        if (Math.abs(jugador.getAngularVelocity()) > 1.5f && (jugador.getLinearVelocity().len() > MAX_VELOCIDAD_FORW / 2)) {
+            b2dmd.center.set(0, -4);
             derrape = DERRAPE_ALTO;
         } else {
-            b2dmd.center.set(0,0);
+            b2dmd.center.set(0, 0);
             derrape = DERRAPE_BAJO;
         }
 
