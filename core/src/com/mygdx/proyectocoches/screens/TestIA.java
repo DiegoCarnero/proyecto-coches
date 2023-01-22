@@ -5,6 +5,9 @@ import static com.mygdx.proyectocoches.Constantes.PPM;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ai.steer.behaviors.Arrive;
+import com.badlogic.gdx.ai.steer.behaviors.FollowPath;
+import com.badlogic.gdx.ai.steer.utils.Path;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -17,7 +20,10 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.proyectocoches.entidades.CocheIA;
 import com.mygdx.proyectocoches.formas.Circuito;
+import com.mygdx.proyectocoches.formas.Coche;
+import com.mygdx.proyectocoches.formas.Sensor;
 
 public class TestIA implements Screen {
 
@@ -27,8 +33,16 @@ public class TestIA implements Screen {
     private final OrthographicCamera miCam;
     private final Viewport miViewport;
     private final Circuito circuito;
+    private final CocheIA c;
     private final CatmullRomSpline<Vector2>[] rutas;
     private final ShapeRenderer sr;
+
+    private Vector2 posSplineActual;
+    private int contSplineActual = 0;
+    private Sensor b;
+
+    private Vector2 aux;
+    private Arrive arriveSB;
 
     private Skin skin;
 
@@ -39,13 +53,17 @@ public class TestIA implements Screen {
         this.miWorld = new World(new Vector2(0, 0), true);
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new OrthographicCamera();
-        miCam.zoom = 2f;
+        miCam.zoom = 0.2f;
         this.miViewport = new FitViewport(Gdx.graphics.getWidth() / PPM, Gdx.graphics.getHeight() / PPM, miCam);
 
         this.circuito = new Circuito(miWorld, "test_loop");
         circuito.cargarMuros();
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
+
+        this.c = new CocheIA(Coche.generaCoche(new Vector2(2, -5), miWorld, new Vector2(5, 10)));
+        c.getBody().setTransform(c.getBody().getPosition(), (float) -(90 * Math.PI / 180));
+        c.getBody().setAwake(true);
 
         this.rutas = circuito.cargarRutas();
         this.sr = new ShapeRenderer();
@@ -57,33 +75,48 @@ public class TestIA implements Screen {
 
     }
 
+    private void update(float delta) {
+        Sensor b = new Sensor(posSplineActual,miWorld);
+
+         arriveSB = new Arrive<Vector2>(c, b).setTimeToTarget(0.01f)
+                .setArrivalTolerance(1f)
+                .setDecelerationRadius(0.01f);
+        c.setSteeringBehavior(arriveSB);
+        c.getBody().setLinearVelocity(new Vector2(0,2));
+        c.update(delta, b.getVarPos());
+    }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         sr.begin();
         sr.setColor(Color.WHITE);
         int precision = 100;
-        for (CatmullRomSpline<Vector2> c : rutas) {
+        for (CatmullRomSpline<Vector2> s : rutas) {
 
             for (int i = 0; i < precision; ++i) {
                 float t = i / (float) precision;
                 Vector2 ini = new Vector2();
                 Vector2 fin = new Vector2();
 
-                c.valueAt(ini, t);
+                s.valueAt(ini, t);
 
-                c.valueAt(fin, t - (1f / (float) precision));
+                s.valueAt(fin, t - (1f / (float) precision));
 
                 sr.line(ini.x, ini.y, fin.x, fin.y);
 
+                if (i == contSplineActual) {
+                    posSplineActual = ini;
+                }
             }
         }
         sr.end();
-        miCam.position.set(0, 0, 0);
-        miCam.update();
         draw();
+        update(delta);
+
+        miCam.position.set(c.getPosition().x,c.getPosition().y, 0);
+        miCam.update();
     }
 
     private void draw() {

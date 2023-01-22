@@ -30,5 +30,5 @@ public class Constantes {
 
     public static final Vector2[] test_loop_vGrid = {new Vector2(2,-5)};
     public static final float test_loop_ang = -90;
-    public static final int TEST_LOOP_PATHS = 2;
+    public static final int TEST_LOOP_PATHS = 1;
 }

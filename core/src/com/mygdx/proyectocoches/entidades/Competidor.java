@@ -15,7 +15,7 @@ public class Competidor {
         return body;
     }
 
-    public Vector2 getWorldPosition(){
+    public Vector2 getPosition(){
         return body.getPosition();
     }
 }

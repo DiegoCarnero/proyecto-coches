@@ -19,6 +19,7 @@ import com.mygdx.proyectocoches.ui.TestOsd;
 import com.mygdx.proyectocoches.ui.TimeTrialOsd;
 import com.mygdx.proyectocoches.utils.InputManager;
 import com.mygdx.proyectocoches.utils.MiOrthoCam;
+import com.mygdx.proyectocoches.utils.PlayerInput;
 import com.mygdx.proyectocoches.utils.miContactListener;
 
 public class TestDrive implements Screen {
@@ -30,6 +31,7 @@ public class TestDrive implements Screen {
     private final Viewport miViewport;
     private final Jugador jugador;
     private final Circuito circuito;
+    private final PlayerInput pi;
     private final TestOsd osd;
     private final TimeTrialOsd ttOsd;
     private final InputManager im;
@@ -56,7 +58,7 @@ public class TestDrive implements Screen {
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
         this.jugador = circuito.prepararParrilla(0,0);
-
+        this.pi = osd;
         im = new InputManager(osd,jugador);
     }
 
@@ -77,7 +79,7 @@ public class TestDrive implements Screen {
     }
 
     private void update(float delta) {
-        miCam.position.set(jugador.getWorldPosition(),0);
+        miCam.position.set(jugador.getPosition(),0);
         this.miCam.AdjustaZoomPorVelo(jugador.getBody());
         miCam.update();
         miWorld.step(delta,6,2);

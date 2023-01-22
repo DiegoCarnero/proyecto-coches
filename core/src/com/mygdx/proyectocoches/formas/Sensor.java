@@ -1,80 +1,58 @@
-package com.mygdx.proyectocoches.entidades;
-/**
- * https://github.com/libgdx/gdx-ai/blob/master/tests/src/com/badlogic/gdx/ai/tests/steer/box2d/Box2dSteeringEntity.java
- */
+package com.mygdx.proyectocoches.formas;
 
-import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_FORW;
+import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP1;
+import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP2;
+import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP3;
+import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_META;
+import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_MUROS;
+import static com.mygdx.proyectocoches.Constantes.CAT_COCHE_JUG;
+import static com.mygdx.proyectocoches.Constantes.DAMPING_DEFAULT;
+import static com.mygdx.proyectocoches.Constantes.DENSIDAD_COCHE;
+import static com.mygdx.proyectocoches.Constantes.PPM;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ai.steer.Proximity;
 import com.badlogic.gdx.ai.steer.Steerable;
-import com.badlogic.gdx.ai.steer.SteeringAcceleration;
-import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.utils.Location;
+import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 
-public class CocheIA extends Competidor implements Steerable<Vector2> {
+public class Sensor implements Steerable {
 
-    private boolean tagged;
-    private float maxAngularSpeed, maxLinearSpeed, maxAngularAcceleration, maxLinearAcceleration;
+    private final Body b;
 
-    SteeringBehavior<Vector2> behavior;
-    SteeringAcceleration<Vector2> steerOut;
+    private Vector2 pos;
 
-    public CocheIA(Body b) {
-        super(b);
-        this.maxAngularAcceleration = 10f;
-        this.maxLinearSpeed = MAX_VELOCIDAD_FORW;
-        this.maxLinearAcceleration = 20f;
-        this.maxAngularSpeed = 20.5f;
-        this.steerOut = new SteeringAcceleration<Vector2>(new Vector2());
-    }
+    public Sensor(Vector2 pos, World mundo){
+        BodyDef bdef;
 
-    public void update(float delta,Vector2 pos) {
+        // definir body
+        bdef = new BodyDef();
+        bdef.position.set(pos);
+        bdef.type = BodyDef.BodyType.StaticBody;
+        this.b = mundo.createBody(bdef);
 
-        if (behavior != null) {
-            behavior.calculateSteering(steerOut);
-            applySteering(delta,pos);
-        }
+        //definir fixture
+        PolygonShape pShape = new PolygonShape();
+        pShape.setAsBox(0.5f/PPM,0.5f/PPM);
+        FixtureDef fDef= new FixtureDef();
+        fDef.isSensor = true;
+        fDef.shape = pShape;
 
-    }
-
-    private void applySteering(float delta,Vector2 pos) {
-
-        boolean anyAccelerations = false;
-
-        if (!steerOut.linear.isZero()) {
-            Vector2 fuerza = steerOut.linear.scl(delta);
-            getBody().applyLinearImpulse(fuerza, pos,true);
-            anyAccelerations = true;
-        }
-
-        if (steerOut.angular != 0) {
-            getBody().applyTorque(steerOut.angular * delta, true);
-            anyAccelerations = true;
-        }
-
-        if (anyAccelerations) {
-            // lineal
-            Vector2 velo = getBody().getLinearVelocity();
-            float veloCuadrada = velo.len2();
-            if (veloCuadrada > maxLinearSpeed * maxLinearSpeed) {
-                getBody().setLinearVelocity(velo.scl(maxLinearSpeed / 1f));
-            }
-            // angular
-            if (getBody().getAngularVelocity() > maxLinearSpeed) {
-                getBody().setAngularVelocity(maxAngularSpeed);
-            }
-        }
+        this.b.createFixture(fDef);
+        this.pos = pos;
+        pShape.dispose();
     }
 
     /**
      * Returns the vector indicating the linear velocity of this Steerable.
      */
     @Override
-    public Vector2 getLinearVelocity() {
-        return getBody().getLinearVelocity();
+    public Vector getLinearVelocity() {
+        return new Vector2(0,0);
     }
 
     /**
@@ -82,7 +60,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      */
     @Override
     public float getAngularVelocity() {
-        return getBody().getAngularVelocity();
+        return 0;
     }
 
     /**
@@ -90,7 +68,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      */
     @Override
     public float getBoundingRadius() {
-        return 1f;
+        return 0.5f;
     }
 
     /**
@@ -98,7 +76,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      */
     @Override
     public boolean isTagged() {
-        return tagged;
+        return false;
     }
 
     /**
@@ -108,7 +86,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      */
     @Override
     public void setTagged(boolean tagged) {
-        this.tagged = tagged;
+
     }
 
     /**
@@ -136,7 +114,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      */
     @Override
     public float getMaxLinearSpeed() {
-        return this.maxLinearSpeed;
+        return 0;
     }
 
     /**
@@ -146,7 +124,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      */
     @Override
     public void setMaxLinearSpeed(float maxLinearSpeed) {
-        this.maxLinearSpeed = maxLinearSpeed;
+
     }
 
     /**
@@ -154,7 +132,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      */
     @Override
     public float getMaxLinearAcceleration() {
-        return this.maxLinearAcceleration;
+        return 0;
     }
 
     /**
@@ -164,7 +142,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      */
     @Override
     public void setMaxLinearAcceleration(float maxLinearAcceleration) {
-        this.maxLinearAcceleration = maxLinearAcceleration;
+
     }
 
     /**
@@ -172,7 +150,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      */
     @Override
     public float getMaxAngularSpeed() {
-        return this.maxAngularSpeed;
+        return 0;
     }
 
     /**
@@ -182,7 +160,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      */
     @Override
     public void setMaxAngularSpeed(float maxAngularSpeed) {
-        this.maxAngularSpeed = maxAngularSpeed;
+
     }
 
     /**
@@ -190,7 +168,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      */
     @Override
     public float getMaxAngularAcceleration() {
-        return this.maxAngularAcceleration;
+        return 0;
     }
 
     /**
@@ -200,7 +178,15 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      */
     @Override
     public void setMaxAngularAcceleration(float maxAngularAcceleration) {
-        this.maxAngularAcceleration = maxAngularAcceleration;
+
+    }
+
+    /**
+     * Returns the vector indicating the position of this location.
+     */
+    @Override
+    public Vector getPosition() {
+        return pos;
     }
 
     /**
@@ -209,7 +195,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      */
     @Override
     public float getOrientation() {
-        return getBody().getAngle();
+        return 0;
     }
 
     /**
@@ -220,7 +206,6 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
     @Override
     public void setOrientation(float orientation) {
 
-        getBody().setTransform(getPosition(), orientation);
     }
 
     /**
@@ -229,8 +214,8 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      * @param vector the vector
      */
     @Override
-    public float vectorToAngle(Vector2 vector) {
-        return (float) Math.atan2(-vector.x, vector.y);
+    public float vectorToAngle(Vector vector) {
+        return 0;
     }
 
     /**
@@ -241,23 +226,24 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      * @return the output vector for chaining.
      */
     @Override
-    public Vector2 angleToVector(Vector2 outVector, float angle) {
-        outVector.x = -(float) Math.sin(angle);
-        outVector.y = (float) Math.cos(angle);
-        return outVector;
-    }
-
-    @Override
-    public Location<Vector2> newLocation() {
+    public Vector angleToVector(Vector outVector, float angle) {
         return null;
     }
 
-    public SteeringBehavior<Vector2> getSteeringBehavior() {
-        return behavior;
+    /**
+     * Creates a new location.
+     * <p>
+     * This method is used internally to instantiate locations of the correct type parameter {@code T}. This technique keeps the API
+     * simple and makes the API easier to use with the GWT backend because avoids the use of reflection.
+     *
+     * @return the newly created location.
+     */
+    @Override
+    public Location newLocation() {
+        return null;
     }
 
-    public void setSteeringBehavior(SteeringBehavior<Vector2> steeringBehavior) {
-        this.behavior = steeringBehavior;
+    public Vector2 getVarPos(){
+        return pos;
     }
-
 }

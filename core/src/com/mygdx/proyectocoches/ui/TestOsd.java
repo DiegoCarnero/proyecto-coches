@@ -19,18 +19,18 @@ public class TestOsd implements Screen, PlayerInput {
     private boolean acelerando = false;
     private boolean adelante = true;
     private boolean frenando = false;
-    private final Stage UIStage;
+    private Stage UIStage;
 
-    private final InputMultiplexer multiplexer;
+    private InputMultiplexer multiplexer;
 
-    private final Slider accSlider;
-    private final Slider steerSlider;
+    private Slider accSlider;
+    private Slider steerSlider;
 
-    private final Button btnD;
-    private final Button btnR;
-    private final Button btnB;
+    private Button btnD;
+    private Button btnR;
+    private Button btnB;
 
-    public TestOsd(Game miGame, Skin skin) {
+    public TestOsd(Game miGame,Skin skin) {
 
         UIStage = new Stage(new ScreenViewport());
 
@@ -43,39 +43,39 @@ public class TestOsd implements Screen, PlayerInput {
 
         UIStage.getViewport().getCamera().position.set(screenW / 2f, 0, 0);
 
-        btnD = new TextButton("D", skin);
+        btnD = new TextButton("D",skin);
         btnD.setHeight(screenH * 0.1f);
         btnD.setWidth(screenH * 0.1f);
         btnD.setPosition(screenW / 2f, screenH / 4f);
-        btnD.addListener(new InputListener() {
+        btnD.addListener(new InputListener(){
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 adelante = true;
                 return true;
             }
         });
 
-        btnR = new TextButton("R", skin);
+        btnR = new TextButton("R",skin);
         btnR.setHeight(screenH * 0.1f);
         btnR.setWidth(screenH * 0.1f);
         btnR.setPosition(screenW / 2f + screenH * 0.13f, screenH / 4f);
         btnR.setChecked(true);
-        btnR.addListener(new InputListener() {
+        btnR.addListener(new InputListener(){
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 adelante = false;
                 return true;
             }
         });
 
-        btnB = new TextButton("B", skin);
+        btnB = new TextButton("B",skin);
         btnB.setHeight(screenH * 0.1f);
         btnB.setWidth(screenH * 0.1f);
         btnB.setPosition(screenW / 2f + screenH * 0.4f, screenH / 4f);
         btnB.setChecked(true);
-        btnB.addListener(new InputListener() {
+        btnB.addListener(new InputListener(){
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 frenando = true;
                 return true;
             }
@@ -150,7 +150,7 @@ public class TestOsd implements Screen, PlayerInput {
         return acelerando;
     }
 
-    public boolean isAdelante() {
+    public boolean isAdelante(){
         return adelante;
     }
 

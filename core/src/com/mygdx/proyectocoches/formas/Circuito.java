@@ -248,7 +248,7 @@ public class Circuito {
 
         if (!jugInit) {
             jugador = new Jugador(Coche.generaCoche(vGrid[vGrid.length - 1], mundo, tamCoche));
-            jugador.getBody().setTransform(jugador.getWorldPosition(), (float) -(angulo * Math.PI / 180));
+            jugador.getBody().setTransform(jugador.getPosition(), (float) -(angulo * Math.PI / 180));
         }
 
         return jugador;
