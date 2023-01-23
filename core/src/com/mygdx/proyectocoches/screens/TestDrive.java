@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.proyectocoches.audio.AudioManager;
 import com.mygdx.proyectocoches.gamemodes.TimeTrialManager;
 import com.mygdx.proyectocoches.entidades.Jugador;
 import com.mygdx.proyectocoches.formas.Circuito;
@@ -36,6 +37,7 @@ public class TestDrive implements Screen {
     private final TimeTrialOsd ttOsd;
     private final InputManager im;
     private final TimeTrialManager rlm;
+    private final AudioManager am;
 
     private final Skin skin;
 
@@ -60,6 +62,8 @@ public class TestDrive implements Screen {
         this.jugador = circuito.prepararParrilla(0,0);
         this.pi = osd;
         im = new InputManager(osd,jugador);
+
+        this.am = new AudioManager(this.osd);
     }
 
 
@@ -79,6 +83,7 @@ public class TestDrive implements Screen {
     }
 
     private void update(float delta) {
+        am.update(delta);
         miCam.position.set(jugador.getPosition(),0);
         this.miCam.AdjustaZoomPorVelo(jugador.getBody());
         miCam.update();
