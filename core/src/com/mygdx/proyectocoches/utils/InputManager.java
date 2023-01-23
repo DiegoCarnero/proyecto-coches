@@ -67,8 +67,11 @@ public class InputManager {
             }
         }
 
-        nuevSteer = input.getSteerValue() * 0.05f;
-
+        if (!input.isFrenando()) {
+            nuevSteer = input.getSteerValue() * 0.05f;
+        } else {
+            nuevSteer = 0;
+        }
         if (nuevSteer == 0 || jugador.getLinearVelocity().len() < 0.1) {
             jugador.setAngularVelocity(0.0f);
         } else {
