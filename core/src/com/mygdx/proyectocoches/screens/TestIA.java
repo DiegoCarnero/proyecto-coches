@@ -40,10 +40,6 @@ public class TestIA implements Screen {
     private final CatmullRomSpline<Vector2>[] rutas;
     private final ShapeRenderer sr;
 
-    private Vector2 posSplineActual;
-    private int contSplineActual = 0;
-
-    private Vector2 aux;
     private Seek seekSB;
 
     private Skin skin;
@@ -120,10 +116,6 @@ public class TestIA implements Screen {
                 s.valueAt(fin, t - (1f / (float) precision));
 
                 sr.line(ini.x, ini.y, fin.x, fin.y);
-
-                if (i == contSplineActual) {
-                    posSplineActual = ini;
-                }
             }
         }
         sr.end();
