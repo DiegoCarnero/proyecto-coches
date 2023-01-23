@@ -12,13 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.proyectocoches.ProyectoCOCHES;
-import com.mygdx.proyectocoches.test.AiSteeringState;
 
 
 public class ScreenSelector implements Screen {
 
     private Stage stage;
-    private final String[] screens = new String[]{"TestDrive", "TestIA", "AiSteeeringState"};
+    private final String[] screens = new String[]{"TestDrive", "TestIA"};
     private String seleccion;
     private InputMultiplexer multiplexer;
     private Skin skin;
@@ -39,7 +38,7 @@ public class ScreenSelector implements Screen {
 
         TextButton btn1 = new TextButton(screens[0], this.skin);
         btn1.setHeight(screenH);
-        btn1.setWidth(screenW * 0.3f);
+        btn1.setWidth(screenW * 0.5f);
         btn1.setPosition(0, 0);
         btn1.addListener(new InputListener() {
             @Override
@@ -51,8 +50,8 @@ public class ScreenSelector implements Screen {
 
         TextButton btn2 = new TextButton(screens[1], this.skin);
         btn2.setHeight(screenH);
-        btn2.setWidth(screenW * 0.3f);
-        btn2.setPosition(screenW / 3f, 0);
+        btn2.setWidth(screenW * 0.5f);
+        btn2.setPosition(screenW / 2f, 0);
         btn2.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -61,21 +60,9 @@ public class ScreenSelector implements Screen {
             }
         });
 
-        TextButton btn3 = new TextButton(screens[2], this.skin);
-        btn3.setHeight(screenH);
-        btn3.setWidth(screenW * 0.3f);
-        btn3.setPosition(2 * screenW / 3f, 0);
-        btn3.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                pc.setScreen(new AiSteeringState(pc,skin));
-                return true;
-            }
-        });
 
         stage.addActor(btn1);
         stage.addActor(btn2);
-        stage.addActor(btn3);
     }
 
 

@@ -227,7 +227,7 @@ public class Circuito {
             if (cont > oponentes) {
                 break;
             }
-            CocheIA c = new CocheIA(Coche.generaCoche(v, mundo, tamCoche, false),10f);
+            CocheIA c = new CocheIA(Coche.generaCoche(v, mundo, tamCoche, false));
             c.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
             competidores.add(c);
             cont++;
@@ -278,7 +278,7 @@ public class Circuito {
                 competidores.add(jugador);
                 jugInit = true;
             } else {
-                CocheIA c = new CocheIA(Coche.generaCoche(v, mundo, tamCoche, false),10f);
+                CocheIA c = new CocheIA(Coche.generaCoche(v, mundo, tamCoche, false));
                 c.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
                 competidores.add(c);
             }

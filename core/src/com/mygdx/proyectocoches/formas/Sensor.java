@@ -1,16 +1,9 @@
 package com.mygdx.proyectocoches.formas;
 
-import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP1;
-import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP2;
-import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP3;
-import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_META;
-import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_MUROS;
 import static com.mygdx.proyectocoches.Constantes.CAT_COCHE_IA;
 import static com.mygdx.proyectocoches.Constantes.CAT_COCHE_IA_SENSOR;
-import static com.mygdx.proyectocoches.Constantes.CAT_COCHE_JUG;
-import static com.mygdx.proyectocoches.Constantes.DAMPING_DEFAULT;
-import static com.mygdx.proyectocoches.Constantes.DENSIDAD_COCHE;
 import static com.mygdx.proyectocoches.Constantes.PPM;
+import static com.mygdx.proyectocoches.Constantes.SENSOR_SIZE;
 
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.utils.Location;
@@ -26,6 +19,7 @@ import com.mygdx.proyectocoches.entidades.CocheIA;
 public class Sensor implements Steerable {
 
     private final Body b;
+
     private Vector2 pos;
 
     public Sensor(World mundo, CocheIA dono){
@@ -39,7 +33,7 @@ public class Sensor implements Steerable {
 
         //definir fixture
         PolygonShape pShape = new PolygonShape();
-        pShape.setAsBox(80f/PPM,80f/PPM);
+        pShape.setAsBox(SENSOR_SIZE/PPM,SENSOR_SIZE/PPM);
         FixtureDef fDef= new FixtureDef();
         fDef.isSensor = true;
         fDef.shape = pShape;
@@ -246,10 +240,6 @@ public class Sensor implements Steerable {
     @Override
     public Location newLocation() {
         return null;
-    }
-
-    public Vector2 getVarPos(){
-        return pos;
     }
 
     public void setPos(Vector2 pos) {

@@ -6,22 +6,18 @@ package com.mygdx.proyectocoches.entidades;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_BACK;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_FORW;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ai.steer.Proximity;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.utils.Location;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.proyectocoches.formas.Sensor;
 
 public class CocheIA extends Competidor implements Steerable<Vector2> {
 
-    private final float boundingRadius;
     public Sensor destinoSensor;
     private boolean tagged;
     private float maxAngularSpeed;
@@ -45,16 +41,15 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
     SteeringBehavior<Vector2> behavior;
     SteeringAcceleration<Vector2> steerOut;
 
-    private Arrive<Vector2>arriveSB;
-    private Seek<Vector2>seekSB;
+    private Arrive<Vector2> arriveSB;
+    private Seek<Vector2> seekSB;
 
     public void setNumDestinosRuta(int numDestinosRuta) {
         this.numDestinosRuta = numDestinosRuta;
     }
 
-    public CocheIA(Body b,float boundingRadius) {
+    public CocheIA(Body b) {
         super(b);
-        this.boundingRadius = boundingRadius;
         this.numDestinosRuta = 0;
         this.maxAngularAcceleration = 10f;
         this.maxLinearSpeed = MAX_VELOCIDAD_FORW;
@@ -66,11 +61,11 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
         super.getBody().getFixtureList().get(0).setUserData(this);
         this.destinoSensor = new Sensor(b.getWorld(), this);
 
-        this.arriveSB = new Arrive<>(this,this.destinoSensor)
-                .setTimeToTarget(0.010f)
-                        .setArrivalTolerance(2f)
-                        .setDecelerationRadius(4f);
-        this.seekSB = new Seek<>(this,this.destinoSensor);
+        this.arriveSB = new Arrive<>(this, this.destinoSensor)
+                .setTimeToTarget(0.0040f)
+                .setArrivalTolerance(2f)
+                .setDecelerationRadius(4f);
+        this.seekSB = new Seek<>(this, this.destinoSensor);
     }
 
     public void update(float delta) {
@@ -110,8 +105,8 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
             if (currentSpeedSquare > maxLinearSpeed * maxLinearSpeed) {
                 getBody().setLinearVelocity(velocity.scl(maxLinearSpeed / (float) Math.sqrt(currentSpeedSquare)));
             }
-             //angular
-            if(getBody().getAngularVelocity() > maxAngularSpeed){
+            //angular
+            if (getBody().getAngularVelocity() > maxAngularSpeed) {
                 getBody().setAngularVelocity(maxAngularSpeed);
             }
         }
@@ -308,13 +303,13 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
         this.behavior = steeringBehavior;
     }
 
-    private float distanciaEntrePuntos(Vector2 a, Vector2 b){
+    private float distanciaEntrePuntos(Vector2 a, Vector2 b) {
         return (float) Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
     }
 
     public void setDestinoSensorPosition(Vector2 posicion) {
 
-        float dist = distanciaEntrePuntos(posicion,getBody().getPosition());
+        float dist = distanciaEntrePuntos(posicion, getBody().getPosition());
         if (dist > 100f) {
             setMaxLinearSpeed(MAX_VELOCIDAD_FORW);
             setSteeringBehavior(this.seekSB);
@@ -343,4 +338,5 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
     public int getDestinoActualNdx() {
         return destinoActualNdx;
     }
+
 }

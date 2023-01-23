@@ -64,7 +64,7 @@ public class TestIA implements Screen {
         circuito.cargarMuros();
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
-        circuito.prepararParrilla(5);
+        circuito.prepararParrilla(9);
 
         this.rutas = circuito.cargarRutas();
         for (Competidor c : circuito.getCompetidores()) {
