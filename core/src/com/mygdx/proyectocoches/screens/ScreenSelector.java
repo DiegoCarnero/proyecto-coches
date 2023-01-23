@@ -56,7 +56,7 @@ public class ScreenSelector implements Screen {
         btn2.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                pc.setScreen(new TestDrive(pc,skin));
+                pc.setScreen(new TestIA(pc,skin));
                 return true;
             }
         });

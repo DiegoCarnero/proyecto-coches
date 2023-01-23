@@ -24,11 +24,13 @@ public class Constantes {
     public static final short CAT_COCHE_JUG = 0x1;
     public static final short CAT_CIRCUITO_MUROS = 0x2;
     public static final short CAT_CIRCUITO_META = 0x4;
+    public static final short CAT_COCHE_IA = 0x8;
     public static final short CAT_CIRCUITO_CHECKP1 = 0x10;
     public static final short CAT_CIRCUITO_CHECKP2 = 0x20;
     public static final short CAT_CIRCUITO_CHECKP3 = 0x30;
+    public static final short CAT_COCHE_IA_SENSOR = 0x40;
 
-    public static final Vector2[] test_loop_vGrid = {new Vector2(2,-5)};
+    public static final Vector2[] test_loop_vGrid = {new Vector2(2,-5),new Vector2(3,-5.5f),new Vector2(4,-5),new Vector2(5,-5.5f),new Vector2(6,-5),new Vector2(7,-5.5f),new Vector2(8,-5),new Vector2(9,-5.5f)};
     public static final float test_loop_ang = -90;
-    public static final int TEST_LOOP_PATHS = 1;
+    public static final int TEST_LOOP_PATHS = 3;
 }

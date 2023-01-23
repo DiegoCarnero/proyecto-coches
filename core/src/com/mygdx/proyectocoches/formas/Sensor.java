@@ -5,6 +5,8 @@ import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP2;
 import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP3;
 import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_META;
 import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_MUROS;
+import static com.mygdx.proyectocoches.Constantes.CAT_COCHE_IA;
+import static com.mygdx.proyectocoches.Constantes.CAT_COCHE_IA_SENSOR;
 import static com.mygdx.proyectocoches.Constantes.CAT_COCHE_JUG;
 import static com.mygdx.proyectocoches.Constantes.DAMPING_DEFAULT;
 import static com.mygdx.proyectocoches.Constantes.DENSIDAD_COCHE;
@@ -19,31 +21,34 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.proyectocoches.entidades.CocheIA;
 
 public class Sensor implements Steerable {
 
     private final Body b;
-
     private Vector2 pos;
 
-    public Sensor(Vector2 pos, World mundo){
+    public Sensor(World mundo, CocheIA dono){
         BodyDef bdef;
 
         // definir body
         bdef = new BodyDef();
-        bdef.position.set(pos);
+        bdef.position.set(new Vector2(0,0));
         bdef.type = BodyDef.BodyType.StaticBody;
         this.b = mundo.createBody(bdef);
 
         //definir fixture
         PolygonShape pShape = new PolygonShape();
-        pShape.setAsBox(0.5f/PPM,0.5f/PPM);
+        pShape.setAsBox(80f/PPM,80f/PPM);
         FixtureDef fDef= new FixtureDef();
         fDef.isSensor = true;
         fDef.shape = pShape;
 
+        fDef.filter.categoryBits = CAT_COCHE_IA_SENSOR;
+        fDef.filter.maskBits = CAT_COCHE_IA;
         this.b.createFixture(fDef);
-        this.pos = pos;
+        this.b.getFixtureList().get(0).setUserData(dono);
+        this.pos = new Vector2(0,0);
         pShape.dispose();
     }
 
@@ -245,5 +250,10 @@ public class Sensor implements Steerable {
 
     public Vector2 getVarPos(){
         return pos;
+    }
+
+    public void setPos(Vector2 pos) {
+        this.b.setTransform(pos,0);
+        this.pos = pos;
     }
 }

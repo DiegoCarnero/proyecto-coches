@@ -10,6 +10,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
+import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -49,10 +50,10 @@ public class AiSteeringState implements Screen {
         // Create following entity
         Body body = createCircle(world, 0, 50, 10, false, true);
         entity = new B2dSteeringEntity(body, 30);
-        entity.setMaxLinearSpeed(500);
-        entity.setMaxLinearAcceleration(5000);
+        entity.setMaxLinearSpeed(50);
+        entity.setMaxLinearAcceleration(50);
         entity.setMaxAngularAcceleration(5);
-        entity.setMaxAngularSpeed(5000);
+        entity.setMaxAngularSpeed(100);
 
         this.camera = new OrthographicCamera();
         this.camera.zoom = 30f;
@@ -68,10 +69,7 @@ public class AiSteeringState implements Screen {
         createBox(world, 140, -200, 60, 20, true, false);
 
         // Create temporary behavior
-        Arrive<Vector2> arriveSB = new Arrive<Vector2>(entity, target)
-                .setTimeToTarget(0.010f)
-                .setArrivalTolerance(2f)
-                .setDecelerationRadius(10);
+        Seek<Vector2> arriveSB = new Seek<Vector2>(entity, target);
         entity.setBehavior(arriveSB);
         entity.getBody().setAwake(true);
     }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="1" nextlayerid="15" nextobjectid="75">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="1" nextlayerid="17" nextobjectid="77">
  <objectgroup id="4" name="Muros">
   <object id="20" x="-301.667" y="581.667">
    <polygon points="0,0 1,-45 606,-43 607,0"/>
   </object>
   <object id="21" x="-253.801" y="767.667">
-   <polygon points="0,0 -0.865546,-64 514.134,-64 513.269,2"/>
+   <polygon points="24,0 0.075867,-12.6534 0.27393,-45.6869 48.1345,-64 490.801,-64 515.134,-48 513.605,-23.6696 487.269,0"/>
   </object>
   <object id="22" x="-302.667" y="882.667">
    <polygon points="0,0 614.25,-1.75 606,34 -3,34"/>
@@ -53,7 +53,7 @@
    <polygon points="0,0 -15.3333,-77.3333 -70.6667,-40.6667"/>
   </object>
  </objectgroup>
- <objectgroup id="9" name="Meta">
+ <objectgroup id="9" name="Meta" visible="0">
   <object id="57" x="20.333" y="895.334">
    <polygon points="0,0 0,-133.333 -4.33337,-132.667 -4.33333,-0.333337"/>
   </object>
@@ -65,7 +65,7 @@
  </objectgroup>
  <objectgroup id="11" name="Checkpoint2" visible="0">
   <object id="70" x="-369" y="613">
-   <polygon points="0,0 125,102 129,96 2,-8"/>
+   <polygon points="0,0 181,142 185,139 2,-8"/>
   </object>
  </objectgroup>
  <objectgroup id="12" name="Checkpoint3" visible="0">
@@ -75,7 +75,17 @@
  </objectgroup>
  <objectgroup id="13" name="Path1">
   <object id="72" x="-232.482" y="810.932">
-   <polygon points="251.559,-0.614417 -12.0314,1.56049 -78.5177,-64.3052 8.51396,-136.932 475.707,-137.67 552.097,-62.8265 478.872,0.111442"/>
+   <polygon points="-14.0314,3.56049 -37.0792,1.63449 -59.1726,-4.28067 -74.2193,-13.2429 -84.2847,-28.1864 -90.5177,-49.3052 -92.3071,-66.3575 -79.4966,-77.2574 -67.2799,-87.6522 -49.4356,-102.835 -3.48604,-141.932 495.179,-137.163 512.49,-134.601 531.516,-131.102 539.457,-120.318 545.926,-106.354 551.483,-84.342 552.097,-62.8265 496.872,0.111442"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="15" name="Path2">
+  <object id="75" x="-251" y="794">
+   <polygon points="0,0 -12,0 -25,-3 -36,-5 -44,-11 -53,-16 -59,-31 -64,-44 -64,-53 -55.6518,-60.7061 -43.1917,-72.2077 -12,-101 509,-106 531,-100 548,-93 558,-81 559,-66 559,-50 542,-10"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="16" name="Path3">
+  <object id="76" x="-246" y="836">
+   <polygon points="0,0 -20,-3 -47,-9 -60,-17 -71,-25 -81,-42 -89,-63 -93,-84 -93,-106 -87,-126 29.9429,-178.647 502,-178 539,-174 568,-157 580,-140 589,-123 591,-108 591,-92 590,-81 587.151,-64.8742 531.047,-27.576"/>
   </object>
  </objectgroup>
 </map>

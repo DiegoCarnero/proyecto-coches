@@ -3,6 +3,7 @@ package com.mygdx.proyectocoches.entidades;
  * https://github.com/libgdx/gdx-ai/blob/master/tests/src/com/badlogic/gdx/ai/tests/steer/box2d/Box2dSteeringEntity.java
  */
 
+import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_BACK;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_FORW;
 
 import com.badlogic.gdx.Gdx;
@@ -10,60 +11,107 @@ import com.badlogic.gdx.ai.steer.Proximity;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.ai.steer.behaviors.Arrive;
+import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.utils.Location;
+import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.mygdx.proyectocoches.formas.Sensor;
 
 public class CocheIA extends Competidor implements Steerable<Vector2> {
 
+    private final float boundingRadius;
+    public Sensor destinoSensor;
     private boolean tagged;
-    private float maxAngularSpeed, maxLinearSpeed, maxAngularAcceleration, maxLinearAcceleration;
+    private float maxAngularSpeed;
+    private int numDestinosRuta;
+    private int destinoActualNdx;
+
+    public int getRutaSelect() {
+        return rutaSelect;
+    }
+
+    public void setRutaSelect(int rutaSelect) {
+        this.rutaSelect = rutaSelect;
+    }
+
+    private int rutaSelect;
+
+    private float maxLinearSpeed;
+    private float maxAngularAcceleration;
+    private float maxLinearAcceleration;
 
     SteeringBehavior<Vector2> behavior;
     SteeringAcceleration<Vector2> steerOut;
 
-    public CocheIA(Body b) {
+    private Arrive<Vector2>arriveSB;
+    private Seek<Vector2>seekSB;
+
+    public void setNumDestinosRuta(int numDestinosRuta) {
+        this.numDestinosRuta = numDestinosRuta;
+    }
+
+    public CocheIA(Body b,float boundingRadius) {
         super(b);
+        this.boundingRadius = boundingRadius;
+        this.numDestinosRuta = 0;
         this.maxAngularAcceleration = 10f;
         this.maxLinearSpeed = MAX_VELOCIDAD_FORW;
         this.maxLinearAcceleration = 20f;
         this.maxAngularSpeed = 20.5f;
+        this.tagged = false;
         this.steerOut = new SteeringAcceleration<Vector2>(new Vector2());
+        this.destinoActualNdx = 0;
+        super.getBody().getFixtureList().get(0).setUserData(this);
+        this.destinoSensor = new Sensor(b.getWorld(), this);
+
+        this.arriveSB = new Arrive<>(this,this.destinoSensor)
+                .setTimeToTarget(0.010f)
+                        .setArrivalTolerance(2f)
+                        .setDecelerationRadius(4f);
+        this.seekSB = new Seek<>(this,this.destinoSensor);
     }
 
-    public void update(float delta,Vector2 pos) {
+    public void update(float delta) {
 
         if (behavior != null) {
             behavior.calculateSteering(steerOut);
-            applySteering(delta,pos);
+            applySteering(delta);
         }
-
     }
 
-    private void applySteering(float delta,Vector2 pos) {
+    private void applySteering(float delta) {
 
         boolean anyAccelerations = false;
 
         if (!steerOut.linear.isZero()) {
             Vector2 fuerza = steerOut.linear.scl(delta);
-            getBody().applyLinearImpulse(fuerza, pos,true);
+            getBody().applyForceToCenter(fuerza, true);
             anyAccelerations = true;
         }
 
         if (steerOut.angular != 0) {
             getBody().applyTorque(steerOut.angular * delta, true);
             anyAccelerations = true;
+        } else {
+            Vector2 linVel = getLinearVelocity();
+            if (!linVel.isZero()) {
+                float newOrientation = vectorToAngle(linVel);
+                getBody().setAngularVelocity((newOrientation - getAngularVelocity()) * delta);
+                getBody().setTransform(getBody().getPosition(), newOrientation);
+            }
         }
 
         if (anyAccelerations) {
             // lineal
-            Vector2 velo = getBody().getLinearVelocity();
-            float veloCuadrada = velo.len2();
-            if (veloCuadrada > maxLinearSpeed * maxLinearSpeed) {
-                getBody().setLinearVelocity(velo.scl(maxLinearSpeed / 1f));
+            Vector2 velocity = getBody().getLinearVelocity();
+            float currentSpeedSquare = velocity.len2();
+            if (currentSpeedSquare > maxLinearSpeed * maxLinearSpeed) {
+                getBody().setLinearVelocity(velocity.scl(maxLinearSpeed / (float) Math.sqrt(currentSpeedSquare)));
             }
-            // angular
-            if (getBody().getAngularVelocity() > maxLinearSpeed) {
+             //angular
+            if(getBody().getAngularVelocity() > maxAngularSpeed){
                 getBody().setAngularVelocity(maxAngularSpeed);
             }
         }
@@ -260,4 +308,39 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
         this.behavior = steeringBehavior;
     }
 
+    private float distanciaEntrePuntos(Vector2 a, Vector2 b){
+        return (float) Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+    }
+
+    public void setDestinoSensorPosition(Vector2 posicion) {
+
+        float dist = distanciaEntrePuntos(posicion,getBody().getPosition());
+        if (dist > 100f) {
+            setMaxLinearSpeed(MAX_VELOCIDAD_FORW);
+            setSteeringBehavior(this.seekSB);
+        }
+        if (dist < 20f) {
+            setMaxLinearSpeed(MAX_VELOCIDAD_BACK);
+            setSteeringBehavior(this.arriveSB);
+        }
+        if (dist < 2f) {
+            setSteeringBehavior(this.seekSB);
+        }
+        this.destinoSensor.setPos(posicion);
+    }
+
+    public Sensor getDestinoSensor() {
+        return destinoSensor;
+    }
+
+    public void nextDestino() {
+        destinoActualNdx++;
+        if (destinoActualNdx == numDestinosRuta) {
+            destinoActualNdx = 0;
+        }
+    }
+
+    public int getDestinoActualNdx() {
+        return destinoActualNdx;
+    }
 }

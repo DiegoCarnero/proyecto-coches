@@ -1,13 +1,13 @@
 package com.mygdx.proyectocoches.screens;
 
+import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_FORW;
 import static com.mygdx.proyectocoches.Constantes.PPM;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
-import com.badlogic.gdx.ai.steer.behaviors.FollowPath;
-import com.badlogic.gdx.ai.steer.utils.Path;
+import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,15 +15,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.CatmullRomSpline;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.proyectocoches.entidades.CocheIA;
+import com.mygdx.proyectocoches.entidades.Competidor;
 import com.mygdx.proyectocoches.formas.Circuito;
 import com.mygdx.proyectocoches.formas.Coche;
 import com.mygdx.proyectocoches.formas.Sensor;
+import com.mygdx.proyectocoches.gamemodes.TimeTrialManager;
+import com.mygdx.proyectocoches.utils.miContactListener;
 
 public class TestIA implements Screen {
 
@@ -33,16 +37,14 @@ public class TestIA implements Screen {
     private final OrthographicCamera miCam;
     private final Viewport miViewport;
     private final Circuito circuito;
-    private final CocheIA c;
     private final CatmullRomSpline<Vector2>[] rutas;
     private final ShapeRenderer sr;
 
     private Vector2 posSplineActual;
     private int contSplineActual = 0;
-    private Sensor b;
 
     private Vector2 aux;
-    private Arrive arriveSB;
+    private Seek seekSB;
 
     private Skin skin;
 
@@ -53,19 +55,31 @@ public class TestIA implements Screen {
         this.miWorld = new World(new Vector2(0, 0), true);
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new OrthographicCamera();
-        miCam.zoom = 0.2f;
+        miWorld.setContactListener(new miContactListener(new TimeTrialManager()));
+        miCam.zoom = 1f;
+        miCam.position.set(new Vector2(0,-2),0);
         this.miViewport = new FitViewport(Gdx.graphics.getWidth() / PPM, Gdx.graphics.getHeight() / PPM, miCam);
 
         this.circuito = new Circuito(miWorld, "test_loop");
         circuito.cargarMuros();
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
-
-        this.c = new CocheIA(Coche.generaCoche(new Vector2(2, -5), miWorld, new Vector2(5, 10)));
-        c.getBody().setTransform(c.getBody().getPosition(), (float) -(90 * Math.PI / 180));
-        c.getBody().setAwake(true);
+        circuito.prepararParrilla(5);
 
         this.rutas = circuito.cargarRutas();
+        for (Competidor c : circuito.getCompetidores()) {
+            if (c instanceof CocheIA) {
+                ((CocheIA) c).setMaxLinearSpeed(MAX_VELOCIDAD_FORW);
+                ((CocheIA) c).setMaxLinearAcceleration(10);
+                ((CocheIA) c).setMaxAngularAcceleration(15000);
+                ((CocheIA) c).setMaxAngularSpeed(5000);
+                this.seekSB = new Seek<>((CocheIA) c, ((CocheIA) c).getDestinoSensor());
+                ((CocheIA) c).setSteeringBehavior(this.seekSB);
+                int rnd = (int) (Math.random() * rutas.length);
+                ((CocheIA) c).setRutaSelect(rnd);
+                ((CocheIA) c).setNumDestinosRuta(rutas[rnd].controlPoints.length);
+            }
+        }
         this.sr = new ShapeRenderer();
         sr.setAutoShapeType(true);
     }
@@ -76,14 +90,15 @@ public class TestIA implements Screen {
     }
 
     private void update(float delta) {
-        Sensor b = new Sensor(posSplineActual,miWorld);
-
-         arriveSB = new Arrive<Vector2>(c, b).setTimeToTarget(0.01f)
-                .setArrivalTolerance(1f)
-                .setDecelerationRadius(0.01f);
-        c.setSteeringBehavior(arriveSB);
-        c.getBody().setLinearVelocity(new Vector2(0,2));
-        c.update(delta, b.getVarPos());
+        miWorld.step(delta, 6, 2);
+        for (Competidor c : circuito.getCompetidores()) {
+            if (c instanceof CocheIA) {
+                int destino = ((CocheIA) c).getDestinoActualNdx();
+                int ndx =  ((CocheIA) c).getRutaSelect();
+                ((CocheIA) c).setDestinoSensorPosition(rutas[ndx].controlPoints[destino]);
+                ((CocheIA) c).update(delta);
+            }
+        }
     }
 
     @Override
@@ -92,7 +107,7 @@ public class TestIA implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sr.begin();
         sr.setColor(Color.WHITE);
-        int precision = 100;
+        int precision = 1000;
         for (CatmullRomSpline<Vector2> s : rutas) {
 
             for (int i = 0; i < precision; ++i) {
@@ -115,7 +130,6 @@ public class TestIA implements Screen {
         draw();
         update(delta);
 
-        miCam.position.set(c.getPosition().x,c.getPosition().y, 0);
         miCam.update();
     }
 

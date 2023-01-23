@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.mygdx.proyectocoches.entidades.CocheIA;
 import com.mygdx.proyectocoches.gamemodes.TimeTrialManager;
 
 public class miContactListener implements ContactListener {
@@ -47,8 +48,11 @@ public class miContactListener implements ContactListener {
                 rlm.CompletadoSector2();
                 rlm.setCruzandoS3(true);
             }
+        } else if ((a | b) == 0x48) {// IA->sensor
+            if (contact.getFixtureA().getUserData() == contact.getFixtureB().getUserData()) {
+                ((CocheIA) contact.getFixtureA().getUserData()).nextDestino();
+            }
         }
-
     }
 
     @Override
@@ -59,12 +63,10 @@ public class miContactListener implements ContactListener {
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
 
-        Gdx.app.log("test pre", contact.getFixtureA().getFilterData().categoryBits + " " + contact.getFixtureB().getFilterData().categoryBits);
     }
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
-        Gdx.app.log("test post", contact.getFixtureA().getFilterData().categoryBits + " " + contact.getFixtureB().getFilterData().categoryBits);
     }
 }

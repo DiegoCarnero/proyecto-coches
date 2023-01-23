@@ -5,6 +5,7 @@ import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP2;
 import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_CHECKP3;
 import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_META;
 import static com.mygdx.proyectocoches.Constantes.CAT_CIRCUITO_MUROS;
+import static com.mygdx.proyectocoches.Constantes.CAT_COCHE_IA;
 import static com.mygdx.proyectocoches.Constantes.CAT_COCHE_JUG;
 import static com.mygdx.proyectocoches.Constantes.LAYER_CHECKP;
 import static com.mygdx.proyectocoches.Constantes.LAYER_META;
@@ -102,26 +103,26 @@ public class Circuito {
         switch (t) {
             case Muros:
                 fDef.filter.categoryBits = CAT_CIRCUITO_MUROS;
-                fDef.filter.maskBits = CAT_COCHE_JUG;
+                fDef.filter.maskBits = CAT_COCHE_JUG | CAT_COCHE_IA;
                 break;
             case Meta:
                 fDef.filter.categoryBits = CAT_CIRCUITO_META;
-                fDef.filter.maskBits = CAT_COCHE_JUG;
+                fDef.filter.maskBits = CAT_COCHE_JUG | CAT_COCHE_IA;
                 fDef.isSensor = true;
                 break;
             case Checkpoint1:
                 fDef.filter.categoryBits = CAT_CIRCUITO_CHECKP1;
-                fDef.filter.maskBits = CAT_COCHE_JUG;
+                fDef.filter.maskBits = CAT_COCHE_JUG | CAT_COCHE_IA;
                 fDef.isSensor = true;
                 break;
             case Checkpoint2:
                 fDef.filter.categoryBits = CAT_CIRCUITO_CHECKP2;
-                fDef.filter.maskBits = CAT_COCHE_JUG;
+                fDef.filter.maskBits = CAT_COCHE_JUG | CAT_COCHE_IA;
                 fDef.isSensor = true;
                 break;
             case Checkpoint3:
                 fDef.filter.categoryBits = CAT_CIRCUITO_CHECKP3;
-                fDef.filter.maskBits = CAT_COCHE_JUG;
+                fDef.filter.maskBits = CAT_COCHE_JUG | CAT_COCHE_IA;
                 fDef.isSensor = true;
                 break;
 
@@ -195,6 +196,44 @@ public class Circuito {
         miTiledMap.dispose();
     }
 
+    public void prepararParrilla(int oponentes) {
+
+        Jugador jugador = null;
+        int maxOponentes;
+        Vector2[] vGrid;
+        float angulo;
+
+        switch (nomCircuito) {
+            case "test_loop":
+                vGrid = test_loop_vGrid;
+                maxOponentes = vGrid.length;
+                angulo = test_loop_ang;
+                break;
+            default:
+                vGrid = test_loop_vGrid;
+                maxOponentes = vGrid.length;
+                angulo = 0;
+        }
+
+        if (maxOponentes < oponentes) {
+            oponentes = maxOponentes;
+        }
+
+        Vector2 tamCoche = new Vector2(5, 10);
+        boolean jugInit = false;
+        int cont = 0;
+
+        for (Vector2 v : vGrid) {
+            if (cont > oponentes) {
+                break;
+            }
+            CocheIA c = new CocheIA(Coche.generaCoche(v, mundo, tamCoche, false),10f);
+            c.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
+            competidores.add(c);
+            cont++;
+        }
+    }
+
     /**
      * Crea y posiciona en el World de este Circuito los objetos tipo Body que representan a los competidores.
      * Las posiciones son determinadas por nomCircuito.
@@ -234,12 +273,12 @@ public class Circuito {
             }
 
             if (cont == posJug) {
-                jugador = new Jugador(Coche.generaCoche(v, mundo, tamCoche));
+                jugador = new Jugador(Coche.generaCoche(v, mundo, tamCoche, true));
                 jugador.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
                 competidores.add(jugador);
                 jugInit = true;
             } else {
-                CocheIA c = new CocheIA(Coche.generaCoche(v, mundo, tamCoche));
+                CocheIA c = new CocheIA(Coche.generaCoche(v, mundo, tamCoche, false),10f);
                 c.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
                 competidores.add(c);
             }
@@ -247,7 +286,7 @@ public class Circuito {
         }
 
         if (!jugInit) {
-            jugador = new Jugador(Coche.generaCoche(vGrid[vGrid.length - 1], mundo, tamCoche));
+            jugador = new Jugador(Coche.generaCoche(vGrid[vGrid.length - 1], mundo, tamCoche, true));
             jugador.getBody().setTransform(jugador.getPosition(), (float) -(angulo * Math.PI / 180));
         }
 
@@ -271,7 +310,7 @@ public class Circuito {
                 ndxCoordVector++;
             }
 
-            Gdx.app.log("ndxRuta", coordV.length+"");
+            Gdx.app.log("ndxRuta", coordV.length + "");
             rutas[ndxRuta] = new CatmullRomSpline<>();
             rutas[ndxRuta].set(coordV, true);
         }
@@ -279,7 +318,7 @@ public class Circuito {
         return rutas;
     }
 
-    public ArrayList<Competidor> getCompetidores(){
+    public ArrayList<Competidor> getCompetidores() {
         return competidores;
     }
 
