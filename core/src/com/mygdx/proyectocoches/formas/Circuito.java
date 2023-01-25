@@ -11,6 +11,7 @@ import static com.mygdx.proyectocoches.Constantes.LAYER_CHECKP;
 import static com.mygdx.proyectocoches.Constantes.LAYER_META;
 import static com.mygdx.proyectocoches.Constantes.LAYER_MUROS;
 import static com.mygdx.proyectocoches.Constantes.LAYER_PATH;
+import static com.mygdx.proyectocoches.Constantes.TEST_LOOP_NAME;
 import static com.mygdx.proyectocoches.Constantes.TEST_LOOP_PATHS;
 import static com.mygdx.proyectocoches.Constantes.TILE_SIZE;
 import static com.mygdx.proyectocoches.Constantes.test_loop_ang;
@@ -204,7 +205,7 @@ public class Circuito {
         float angulo;
 
         switch (nomCircuito) {
-            case "test_loop":
+            case TEST_LOOP_NAME:
                 vGrid = test_loop_vGrid;
                 maxOponentes = vGrid.length;
                 angulo = test_loop_ang;

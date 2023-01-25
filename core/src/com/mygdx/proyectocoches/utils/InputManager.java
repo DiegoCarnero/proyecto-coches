@@ -6,25 +6,34 @@ import static com.mygdx.proyectocoches.Constantes.DERRAPE_ALTO;
 import static com.mygdx.proyectocoches.Constantes.DERRAPE_BAJO;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_BACK;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_FORW;
+import static com.mygdx.proyectocoches.Constantes.TELE_ACC;
+import static com.mygdx.proyectocoches.Constantes.TELE_EMBRAG;
+import static com.mygdx.proyectocoches.Constantes.TELE_PARADO;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.MassData;
+import com.mygdx.proyectocoches.audio.AudioManager;
 import com.mygdx.proyectocoches.entidades.Jugador;
-import com.mygdx.proyectocoches.ui.TestOsd;
 
 public class InputManager {
 
-    PlayerInput input;
-    Body jugador;
-    float nuevAcc;
-    float nuevSteer = 0;
+    private final AudioManager am;
+    private MessageManager msgManager;
+    private final PlayerInput input;
+    private final Body jugador;
+    private float nuevAcc;
+    private float nuevSteer = 0;
+    private float ultimaVelo = 0;
+    private float nuevaVelo = 0;
 
-    public InputManager(PlayerInput input, Jugador jugador) {
+    public InputManager(PlayerInput input, Jugador jugador, AudioManager am) {
         this.input = input;
+        this.am = am;
         this.jugador = jugador.getBody();
 
+        initMessages();
     }
 
     private static Vector2 VectorPorEscalar(Vector2 v, float f) {
@@ -44,6 +53,7 @@ public class InputManager {
     }
 
     public void update() {
+        ultimaVelo = jugador.getLinearVelocity().len2();
         Vector2 v = new Vector2(0, 0);
         float max_velo;
         int direccion;
@@ -101,6 +111,22 @@ public class InputManager {
 
         jugador.setLinearVelocity(veloFrente.x + veloLateral.x * derrape, veloFrente.y + veloLateral.y * derrape);
         nuevAcc = 0;
+        nuevaVelo = jugador.getLinearVelocity().len2();
+
+        if ((nuevaVelo - ultimaVelo) > 0.05f) {
+            msgManager.dispatchMessage(TELE_ACC);
+        } else if ((nuevaVelo - ultimaVelo) < -0.05f) {
+            msgManager.dispatchMessage(TELE_EMBRAG);
+        } else if (nuevaVelo < 2f) {
+            msgManager.dispatchMessage(TELE_PARADO);
+        }
+    }
+
+    private void initMessages() {
+        this.msgManager = MessageManager.getInstance();
+        this.msgManager.addListener(am, TELE_ACC);
+        this.msgManager.addListener(am, TELE_EMBRAG);
+        this.msgManager.addListener(am, TELE_PARADO);
     }
 
 }

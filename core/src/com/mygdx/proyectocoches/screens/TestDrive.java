@@ -38,6 +38,7 @@ public class TestDrive implements Screen {
     private final InputManager im;
     private final TimeTrialManager rlm;
     private final AudioManager am;
+    private boolean init = true;
 
     private final Skin skin;
 
@@ -61,9 +62,8 @@ public class TestDrive implements Screen {
         circuito.cargarCheckpoints();
         this.jugador = circuito.prepararParrilla(0,0);
         this.pi = osd;
-        im = new InputManager(osd,jugador);
-
-        this.am = new AudioManager(this.osd);
+        this.am = new AudioManager();
+        im = new InputManager(osd,jugador,am);
     }
 
 
@@ -75,6 +75,10 @@ public class TestDrive implements Screen {
     @Override
     public void render(float delta) {
 
+        if (init){
+            am.init();
+            init = false;
+        }
         update(delta);
         draw();
         im.update();
@@ -83,7 +87,7 @@ public class TestDrive implements Screen {
     }
 
     private void update(float delta) {
-        am.update(delta);
+
         miCam.position.set(jugador.getPosition(),0);
         this.miCam.AdjustaZoomPorVelo(jugador.getBody());
         miCam.update();

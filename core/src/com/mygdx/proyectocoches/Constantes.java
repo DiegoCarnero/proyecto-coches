@@ -32,7 +32,15 @@ public class Constantes {
 
     public static final float SENSOR_SIZE = 80f;
 
+    public static final String TEST_LOOP_NAME = "test_loop";
     public static final Vector2[] test_loop_vGrid = {new Vector2(2,-5),new Vector2(3,-5.5f),new Vector2(4,-5),new Vector2(5,-5.5f),new Vector2(6,-5),new Vector2(7,-5.5f),new Vector2(8,-5),new Vector2(9,-5.5f)};
     public static final float test_loop_ang = -90;
     public static final int TEST_LOOP_PATHS = 3;
+
+    public static final int TELE_ACC = 1;
+    public static final int TELE_EMBRAG = 2;
+    public static final int TELE_BAJO = 3;
+    public static final int TELE_MEDIO = 4;
+    public static final int TELE_ALTO = 5;
+    public static final int TELE_PARADO = 0;
 }

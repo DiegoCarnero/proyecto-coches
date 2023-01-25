@@ -70,7 +70,7 @@
  </objectgroup>
  <objectgroup id="12" name="Checkpoint3" visible="0">
   <object id="71" x="250" y="707">
-   <polygon points="0,0 108.667,-119.333 110.667,-116 4,5.33333"/>
+   <polygon points="-5.5,6.5 108.667,-119.333 110.667,-116 -1.5,10.3333"/>
   </object>
  </objectgroup>
  <objectgroup id="13" name="Path1" visible="0">
@@ -83,9 +83,9 @@
    <polygon points="0,0 -61,-9 -68,-33 -12,-101 509,-106 552,-95 570,-71 542,-10"/>
   </object>
  </objectgroup>
- <objectgroup id="16" name="Path3">
+ <objectgroup id="16" name="Path3" visible="0">
   <object id="76" x="-246" y="836">
-   <polygon points="0,0 -77,-5 -93,-84 -87,-126 29.9429,-178.647 502,-178 578,-176 591,-92 531.047,-27.576"/>
+   <polygon points="0,0 -47,-18 -80,-46 -77,-127 29.9429,-178.647 502,-178 553,-155 591,-92 531.047,-27.576"/>
   </object>
  </objectgroup>
 </map>
