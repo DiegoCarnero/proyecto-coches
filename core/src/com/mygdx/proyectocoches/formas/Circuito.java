@@ -251,12 +251,14 @@ public class Circuito {
         float angulo;
 
         switch (nomCircuito) {
-            case "test_loop":
+            case TEST_LOOP_NAME:
                 vGrid = test_loop_vGrid;
+                maxOponentes = vGrid.length;
                 angulo = test_loop_ang;
                 break;
             default:
                 vGrid = test_loop_vGrid;
+                maxOponentes = vGrid.length;
                 angulo = 0;
         }
 
