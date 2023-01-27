@@ -11,6 +11,7 @@ import static com.mygdx.proyectocoches.Constantes.TELE_EMBRAG;
 import static com.mygdx.proyectocoches.Constantes.TELE_PARADO;
 
 import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.MassData;
@@ -20,7 +21,6 @@ import com.mygdx.proyectocoches.entidades.Jugador;
 public class InputManager {
 
     private final AudioManager am;
-    private MessageManager msgManager;
     private final PlayerInput input;
     private final Body jugador;
     private float nuevAcc;
@@ -32,8 +32,6 @@ public class InputManager {
         this.input = input;
         this.am = am;
         this.jugador = jugador.getBody();
-
-        initMessages();
     }
 
     private static Vector2 VectorPorEscalar(Vector2 v, float f) {
@@ -113,20 +111,15 @@ public class InputManager {
         nuevAcc = 0;
         nuevaVelo = jugador.getLinearVelocity().len2();
 
-        if ((nuevaVelo - ultimaVelo) > 0.05f) {
-            msgManager.dispatchMessage(TELE_ACC);
+        if (input.getAccValue() > 0f) {
+            am.cambiaSonido(TELE_ACC);
         } else if ((nuevaVelo - ultimaVelo) < -0.05f) {
-            msgManager.dispatchMessage(TELE_EMBRAG);
+            am.cambiaSonido(TELE_EMBRAG);
+
         } else if (nuevaVelo < 2f) {
-            msgManager.dispatchMessage(TELE_PARADO);
+            am.cambiaSonido(TELE_PARADO);
         }
-    }
 
-    private void initMessages() {
-        this.msgManager = MessageManager.getInstance();
-        this.msgManager.addListener(am, TELE_ACC);
-        this.msgManager.addListener(am, TELE_EMBRAG);
-        this.msgManager.addListener(am, TELE_PARADO);
-    }
 
+    }
 }
