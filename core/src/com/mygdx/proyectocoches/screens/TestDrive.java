@@ -1,10 +1,15 @@
 package com.mygdx.proyectocoches.screens;
 
 import static com.mygdx.proyectocoches.Constantes.PPM;
+import static com.mygdx.proyectocoches.Constantes.TELE_ACC;
+import static com.mygdx.proyectocoches.Constantes.TELE_EMBRAG;
+import static com.mygdx.proyectocoches.Constantes.TELE_PARADO;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -12,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.proyectocoches.Constantes;
 import com.mygdx.proyectocoches.audio.AudioManager;
 import com.mygdx.proyectocoches.gamemodes.TimeTrialManager;
 import com.mygdx.proyectocoches.entidades.Jugador;
@@ -38,35 +44,39 @@ public class TestDrive implements Screen {
     private final InputManager im;
     private final TimeTrialManager rlm;
     private final AudioManager am;
+    private final AssetManager asM;
     private boolean init = true;
 
     private final Skin skin;
 
-    public TestDrive(Game juego,Skin skin) {
+    public TestDrive(Game juego, Skin skin) {
 
+        asM = new AssetManager();
+        this.am = new AudioManager(asM);
         this.skin = skin;
-        osd = new TestOsd(juego,skin);
+        osd = new TestOsd(juego, skin);
 
         this.miBatch = new SpriteBatch();
-        this.miWorld = new World(new Vector2(0,0),true);
+        this.miWorld = new World(new Vector2(0, 0), true);
         this.rlm = new TimeTrialManager();
         miWorld.setContactListener(new miContactListener(rlm));
-        this.ttOsd = new TimeTrialOsd(skin,rlm);
+        this.ttOsd = new TimeTrialOsd(skin, rlm);
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new MiOrthoCam();
-        this.miViewport = new FitViewport(Gdx.graphics.getWidth()/PPM,Gdx.graphics.getHeight()/PPM,miCam);
+        this.miViewport = new FitViewport(Gdx.graphics.getWidth() / PPM, Gdx.graphics.getHeight() / PPM, miCam);
 
-        this.circuito = new Circuito(miWorld,"test_loop");
+        this.circuito = new Circuito(miWorld, "test_loop");
         circuito.cargarMuros();
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
-        this.jugador = circuito.prepararParrilla(0,0);
+        this.jugador = circuito.prepararParrilla(0, 0);
         this.pi = osd;
-        this.am = new AudioManager();
-        im = new InputManager(osd,jugador,am);
+        im = new InputManager(osd, jugador, this.am);
     }
 
-
+    /**
+     * Called when this screen becomes the current screen for a {@link Game}.
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(osd.getMultiplexer());
@@ -74,34 +84,35 @@ public class TestDrive implements Screen {
 
     @Override
     public void render(float delta) {
-
-        if (init){
-            am.init();
-            init = false;
+        if (asM.update()) {
+            if(init){
+                am.init();
+                init = false;
+            }
+            update(delta);
+            draw();
+            im.update();
+            osd.render(delta);
+            ttOsd.render(delta);
         }
-        update(delta);
-        draw();
-        im.update();
-        osd.render(delta);
-        ttOsd.render(delta);
     }
 
     private void update(float delta) {
 
-        miCam.position.set(jugador.getPosition(),0);
+        miCam.position.set(jugador.getPosition(), 0);
         this.miCam.AdjustaZoomPorVelo(jugador.getBody());
         miCam.update();
-        miWorld.step(delta,6,2);
+        miWorld.step(delta, 6, 2);
     }
 
     private void draw() {
         miBatch.setProjectionMatrix(miCam.combined);
-        miB2dr.render(miWorld,miCam.combined);
+        miB2dr.render(miWorld, miCam.combined);
     }
 
     @Override
     public void resize(int width, int height) {
-        miViewport.update(width,height);
+        miViewport.update(width, height);
     }
 
     @Override
@@ -127,4 +138,5 @@ public class TestDrive implements Screen {
         osd.dispose();
         ttOsd.dispose();
     }
+
 }
