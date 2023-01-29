@@ -48,6 +48,6 @@ public class Constantes {
     public static final int TELE_EMBRAG = 2;
     public static final int TELE_BAJO = 3;
     public static final int TELE_MEDIO = 4;
-    public static final int TELE_ALTO = 5;
+    public static final int TELE_MAX = 5;
     public static final int TELE_PARADO = 0;
 }

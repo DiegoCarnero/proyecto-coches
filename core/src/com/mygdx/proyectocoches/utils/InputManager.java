@@ -7,11 +7,12 @@ import static com.mygdx.proyectocoches.Constantes.DERRAPE_BAJO;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_BACK;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_FORW;
 import static com.mygdx.proyectocoches.Constantes.TELE_ACC;
+import static com.mygdx.proyectocoches.Constantes.TELE_MAX;
 import static com.mygdx.proyectocoches.Constantes.TELE_EMBRAG;
+import static com.mygdx.proyectocoches.Constantes.TELE_MEDIO;
 import static com.mygdx.proyectocoches.Constantes.TELE_PARADO;
 
-import com.badlogic.gdx.ai.msg.MessageManager;
-import com.badlogic.gdx.ai.msg.Telegraph;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.MassData;
@@ -23,8 +24,6 @@ public class InputManager {
     private final AudioManager am;
     private final PlayerInput input;
     private final Body jugador;
-    private float nuevAcc;
-    private float nuevSteer = 0;
     private float ultimaVelo = 0;
     private float nuevaVelo = 0;
 
@@ -51,7 +50,7 @@ public class InputManager {
     }
 
     public void update() {
-        ultimaVelo = jugador.getLinearVelocity().len2();
+        ultimaVelo = jugador.getLinearVelocity().len();
         Vector2 v = new Vector2(0, 0);
         float max_velo;
         int direccion;
@@ -64,6 +63,7 @@ public class InputManager {
             direccion = -1;
         }
 
+        float nuevAcc;
         if (input.isFrenando()) {
             jugador.setLinearDamping(DAMPING_FRENANDO);
         } else {
@@ -75,6 +75,7 @@ public class InputManager {
             }
         }
 
+        float nuevSteer = 0;
         if (!input.isFrenando()) {
             nuevSteer = input.getSteerValue() * 0.05f;
         } else {
@@ -108,18 +109,23 @@ public class InputManager {
         }
 
         jugador.setLinearVelocity(veloFrente.x + veloLateral.x * derrape, veloFrente.y + veloLateral.y * derrape);
-        nuevAcc = 0;
-        nuevaVelo = jugador.getLinearVelocity().len2();
+        nuevaVelo = jugador.getLinearVelocity().len();
 
-        if (input.getAccValue() > 0f) {
+        informaAudioManager(input, am);
+    }
+
+    private void informaAudioManager(PlayerInput input, AudioManager am) {
+
+        if (input.getAccValue() < 0.6f && input.getAccValue() > 0f) {
             am.cambiaSonido(TELE_ACC);
-        } else if ((nuevaVelo - ultimaVelo) < -0.05f) {
+        } else if (((nuevaVelo - ultimaVelo) < -0.5f) || input.getAccValue() == 0) {
             am.cambiaSonido(TELE_EMBRAG);
-
-        } else if (nuevaVelo < 2f) {
+        } else if (nuevaVelo > MAX_VELOCIDAD_FORW * 0.9) {
+            am.cambiaSonido(TELE_MAX);
+        } else if (nuevaVelo > MAX_VELOCIDAD_FORW * 0.3) {
+            am.cambiaSonido(TELE_MEDIO);
+        } else if (nuevaVelo < MAX_VELOCIDAD_FORW * 0.3) {
             am.cambiaSonido(TELE_PARADO);
         }
-
-
     }
 }
