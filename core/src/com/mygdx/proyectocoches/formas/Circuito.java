@@ -271,7 +271,7 @@ public class Circuito {
         int cont = 0;
 
         for (Vector2 v : vGrid) {
-            if (cont > oponentes) {
+            if (cont >= oponentes) {
                 break;
             }
 
