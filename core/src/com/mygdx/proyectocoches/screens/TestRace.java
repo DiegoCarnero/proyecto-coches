@@ -55,7 +55,7 @@ public class TestRace  implements Screen {
 
     private Seek seekSB;
 
-    private Skin skin;
+    private final Skin skin;
 
     public TestRace(Game juego, Skin skin) {
 
@@ -71,7 +71,9 @@ public class TestRace  implements Screen {
         this.ttOsd = new TimeTrialOsd(skin, rlm);
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new MiOrthoCam();
-        this.miViewport = new FitViewport(Gdx.graphics.getWidth() / PPM, Gdx.graphics.getHeight() / PPM, miCam);
+
+        float aspectRatio = Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
+        this.miViewport = new FitViewport(aspectRatio * 720 / PPM, 720 / PPM, miCam);
 
         this.circuito = new Circuito(miWorld, "test_loop");
         circuito.cargarMuros();
