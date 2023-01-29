@@ -78,7 +78,7 @@ public class TestRace  implements Screen {
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
 
-        this.jugador = circuito.prepararParrilla(8,9);
+        this.jugador = circuito.prepararParrilla(16,9);
         this.pi = osd;
         im = new InputManager(osd, jugador, this.am);
 
@@ -86,7 +86,7 @@ public class TestRace  implements Screen {
         for (Competidor c : circuito.getCompetidores()) {
             if (c instanceof CocheIA) {
                 ((CocheIA) c).setMaxLinearSpeed(MAX_VELOCIDAD_FORW);
-                ((CocheIA) c).setMaxLinearAcceleration(10);
+                ((CocheIA) c).setMaxLinearAcceleration(12);
                 ((CocheIA) c).setMaxAngularAcceleration(15000);
                 ((CocheIA) c).setMaxAngularSpeed(5000);
                 this.seekSB = new Seek<>((CocheIA) c, ((CocheIA) c).getDestinoSensor());
@@ -158,7 +158,6 @@ public class TestRace  implements Screen {
         miCam.position.set(jugador.getPosition(), 0);
         this.miCam.AdjustaZoomPorVelo(jugador.getBody());
         miCam.update();
-        miWorld.step(delta, 6, 2);
     }
 
     private void draw() {

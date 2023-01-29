@@ -5,6 +5,7 @@ package com.mygdx.proyectocoches.entidades;
 
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_BACK;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_FORW;
+import static com.mygdx.proyectocoches.Constantes.MAX_VELO_IA;
 
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
@@ -62,7 +63,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
         this.destinoSensor = new Sensor(b.getWorld(), this);
 
         this.arriveSB = new Arrive<>(this, this.destinoSensor)
-                .setTimeToTarget(0.0040f)
+                .setTimeToTarget(0.0001f)
                 .setArrivalTolerance(2f)
                 .setDecelerationRadius(4f);
         this.seekSB = new Seek<>(this, this.destinoSensor);
@@ -311,7 +312,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
 
         float dist = distanciaEntrePuntos(posicion, getBody().getPosition());
         if (dist > 100f) {
-            setMaxLinearSpeed(MAX_VELOCIDAD_FORW);
+            setMaxLinearSpeed(MAX_VELO_IA);
             setSteeringBehavior(this.seekSB);
         }
         if (dist < 20f) {
