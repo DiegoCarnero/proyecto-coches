@@ -25,7 +25,7 @@ public class miContactListener implements ContactListener {
 
         if (((a | b) == 0x5)) {// jugador->meta
             rlm.setCruzandoMeta(true);
-            if (!rlm.isPrimeraVuelta()) {
+            if (!rlm.isPrimeraVuelta() && rlm.hasCruzadoS1() && rlm.hasCruzadoS2()) {
                 rlm.CompletadoSector3();
                 rlm.setCruzandoS1(false);
                 rlm.setCruzandoS2(false);

@@ -13,6 +13,22 @@ public class TimeTrialManager {
     private boolean cruzandoS1;
     private boolean cruzandoS2;
     private boolean cruzandoS3;
+    private boolean cruzadoS1;
+
+    public boolean hasCruzadoS1() {
+        return cruzadoS1;
+    }
+
+    public boolean hasCruzadoS2() {
+        return cruzadoS2;
+    }
+
+    public boolean hasCruzadoS3() {
+        return cruzadoS3;
+    }
+
+    private boolean cruzadoS2;
+    private boolean cruzadoS3;
     private boolean primeraVuelta = true;
 
     public boolean isCruzandoMeta() {
@@ -60,32 +76,36 @@ public class TimeTrialManager {
 
     public void NuevaVuelta() {
 
-        if (enVuelta) {
-            tMejorVuelta = tVueltaActual < tMejorVuelta? tVueltaActual : tMejorVuelta;
+        if (enVuelta && cruzadoS3 && cruzadoS1 && cruzadoS2) {
+            tMejorVuelta = tVueltaActual < tMejorVuelta ? tVueltaActual : tMejorVuelta;
         }
 
         enVuelta = true;
+        tVueltaActual = 0;
         tSector1 = 0;
         tSector2 = 0;
         tSector3 = 0;
+        cruzadoS1 = false;
+        cruzadoS2 = false;
+        cruzadoS3 = false;
         tiempoGlobalStart = System.currentTimeMillis();
 
     }
 
     public void CompletadoSector3() {
-
+        cruzadoS3 = true;
         tSector3 = System.currentTimeMillis() - tiempoGlobalStart - tSector1 - tSector2;
 
     }
 
     public void CompletadoSector2() {
-
+        cruzadoS2 = true;
         tSector2 = System.currentTimeMillis() - tiempoGlobalStart - tSector1;
 
     }
 
     public void CompletadoSector1() {
-
+        cruzadoS1 = true;
         tSector1 = System.currentTimeMillis() - tiempoGlobalStart;
 
     }
@@ -94,8 +114,8 @@ public class TimeTrialManager {
 
         String retorno = "";
         tVueltaActual = System.currentTimeMillis() - tiempoGlobalStart;
-        if(enVuelta){
-           retorno = getTiempoFormat(tVueltaActual);
+        if (enVuelta) {
+            retorno = getTiempoFormat(tVueltaActual);
         }
 
         return retorno;
@@ -114,7 +134,7 @@ public class TimeTrialManager {
     public String gettVueltaMejorStr() {
 
         String retorno = "";
-        if (tMejorVuelta < Float.MAX_VALUE){
+        if (tMejorVuelta < Float.MAX_VALUE) {
             retorno = getTiempoFormat(tMejorVuelta);
         }
 
@@ -126,7 +146,7 @@ public class TimeTrialManager {
         if (isCruzandoS1() && !isCruzandoS2()) {
             tSector1 = System.currentTimeMillis() - tiempoGlobalStart;
             retorno = getTiempoFormat(tSector1);
-        } else if (isCruzandoS2()){
+        } else if (isCruzandoS2()) {
             retorno = getTiempoFormat(tSector1);
         }
         return retorno;
@@ -137,7 +157,7 @@ public class TimeTrialManager {
         if (isCruzandoS2() && !isCruzandoS3()) {
             tSector2 = System.currentTimeMillis() - tiempoGlobalStart - tSector1;
             retorno = getTiempoFormat(tSector2);
-        } else if (isCruzandoS3()){
+        } else if (isCruzandoS3()) {
             retorno = getTiempoFormat(tSector2);
         }
         return retorno;
