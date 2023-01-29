@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="1" nextlayerid="17" nextobjectid="77">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="1" nextlayerid="19" nextobjectid="79">
  <objectgroup id="4" name="Muros">
   <object id="20" x="-301.667" y="581.667">
    <polygon points="0,0 1,-45 606,-43 607,0"/>
@@ -73,19 +73,29 @@
    <polygon points="-5.5,6.5 108.667,-119.333 110.667,-116 -1.5,10.3333"/>
   </object>
  </objectgroup>
- <objectgroup id="13" name="Path1" visible="0">
+ <objectgroup id="13" name="Path1">
   <object id="72" x="-232.482" y="810.932">
    <polygon points="-14.0314,3.56049 -77.2193,-7.2429 -92.3071,-66.3575 -3.48604,-141.932 495.179,-137.163 512.49,-134.601 531.516,-131.102 539.457,-120.318 545.926,-106.354 551.483,-84.342 552.097,-62.8265 496.872,0.111442"/>
   </object>
  </objectgroup>
- <objectgroup id="15" name="Path2" visible="0">
+ <objectgroup id="15" name="Path2">
   <object id="75" x="-251" y="794">
    <polygon points="0,0 -61,-9 -68,-33 -12,-101 509,-106 552,-95 570,-71 542,-10"/>
   </object>
  </objectgroup>
- <objectgroup id="16" name="Path3" visible="0">
+ <objectgroup id="16" name="Path3">
   <object id="76" x="-246" y="836">
    <polygon points="0,0 -47,-18 -80,-46 -77,-127 29.9429,-178.647 502,-178 553,-155 591,-92 531.047,-27.576"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="17" name="Path4">
+  <object id="77" x="-246.667" y="825.333">
+   <polygon points="0,0 -57.3333,-16.6667 -74,-50 -40.6667,-133.333 503.333,-159.333 556,-134 576,-80.6667 532,-24"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="18" name="Path5">
+  <object id="78" x="-248.667" y="805.333">
+   <polygon points="0,0 -57.3333,-12.6667 -64.6667,-61.3333 14.6667,-124.667 500.667,-123.333 557.333,-90 560,-58.6667 523.333,-12.6667"/>
   </object>
  </objectgroup>
 </map>
