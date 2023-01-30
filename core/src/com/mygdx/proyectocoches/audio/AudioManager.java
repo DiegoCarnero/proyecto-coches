@@ -6,18 +6,54 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mygdx.proyectocoches.Constantes;
 
+/**
+ * Almacena los sonidos y música, y gestiona el cambio de efectos de sonido durante el gameplay
+ */
 public class AudioManager implements Disposable {
 
+    /**
+     * AssetManager en el que se cargarán los archivos
+     */
     private final AssetManager asM;
+    /**
+     * Sonido que se está reproduciendo actualmente.
+     * <p>
+     * Si se quiere cambiar el sonido que se etá reproduciendo reasignar esta variable con el nuevo sonido
+     */
     private Sound soniAct;
+    /**
+     * Sonido del coche parado. Primera parte del bucle
+     */
     private Sound sonParado1;
+    /**
+     * Sonido del coche parado. Segunda parte del bucle
+     */
     private Sound sonParado2;
+    /**
+     * Sonido del coche accelerando
+     */
     private Sound sonAcc1;
+    /**
+     * Sonido del coche bajando de marcha
+     */
     private Sound sonEmbr1;
+    /**
+     * Sonido del coche a velocidad media
+     */
     private Sound sonMedio1;
+    /**
+     * Sonido del coche a la máxima velocidad
+     */
     private Sound sonMax1;
+    /**
+     * Indica si sonAct está reproduciendose
+     */
     private boolean isPlaying;
 
+    /**
+     * Crea un nuevo objeto AudioManager
+     * @param asM AssetManager que se va a utilizar
+     */
     public AudioManager(AssetManager asM) {
         this.asM = asM;
         asM.load("audio/parado1.ogg", Sound.class);
@@ -28,6 +64,9 @@ public class AudioManager implements Disposable {
         asM.load("audio/embragando1.ogg", Sound.class);
     }
 
+    /**
+     * Isigna los archivos a las variables pertinentes
+     */
     public void init() {
         sonParado1 = asM.get("audio/parado1.ogg");
         sonParado2 = asM.get("audio/parado2.ogg");
@@ -54,6 +93,10 @@ public class AudioManager implements Disposable {
         soniAct.dispose();
     }
 
+    /**
+     * Cambia el efecto de sonido del coche según el mensaje recibido
+     * @param msg tipo de sonido que se debe reproducir
+     */
     public void cambiaSonido(int msg) {
         switch (msg) {
             case Constantes.TELE_ACC:

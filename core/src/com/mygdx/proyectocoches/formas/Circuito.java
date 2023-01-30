@@ -321,6 +321,11 @@ public class Circuito {
         return rutas;
     }
 
+    /**
+     * Devuelve todos los competidores en el circuito actual
+     *
+     * @return Lista con los competidores
+     */
     public ArrayList<Competidor> getCompetidores() {
         return competidores;
     }
