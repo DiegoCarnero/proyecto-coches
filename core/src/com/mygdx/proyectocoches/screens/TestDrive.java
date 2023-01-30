@@ -58,9 +58,6 @@ public class TestDrive implements Screen {
 
         this.miBatch = new SpriteBatch();
         this.miWorld = new World(new Vector2(0, 0), true);
-        this.rlm = new TimeTrialManager();
-        miWorld.setContactListener(new miContactListener(rlm));
-        this.ttOsd = new TimeTrialOsd(skin, rlm);
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new MiOrthoCam();
 
@@ -72,6 +69,10 @@ public class TestDrive implements Screen {
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
         this.jugador = circuito.prepararParrilla(0, 0);
+
+        this.rlm = new TimeTrialManager(this.jugador);
+        this.ttOsd = new TimeTrialOsd(skin, rlm);
+        miWorld.setContactListener(new miContactListener(rlm));
         this.pi = osd;
         im = new InputManager(osd, jugador, this.am);
     }

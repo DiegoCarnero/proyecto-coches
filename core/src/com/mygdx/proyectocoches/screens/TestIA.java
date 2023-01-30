@@ -51,7 +51,7 @@ public class TestIA implements Screen {
         this.miWorld = new World(new Vector2(0, 0), true);
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new OrthographicCamera();
-        miWorld.setContactListener(new miContactListener(new TimeTrialManager()));
+        //miWorld.setContactListener(new miContactListener(new TimeTrialManager()));
         miCam.zoom = 1f;
         miCam.position.set(new Vector2(0,-2),0);
         this.miViewport = new FitViewport(Gdx.graphics.getWidth() / PPM, Gdx.graphics.getHeight() / PPM, miCam);

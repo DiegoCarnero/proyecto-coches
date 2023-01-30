@@ -66,9 +66,6 @@ public class TestRace  implements Screen {
 
         this.miBatch = new SpriteBatch();
         this.miWorld = new World(new Vector2(0, 0), true);
-        this.rlm = new TimeTrialManager();
-        miWorld.setContactListener(new miContactListener(rlm));
-        this.ttOsd = new TimeTrialOsd(skin, rlm);
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new MiOrthoCam();
 
@@ -81,6 +78,9 @@ public class TestRace  implements Screen {
         circuito.cargarCheckpoints();
 
         this.jugador = circuito.prepararParrilla(16,9);
+        this.rlm = new TimeTrialManager(jugador);
+        miWorld.setContactListener(new miContactListener(rlm));
+        this.ttOsd = new TimeTrialOsd(skin, rlm);
         this.pi = osd;
         im = new InputManager(osd, jugador, this.am);
 

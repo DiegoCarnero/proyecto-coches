@@ -246,7 +246,7 @@ public class Circuito {
     public Jugador prepararParrilla(int oponentes, int posJug) {
 
         Jugador jugador = null;
-        int maxOponentes = 0;
+        int maxOponentes;
         Vector2[] vGrid;
         float angulo;
 
@@ -278,10 +278,12 @@ public class Circuito {
             if (cont == posJug) {
                 jugador = new Jugador(Coche.generaCoche(v, mundo, tamCoche, true));
                 jugador.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
+                jugador.getBody().getFixtureList().get(0).setUserData(jugador);
                 competidores.add(jugador);
                 jugInit = true;
             } else {
                 CocheIA c = new CocheIA(Coche.generaCoche(v, mundo, tamCoche, false));
+                c.getBody().getFixtureList().get(0).setUserData(c);
                 c.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
                 competidores.add(c);
             }
@@ -291,6 +293,7 @@ public class Circuito {
         if (!jugInit) {
             jugador = new Jugador(Coche.generaCoche(vGrid[vGrid.length - 1], mundo, tamCoche, true));
             jugador.getBody().setTransform(jugador.getPosition(), (float) -(angulo * Math.PI / 180));
+            jugador.getBody().getFixtureList().get(0).setUserData(jugador);
         }
 
         return jugador;

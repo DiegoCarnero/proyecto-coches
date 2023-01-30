@@ -1,20 +1,21 @@
 package com.mygdx.proyectocoches.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.proyectocoches.entidades.CocheIA;
+import com.mygdx.proyectocoches.entidades.Competidor;
+import com.mygdx.proyectocoches.gamemodes.Gamemode;
 import com.mygdx.proyectocoches.gamemodes.TimeTrialManager;
 
 public class miContactListener implements ContactListener {
 
-    TimeTrialManager rlm;
+    Gamemode gm;
 
-    public miContactListener(TimeTrialManager rlm) {
+    public miContactListener(Gamemode gm) {
         super();
-        this.rlm = rlm;
+        this.gm = gm;
     }
 
     @Override
@@ -22,34 +23,35 @@ public class miContactListener implements ContactListener {
 
         int a = contact.getFixtureA().getFilterData().categoryBits;
         int b = contact.getFixtureB().getFilterData().categoryBits;
+        Competidor bUD = (Competidor) contact.getFixtureB().getUserData();
 
         if (((a | b) == 0x5)) {// jugador->meta
-            rlm.setCruzandoMeta(true);
-            if (!rlm.isPrimeraVuelta() && rlm.hasCruzadoS1() && rlm.hasCruzadoS2()) {
-                rlm.CompletadoSector3();
-                rlm.setCruzandoS1(false);
-                rlm.setCruzandoS2(false);
-                rlm.setCruzandoS3(false);
+            gm.setCruzandoMeta(true,bUD);
+            if (!gm.isPrimeraVuelta(bUD) && gm.hasCruzadoS1(bUD) && gm.hasCruzadoS2(bUD)) {
+                gm.CompletadoSector3(bUD);
+                gm.setCruzandoS1(false,bUD);
+                gm.setCruzandoS2(false,bUD);
+                gm.setCruzandoS3(false,bUD);
             }
         } else if ((a | b) == 0x11) {// jugador->sector1
-            if (rlm.isCruzandoMeta()) {
-                rlm.NuevaVuelta();
-                rlm.setPrimeraVuelta(false);
-                rlm.setCruzandoMeta(false);
-                rlm.setCruzandoS1(true);
+            if (gm.isCruzandoMeta(bUD)) {
+                gm.NuevaVuelta(bUD);
+                gm.setPrimeraVuelta(false,bUD);
+                gm.setCruzandoMeta(false,bUD);
+                gm.setCruzandoS1(true,bUD);
             }
         } else if ((a | b) == 0x21) {// jugador->sector2
-            if (rlm.isCruzandoS1() && !rlm.isCruzandoS2() && !rlm.isCruzandoS3()) {
-                rlm.CompletadoSector1();
-                rlm.setCruzandoS2(true);
+            if (gm.isCruzandoS1(bUD) && !gm.isCruzandoS2(bUD) && !gm.isCruzandoS3(bUD)) {
+                gm.CompletadoSector1(bUD);
+                gm.setCruzandoS2(true,bUD);
             }
         } else if ((a | b) == 0x31) {// jugador->sector3
-            if (rlm.isCruzandoS1() && rlm.isCruzandoS2() && !rlm.isCruzandoS3()) {
-                rlm.CompletadoSector2();
-                rlm.setCruzandoS3(true);
+            if (gm.isCruzandoS1(bUD) && gm.isCruzandoS2(bUD) && !gm.isCruzandoS3(bUD)) {
+                gm.CompletadoSector2(bUD);
+                gm.setCruzandoS3(true,bUD);
             }
         } else if ((a | b) == 0x48) {// IA->sensor
-            if (contact.getFixtureA().getUserData() == contact.getFixtureB().getUserData()) {
+            if (contact.getFixtureA().getUserData() == bUD) {
                 ((CocheIA) contact.getFixtureA().getUserData()).nextDestino();
             }
         }
