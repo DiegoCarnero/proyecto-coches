@@ -91,6 +91,12 @@ public class AudioManager implements Disposable {
     @Override
     public void dispose() {
         soniAct.dispose();
+        sonParado1.dispose();
+        sonParado2.dispose();
+        sonAcc1.dispose();
+        sonEmbr1.dispose();
+        sonMedio1.dispose();
+        sonMax1.dispose();
     }
 
     /**
@@ -143,8 +149,6 @@ public class AudioManager implements Disposable {
             case Constantes.TELE_PARADO:
                 break;
         }
-
-
     }
 
 }
