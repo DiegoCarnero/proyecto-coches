@@ -64,7 +64,7 @@ public class TestDrive implements Screen {
         float aspectRatio = Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
         this.miViewport = new FitViewport(aspectRatio * 720 / PPM, 720 / PPM, miCam);
 
-        this.circuito = new Circuito(miWorld, "test_loop");
+        this.circuito = new Circuito(miWorld, "track_1");
         circuito.cargarMuros();
         circuito.cargarMeta();
         circuito.cargarCheckpoints();

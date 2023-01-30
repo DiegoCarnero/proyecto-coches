@@ -14,8 +14,12 @@ import static com.mygdx.proyectocoches.Constantes.LAYER_PATH;
 import static com.mygdx.proyectocoches.Constantes.TEST_LOOP_NAME;
 import static com.mygdx.proyectocoches.Constantes.TEST_LOOP_PATHS;
 import static com.mygdx.proyectocoches.Constantes.TILE_SIZE;
+import static com.mygdx.proyectocoches.Constantes.TRACK_1_NAME;
+import static com.mygdx.proyectocoches.Constantes.TRACK_1_PATHS;
 import static com.mygdx.proyectocoches.Constantes.test_loop_ang;
 import static com.mygdx.proyectocoches.Constantes.test_loop_vGrid;
+import static com.mygdx.proyectocoches.Constantes.track_1_ang;
+import static com.mygdx.proyectocoches.Constantes.track_1_vGrid;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
@@ -210,6 +214,11 @@ public class Circuito {
                 maxOponentes = vGrid.length;
                 angulo = test_loop_ang;
                 break;
+            case TRACK_1_NAME:
+                vGrid = track_1_vGrid;
+                maxOponentes = vGrid.length;
+                angulo = track_1_ang;
+                break;
             default:
                 vGrid = test_loop_vGrid;
                 maxOponentes = vGrid.length;
@@ -255,6 +264,11 @@ public class Circuito {
                 vGrid = test_loop_vGrid;
                 maxOponentes = vGrid.length;
                 angulo = test_loop_ang;
+                break;
+            case TRACK_1_NAME:
+                vGrid = track_1_vGrid;
+                maxOponentes = vGrid.length;
+                angulo = track_1_ang;
                 break;
             default:
                 vGrid = test_loop_vGrid;
@@ -303,9 +317,23 @@ public class Circuito {
 
         TiledMap miTiledMap = new TmxMapLoader().load("worlds/" + nomCircuito + ".tmx");
         Vector2[] coordV;
-        CatmullRomSpline<Vector2>[] rutas = new CatmullRomSpline[TEST_LOOP_PATHS];
+        int numPaths;
 
-        for (int ndxRuta = 0; ndxRuta < TEST_LOOP_PATHS; ndxRuta++) {
+        switch (nomCircuito) {
+            case TEST_LOOP_NAME:
+                numPaths = TEST_LOOP_PATHS;
+                break;
+            case TRACK_1_NAME:
+                numPaths = TRACK_1_PATHS;
+                break;
+            default:
+                numPaths = TEST_LOOP_PATHS;
+                break;
+        }
+
+        CatmullRomSpline<Vector2>[] rutas = new CatmullRomSpline[numPaths];
+
+        for (int ndxRuta = 0; ndxRuta < numPaths; ndxRuta++) {
             MapObjects rutaMapObjects = miTiledMap.getLayers().get(LAYER_PATH + (ndxRuta + 1)).getObjects();
 
             float[] coordF = ((PolygonMapObject) rutaMapObjects.get(0)).getPolygon().getTransformedVertices();

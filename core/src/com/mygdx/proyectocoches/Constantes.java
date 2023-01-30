@@ -85,6 +85,7 @@ public class Constantes {
      * Nombre del archivo del circuito
      */
     public static final String TEST_LOOP_NAME = "test_loop";
+    public static final String TRACK_1_NAME = "track_1";
     /**
      * Coordenadas para las posiciones en la parrilla de salida
      */
@@ -95,14 +96,26 @@ public class Constantes {
                                                     new Vector2(6,-5),new Vector2(6f,-5.5f),new Vector2(6,-6f),
                                                     new Vector2(7,-5),new Vector2(7f,-5.5f),new Vector2(7,-6f),
                                                     new Vector2(8,-5),new Vector2(8f,-5.5f),new Vector2(8,-6f)};
+
+    public static final Vector2[] track_1_vGrid = {new Vector2(2f,-7f),new Vector2(2,-6f),new Vector2(2,-6.5f),
+            new Vector2(3f,-7f),new Vector2(3,-6f),new Vector2(3,-6.5f),
+            new Vector2(4f,-7f),new Vector2(4,-6f),new Vector2(4,-6.5f),
+            new Vector2(5f,-7f),new Vector2(5,-6f),new Vector2(5,-6.5f),
+            new Vector2(6f,-7f),new Vector2(6,-6f),new Vector2(6,-6.5f),
+            new Vector2(7f,-7f),new Vector2(7,-6f),new Vector2(7,-6.5f),
+
+    };
+
     /**
      * Angulo al que deben orientarse los competidores en la parrilla
      */
     public static final float test_loop_ang = -90;
+    public static final float track_1_ang = -90;
     /**
      * Número de rutas en el circuito
      */
     public static final int TEST_LOOP_PATHS = 5;
+    public static final int TRACK_1_PATHS = 1;
 
     /**
      * Tipo de sonido que debe reproducirse según la velocidad del coche
