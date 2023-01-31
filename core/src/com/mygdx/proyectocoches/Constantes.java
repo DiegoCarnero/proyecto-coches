@@ -97,12 +97,12 @@ public class Constantes {
                                                     new Vector2(7,-5),new Vector2(7f,-5.5f),new Vector2(7,-6f),
                                                     new Vector2(8,-5),new Vector2(8f,-5.5f),new Vector2(8,-6f)};
 
-    public static final Vector2[] track_1_vGrid = {new Vector2(2f,-7f),new Vector2(2,-6f),new Vector2(2,-6.5f),
-            new Vector2(3f,-7f),new Vector2(3,-6f),new Vector2(3,-6.5f),
-            new Vector2(4f,-7f),new Vector2(4,-6f),new Vector2(4,-6.5f),
-            new Vector2(5f,-7f),new Vector2(5,-6f),new Vector2(5,-6.5f),
-            new Vector2(6f,-7f),new Vector2(6,-6f),new Vector2(6,-6.5f),
-            new Vector2(7f,-7f),new Vector2(7,-6f),new Vector2(7,-6.5f),
+    public static final Vector2[] track_1_vGrid = {new Vector2(10f,-7f),new Vector2(10,-6f),new Vector2(10,-6.5f),
+            new Vector2(11f,-7f),new Vector2(11,-6f),new Vector2(11,-6.5f),
+            new Vector2(12f,-7f),new Vector2(12,-6f),new Vector2(12,-6.5f),
+            new Vector2(13f,-7f),new Vector2(13,-6f),new Vector2(13,-6.5f),
+            new Vector2(14f,-7f),new Vector2(14,-6f),new Vector2(14,-6.5f),
+            new Vector2(15f,-7f),new Vector2(15,-6f),new Vector2(15,-6.5f),
 
     };
 
@@ -115,7 +115,7 @@ public class Constantes {
      * Número de rutas en el circuito
      */
     public static final int TEST_LOOP_PATHS = 5;
-    public static final int TRACK_1_PATHS = 1;
+    public static final int TRACK_1_PATHS = 5;
 
     /**
      * Tipo de sonido que debe reproducirse según la velocidad del coche
