@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public class Competidor {
 
+    private int vuelta = 0;
     private boolean enVuelta = false;
     private boolean primeraVuelta = true;
     private boolean cruzandoMeta;
@@ -15,8 +16,18 @@ public class Competidor {
     private boolean cruzadoS2;
     private boolean cruzadoS3;
     private final Body body;
+    private String nombre;
 
-    public Competidor(Body b){
+    public int getVuelta() {
+        return vuelta;
+    }
+
+    public void setVuelta(int vuelta) {
+        this.vuelta = vuelta;
+    }
+
+    public Competidor(String nombre,Body b) {
+        this.nombre = nombre;
         this.body = b;
     }
 
@@ -24,7 +35,7 @@ public class Competidor {
         return body;
     }
 
-    public Vector2 getPosition(){
+    public Vector2 getPosition() {
         return body.getPosition();
     }
 
@@ -84,7 +95,7 @@ public class Competidor {
         this.cruzadoS3 = cruzadoS3;
     }
 
-    public void setPrimeraVuelta(boolean b){
+    public void setPrimeraVuelta(boolean b) {
         primeraVuelta = b;
     }
 
@@ -111,8 +122,12 @@ public class Competidor {
     public void CompletadoSector2(boolean b) {
         cruzadoS2 = b;
     }
-    
+
     public void CompletadoSector3(boolean b) {
         cruzadoS3 = b;
+    }
+
+    public String getNombre() {
+        return nombre;
     }
 }

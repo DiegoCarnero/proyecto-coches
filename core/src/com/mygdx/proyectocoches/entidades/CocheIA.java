@@ -49,11 +49,11 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
         this.numDestinosRuta = numDestinosRuta;
     }
 
-    public CocheIA(Body b) {
-        super(b);
+    public CocheIA(String nom, Body b) {
+        super(nom,b);
         this.numDestinosRuta = 0;
         this.maxAngularAcceleration = 10f;
-        this.maxLinearSpeed = MAX_VELOCIDAD_FORW;
+        this.maxLinearSpeed = MAX_VELO_IA;
         this.maxLinearAcceleration = 20f;
         this.maxAngularSpeed = 20.5f;
         this.tagged = false;
@@ -320,6 +320,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
             setSteeringBehavior(this.arriveSB);
         }
         if (dist < 2f) {
+            setMaxLinearSpeed(MAX_VELO_IA);
             setSteeringBehavior(this.seekSB);
         }
         this.destinoSensor.setPos(posicion);
