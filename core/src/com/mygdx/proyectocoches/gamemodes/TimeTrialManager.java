@@ -22,7 +22,7 @@ public class TimeTrialManager implements Gamemode{
         return jugador.isCruzandoS2();
     }
 
-    public TimeTrialManager(Jugador jugador) {
+    public TimeTrialManager(Competidor jugador) {
         this.jugador = jugador;
     }
 
