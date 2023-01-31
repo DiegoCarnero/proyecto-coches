@@ -51,16 +51,17 @@ public class TestIA implements Screen {
         this.miWorld = new World(new Vector2(0, 0), true);
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new OrthographicCamera();
-        //miWorld.setContactListener(new miContactListener(new TimeTrialManager()));
         miCam.zoom = 4f;
-        miCam.position.set(new Vector2(0,16),0);
+        miCam.position.set(new Vector2(0,17),0);
         this.miViewport = new FitViewport(Gdx.graphics.getWidth() / PPM, Gdx.graphics.getHeight() / PPM, miCam);
 
         this.circuito = new Circuito(miWorld, "track_1");
         circuito.cargarMuros();
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
-        circuito.prepararParrilla(9);
+        circuito.prepararParrilla(25);
+
+        miWorld.setContactListener(new miContactListener(new TimeTrialManager(circuito.getCompetidores().get(0))));
 
         this.rutas = circuito.cargarRutas();
         for (Competidor c : circuito.getCompetidores()) {

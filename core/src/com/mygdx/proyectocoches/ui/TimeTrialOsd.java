@@ -16,12 +16,12 @@ public class TimeTrialOsd implements Screen {
     private final Label lblSector3;
     private final Label lblVueltaActual;
     private final Label lblMejorVuelta;
-    private final TimeTrialManager rlm;
+    private final TimeTrialManager ttm;
 
-    public TimeTrialOsd(Skin skin, TimeTrialManager rlm) {
+    public TimeTrialOsd(Skin skin, TimeTrialManager ttm) {
 
         UIStage = new Stage(new ScreenViewport());
-        this.rlm = rlm;
+        this.ttm = ttm;
         int screenW,screenH;
         screenW = Gdx.graphics.getWidth();
         screenH = Gdx.graphics.getHeight();
@@ -53,11 +53,11 @@ public class TimeTrialOsd implements Screen {
 
     @Override
     public void render(float delta) {
-        lblSector1.setText("Sector1: "+rlm.gettSector1Str());
-        lblSector2.setText("Sector2: "+rlm.gettSector2Str());
-        lblSector3.setText("Sector3: "+rlm.gettSector3Str());
-        lblVueltaActual.setText("Actual: "+rlm.gettVueltaActualStr());
-        lblMejorVuelta.setText("Mejor: "+rlm.gettVueltaMejorStr());
+        lblSector1.setText("Sector1: "+ ttm.gettSector1Str());
+        lblSector2.setText("Sector2: "+ ttm.gettSector2Str());
+        lblSector3.setText("Sector3: "+ ttm.gettSector3Str());
+        lblVueltaActual.setText("Actual: "+ ttm.gettVueltaActualStr());
+        lblMejorVuelta.setText("Mejor: "+ ttm.gettVueltaMejorStr());
         UIStage.act();
         UIStage.draw();
     }

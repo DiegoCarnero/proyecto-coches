@@ -1,8 +1,39 @@
 package com.mygdx.proyectocoches.gamemodes;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.CatmullRomSpline;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.proyectocoches.entidades.Competidor;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
 public class RaceManager implements Gamemode {
+
+    private HashMap<Competidor, Integer> competidores;
+    private CatmullRomSpline<Vector2> spline;
+
+    public RaceManager(ArrayList<Competidor> competidores, CatmullRomSpline<Vector2> s) {
+        this.competidores = new HashMap<>();
+        for (Competidor c : competidores) {
+            this.competidores.put(c, 0);
+        }
+        spline = s;
+    }
+
+    public void update() {
+        for (Competidor c : competidores.keySet()) {
+            Gdx.app.log("spline", c.getNombre() + " - " + spline.nearest(c.getPosition()) + "");
+            competidores.put(c, spline.nearest(c.getPosition()));
+        }
+    }
+
     @Override
     public void setCruzandoMeta(boolean b, Competidor userData) {
 
@@ -30,7 +61,9 @@ public class RaceManager implements Gamemode {
 
     @Override
     public void setCruzandoS1(boolean b, Competidor userData) {
-
+        if (!userData.isEnVuelta()) {
+//            competidores.add(userData);
+        }
     }
 
     @Override
@@ -50,7 +83,15 @@ public class RaceManager implements Gamemode {
 
     @Override
     public void NuevaVuelta(Competidor userData) {
+        if (userData.isEnVuelta() && userData.hasCruzadoS3() && userData.hasCruzadoS1() && userData.hasCruzadoS2()) {
+            int nVuelta = userData.getVuelta();
+            userData.setVuelta(nVuelta + 1);
+        }
 
+        userData.setEnVuelta(true);
+        userData.setCruzadoS1(false);
+        userData.setCruzadoS2(false);
+        userData.setCruzadoS3(false);
     }
 
     @Override
@@ -81,5 +122,35 @@ public class RaceManager implements Gamemode {
     @Override
     public void CompletadoSector2(Competidor userData) {
 
+    }
+
+    @Override
+    public String toString() {
+        String listaComp = "";
+        int cont = 1;
+
+        List<Integer> auxList = new ArrayList<>();
+        for (Map.Entry<Competidor, Integer> entry : competidores.entrySet()) {
+            auxList.add(entry.getValue());
+        }
+        // eliminar repetidos metiendolo en un HashSet
+        Set<Integer> set = new HashSet<Integer>(auxList);
+        auxList.clear();
+        // volver a convertirlo a arraylist para ordenarlo
+        auxList.addAll(set);
+
+        Collections.sort(auxList);
+        Collections.reverse(auxList);
+
+        for (Integer num : auxList) {
+            for (Map.Entry<Competidor, Integer> entry : competidores.entrySet()) {
+                if (entry.getValue().equals(num)) {
+                    listaComp += String.format(Locale.ROOT, "%d. %s\n", cont, entry.getKey().getNombre());
+                    cont++;
+                }
+            }
+        }
+
+        return listaComp;
     }
 }

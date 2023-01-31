@@ -234,10 +234,10 @@ public class Circuito {
         int cont = 0;
 
         for (Vector2 v : vGrid) {
-            if (cont > oponentes) {
+            if (cont >= oponentes) {
                 break;
             }
-            CocheIA c = new CocheIA(Coche.generaCoche(v, mundo, tamCoche, false));
+            CocheIA c = new CocheIA("IA_"+cont,Coche.generaCoche(v, mundo, tamCoche, false));
             c.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
             competidores.add(c);
             cont++;
@@ -296,7 +296,7 @@ public class Circuito {
                 competidores.add(jugador);
                 jugInit = true;
             } else {
-                CocheIA c = new CocheIA(Coche.generaCoche(v, mundo, tamCoche, false));
+                CocheIA c = new CocheIA("IA_"+cont,Coche.generaCoche(v, mundo, tamCoche, false));
                 c.getBody().getFixtureList().get(0).setUserData(c);
                 c.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
                 competidores.add(c);
@@ -308,6 +308,7 @@ public class Circuito {
             jugador = new Jugador(Coche.generaCoche(vGrid[vGrid.length - 1], mundo, tamCoche, true));
             jugador.getBody().setTransform(jugador.getPosition(), (float) -(angulo * Math.PI / 180));
             jugador.getBody().getFixtureList().get(0).setUserData(jugador);
+            competidores.add(jugador);
         }
 
         return jugador;
@@ -350,6 +351,26 @@ public class Circuito {
         }
 
         return rutas;
+    }
+
+    public CatmullRomSpline<Vector2> cargarSplineControl() {
+        TiledMap miTiledMap = new TmxMapLoader().load("worlds/" + nomCircuito + ".tmx");
+        Vector2[] coordV;
+
+        CatmullRomSpline<Vector2> splineControl = new CatmullRomSpline<>();
+
+        MapObjects rutaMapObjects = miTiledMap.getLayers().get("SplineControl").getObjects();
+
+        float[] coordF = ((PolygonMapObject) rutaMapObjects.get(0)).getPolygon().getTransformedVertices();
+        coordV = new Vector2[coordF.length / 2];
+        int ndxCoordVector = 0;
+        for (int ndxCoordFloat = 0; ndxCoordFloat < coordF.length; ndxCoordFloat += 2) {
+            coordV[ndxCoordVector] = new Vector2(coordF[ndxCoordFloat] / TILE_SIZE, coordF[ndxCoordFloat + 1] / TILE_SIZE);
+            ndxCoordVector++;
+        }
+        splineControl.set(coordV, true);
+
+        return splineControl;
     }
 
     /**

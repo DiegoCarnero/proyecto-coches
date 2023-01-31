@@ -10,7 +10,6 @@ import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.CatmullRomSpline;
@@ -25,9 +24,9 @@ import com.mygdx.proyectocoches.entidades.CocheIA;
 import com.mygdx.proyectocoches.entidades.Competidor;
 import com.mygdx.proyectocoches.entidades.Jugador;
 import com.mygdx.proyectocoches.formas.Circuito;
-import com.mygdx.proyectocoches.gamemodes.TimeTrialManager;
+import com.mygdx.proyectocoches.gamemodes.RaceManager;
+import com.mygdx.proyectocoches.ui.RaceOsd;
 import com.mygdx.proyectocoches.ui.TestOsd;
-import com.mygdx.proyectocoches.ui.TimeTrialOsd;
 import com.mygdx.proyectocoches.utils.InputManager;
 import com.mygdx.proyectocoches.utils.MiOrthoCam;
 import com.mygdx.proyectocoches.utils.PlayerInput;
@@ -46,9 +45,9 @@ public class TestRace  implements Screen {
     private final Jugador jugador;
     private final PlayerInput pi;
     private final TestOsd osd;
-    private final TimeTrialOsd ttOsd;
+    private final RaceOsd rOsd;
     private final InputManager im;
-    private final TimeTrialManager rlm;
+    private final RaceManager rm;
     private final AudioManager am;
     private final AssetManager asM;
     private boolean init = true;
@@ -77,10 +76,10 @@ public class TestRace  implements Screen {
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
 
-        this.jugador = circuito.prepararParrilla(16,9);
-        this.rlm = new TimeTrialManager(jugador);
-        miWorld.setContactListener(new miContactListener(rlm));
-        this.ttOsd = new TimeTrialOsd(skin, rlm);
+        this.jugador = circuito.prepararParrilla(25,10);
+        this.rm = new RaceManager(circuito.getCompetidores(),circuito.cargarSplineControl());
+        miWorld.setContactListener(new miContactListener(rm));
+        this.rOsd = new RaceOsd(skin, rm);
         this.pi = osd;
         im = new InputManager(osd, jugador, this.am);
 
@@ -121,7 +120,7 @@ public class TestRace  implements Screen {
             update(delta);
             im.update();
             osd.render(delta);
-            ttOsd.render(delta);
+            rOsd.render(delta);
 
             sr.begin();
             sr.setColor(Color.WHITE);
@@ -134,7 +133,6 @@ public class TestRace  implements Screen {
                     Vector2 fin = new Vector2();
 
                     s.valueAt(ini, t);
-
                     s.valueAt(fin, t - (1f / (float) precision));
 
                     sr.line(ini.x, ini.y, fin.x, fin.y);
@@ -193,7 +191,7 @@ public class TestRace  implements Screen {
         miWorld.dispose();
         miB2dr.dispose();
         osd.dispose();
-        ttOsd.dispose();
+        rOsd.dispose();
     }
 
 }
