@@ -30,7 +30,7 @@ public class TestOsd implements Screen, PlayerInput {
     private Button btnR;
     private Button btnB;
 
-    public TestOsd(Game miGame,Skin skin) {
+    public TestOsd(Game miGame, Skin skin) {
 
         UIStage = new Stage(new ScreenViewport());
 
@@ -43,39 +43,39 @@ public class TestOsd implements Screen, PlayerInput {
 
         UIStage.getViewport().getCamera().position.set(screenW / 2f, 0, 0);
 
-        btnD = new TextButton("D",skin);
+        btnD = new TextButton("D", skin);
         btnD.setHeight(screenH * 0.1f);
         btnD.setWidth(screenH * 0.1f);
-        btnD.setPosition(screenW / 2f, screenH / 4f);
-        btnD.addListener(new InputListener(){
+        btnD.setPosition(14 * screenW / 15f, screenH / 4f);
+        btnD.addListener(new InputListener() {
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 adelante = true;
                 return true;
             }
         });
 
-        btnR = new TextButton("R",skin);
+        btnR = new TextButton("R", skin);
         btnR.setHeight(screenH * 0.1f);
         btnR.setWidth(screenH * 0.1f);
-        btnR.setPosition(screenW / 2f + screenH * 0.13f, screenH / 4f);
+        btnR.setPosition(14 * screenW / 15f, screenH / 4f - screenH * 0.13f);
         btnR.setChecked(true);
-        btnR.addListener(new InputListener(){
+        btnR.addListener(new InputListener() {
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 adelante = false;
                 return true;
             }
         });
 
-        btnB = new TextButton("B",skin);
+        btnB = new TextButton("B", skin);
         btnB.setHeight(screenH * 0.1f);
         btnB.setWidth(screenH * 0.1f);
-        btnB.setPosition(screenW / 2f + screenH * 0.4f, screenH / 4f);
+        btnB.setPosition(14 * screenW / 15f, screenH / 4f - screenH * 0.4f);
         btnB.setChecked(true);
-        btnB.addListener(new InputListener(){
+        btnB.addListener(new InputListener() {
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 frenando = true;
                 return true;
             }
@@ -88,9 +88,9 @@ public class TestOsd implements Screen, PlayerInput {
         });
 
         accSlider = new Slider(0F, 100F, (float) 0.1, false, skin);
-        accSlider.setHeight(screenH * 0.2f);
-        accSlider.setWidth(screenW * 0.4f);
-        accSlider.setPosition(screenW / 2f, screenH / 3f);
+        accSlider.setHeight(screenH * 0.3f);
+        accSlider.setWidth(screenW * 0.3f);
+        accSlider.setPosition(13 * screenW / 20f, -screenH / 2f);
 
         accSlider.addListener(new InputListener() {
             @Override
@@ -115,9 +115,9 @@ public class TestOsd implements Screen, PlayerInput {
         });
 
         steerSlider = new Slider(0F, 100F, (float) 0.1, false, skin);
-        steerSlider.setHeight(screenH * 0.2f);
-        steerSlider.setWidth(screenW * 0.4f);
-        steerSlider.setPosition(screenW / 20f, screenH / 3f);
+        steerSlider.setHeight(screenH * 0.3f);
+        steerSlider.setWidth(screenW * 0.3f);
+        steerSlider.setPosition(screenW / 20f, screenH / -2f);
         steerSlider.setValue(50.0f);
 
         steerSlider.addListener(new InputListener() {
@@ -150,7 +150,7 @@ public class TestOsd implements Screen, PlayerInput {
         return acelerando;
     }
 
-    public boolean isAdelante(){
+    public boolean isAdelante() {
         return adelante;
     }
 
