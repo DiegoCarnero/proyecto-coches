@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.CatmullRomSpline;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.proyectocoches.entidades.Competidor;
+import com.mygdx.proyectocoches.entidades.Jugador;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,110 +19,129 @@ public class RaceManager implements Gamemode {
 
     private HashMap<Competidor, Integer> competidores;
     private CatmullRomSpline<Vector2> spline;
+    private final int nVueltas;
+    private int nVueltaJugador = 0;
+    private int posJugador = 0;
 
-    public RaceManager(ArrayList<Competidor> competidores, CatmullRomSpline<Vector2> s) {
+    public int getnCompetidores() {
+        return nCompetidores;
+    }
+
+    private int nCompetidores;
+
+    public int getVueltaJugador() {
+        return nVueltaJugador;
+    }
+
+    public RaceManager(ArrayList<Competidor> competidores, CatmullRomSpline<Vector2> s, int nVueltas) {
         this.competidores = new HashMap<>();
         for (Competidor c : competidores) {
             this.competidores.put(c, 0);
         }
+        nCompetidores = this.competidores.size();
+        this.nVueltas = nVueltas;
         spline = s;
     }
 
     public void update() {
         for (Competidor c : competidores.keySet()) {
-            Gdx.app.log("spline", c.getNombre() + " - " + spline.nearest(c.getPosition()) + "");
-            competidores.put(c, spline.nearest(c.getPosition()));
+            int a = c.getVuelta();
+            int nuevoVal = spline.nearest(c.getPosition()) + (a * 1000);
+            competidores.put(c, nuevoVal);
         }
     }
 
     @Override
     public void setCruzandoMeta(boolean b, Competidor userData) {
-
+        userData.setCruzandoMeta(b);
     }
 
     @Override
     public boolean isPrimeraVuelta(Competidor userData) {
-        return false;
+        return userData.isPrimeraVuelta();
     }
 
     @Override
     public boolean hasCruzadoS1(Competidor userData) {
-        return false;
+        return userData.hasCruzadoS1();
     }
 
     @Override
     public boolean hasCruzadoS2(Competidor userData) {
-        return false;
+        return userData.hasCruzadoS2();
     }
 
     @Override
     public void CompletadoSector3(Competidor userData) {
-
+        userData.CompletadoSector3(true);
     }
 
     @Override
     public void setCruzandoS1(boolean b, Competidor userData) {
-        if (!userData.isEnVuelta()) {
-//            competidores.add(userData);
-        }
+        userData.setCruzandoS1(b);
     }
 
     @Override
     public void setCruzandoS2(boolean b, Competidor userData) {
-
+        userData.setCruzandoS2(b);
     }
 
     @Override
     public void setCruzandoS3(boolean b, Competidor userData) {
-
+        userData.setCruzandoS3(b);
     }
 
     @Override
     public boolean isCruzandoMeta(Competidor userData) {
-        return false;
+        return userData.isCruzandoMeta();
     }
 
     @Override
     public void NuevaVuelta(Competidor userData) {
-        if (userData.isEnVuelta() && userData.hasCruzadoS3() && userData.hasCruzadoS1() && userData.hasCruzadoS2()) {
+
+        if (userData.isPrimeraVuelta() || (userData.isEnVuelta() && userData.hasCruzadoS3() && userData.hasCruzadoS1() && userData.hasCruzadoS2())) {
             int nVuelta = userData.getVuelta();
             userData.setVuelta(nVuelta + 1);
         }
-
+        Gdx.app.log("nuev",userData.getNombre()+" "+userData.getVuelta());
         userData.setEnVuelta(true);
         userData.setCruzadoS1(false);
         userData.setCruzadoS2(false);
         userData.setCruzadoS3(false);
+
+        if (userData.getClass() == Jugador.class) {
+            nVueltaJugador = userData.getVuelta();
+        }
     }
 
     @Override
     public void setPrimeraVuelta(boolean b, Competidor userData) {
-
+        userData.setPrimeraVuelta(b);
     }
 
     @Override
     public boolean isCruzandoS1(Competidor userData) {
-        return false;
+        return userData.isCruzandoS1();
     }
 
     @Override
     public boolean isCruzandoS2(Competidor userData) {
-        return false;
+        return userData.isCruzandoS2();
     }
 
     @Override
     public boolean isCruzandoS3(Competidor userData) {
-        return false;
+        return userData.isCruzandoS3();
     }
 
     @Override
     public void CompletadoSector1(Competidor userData) {
-
+        userData.CompletadoSector1(true);
     }
 
     @Override
     public void CompletadoSector2(Competidor userData) {
-
+        userData.CompletadoSector2(true);
     }
 
     @Override
@@ -146,6 +166,9 @@ public class RaceManager implements Gamemode {
             for (Map.Entry<Competidor, Integer> entry : competidores.entrySet()) {
                 if (entry.getValue().equals(num)) {
                     listaComp += String.format(Locale.ROOT, "%d. %s\n", cont, entry.getKey().getNombre());
+                    if (entry.getKey() instanceof Jugador) {
+                        posJugador = cont;
+                    }
                     cont++;
                 }
             }
@@ -153,4 +176,13 @@ public class RaceManager implements Gamemode {
 
         return listaComp;
     }
+
+    public int getvVueltas() {
+        return nVueltas;
+    }
+
+    public int getPosJugador() {
+        return posJugador;
+    }
+
 }

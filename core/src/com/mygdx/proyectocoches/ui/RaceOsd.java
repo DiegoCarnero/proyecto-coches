@@ -53,6 +53,8 @@ public class RaceOsd implements Screen {
     public void render(float delta) {
 
         rm.update();
+        lblVuelta.setText("Vuelta "+rm.getVueltaJugador()+"/"+rm.getvVueltas());
+        lblPosicion.setText("Pos "+rm.getPosJugador()+"/"+rm.getnCompetidores());
         lblLista.setText(rm.toString());
         UIStage.act();
         UIStage.draw();

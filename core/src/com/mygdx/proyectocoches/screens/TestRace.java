@@ -71,13 +71,13 @@ public class TestRace  implements Screen {
         float aspectRatio = Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
         this.miViewport = new FitViewport(aspectRatio * 720 / PPM, 720 / PPM, miCam);
 
-        this.circuito = new Circuito(miWorld, "track_1");
+        this.circuito = new Circuito(miWorld, "test_loop");
         circuito.cargarMuros();
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
 
-        this.jugador = circuito.prepararParrilla(25,10);
-        this.rm = new RaceManager(circuito.getCompetidores(),circuito.cargarSplineControl());
+        this.jugador = circuito.prepararParrilla(25,20);
+        this.rm = new RaceManager(circuito.getCompetidores(),circuito.cargarSplineControl(),3);
         miWorld.setContactListener(new miContactListener(rm));
         this.rOsd = new RaceOsd(skin, rm);
         this.pi = osd;
