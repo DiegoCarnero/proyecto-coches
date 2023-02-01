@@ -103,7 +103,7 @@ public class RaceManager implements Gamemode {
             int nVuelta = userData.getVuelta();
             userData.setVuelta(nVuelta + 1);
         }
-        Gdx.app.log("nuev",userData.getNombre()+" "+userData.getVuelta());
+		
         userData.setEnVuelta(true);
         userData.setCruzadoS1(false);
         userData.setCruzadoS2(false);

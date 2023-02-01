@@ -28,7 +28,7 @@ public class miContactListener implements ContactListener {
 
         if (((a | b) == 0x5) || ((a | b) == 0xC)) {// jugador->meta || IA->meta
             gm.setCruzandoMeta(true,bUD);
-            Gdx.app.log("nuev",bUD.getNombre()+" "+bUD.isCruzandoMeta());
+			
             if (!gm.isPrimeraVuelta(bUD) && gm.hasCruzadoS1(bUD) && gm.hasCruzadoS2(bUD)) {
                 gm.CompletadoSector3(bUD);
                 gm.setCruzandoS1(false,bUD);

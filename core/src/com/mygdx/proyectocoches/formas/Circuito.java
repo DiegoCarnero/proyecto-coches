@@ -345,7 +345,7 @@ public class Circuito {
                 ndxCoordVector++;
             }
 
-            Gdx.app.log("ndxRuta", coordV.length + "");
+
             rutas[ndxRuta] = new CatmullRomSpline<>();
             rutas[ndxRuta].set(coordV, true);
         }
