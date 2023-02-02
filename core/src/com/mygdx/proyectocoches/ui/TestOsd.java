@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,21 +15,26 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.proyectocoches.utils.PlayerInput;
 
+import java.util.ArrayList;
+
 public class TestOsd implements Screen, PlayerInput {
 
     private boolean acelerando = false;
     private boolean adelante = true;
     private boolean frenando = false;
-    private Stage UIStage;
+    private final Stage UIStage;
 
-    private InputMultiplexer multiplexer;
+    private final InputMultiplexer multiplexer;
 
-    private Slider accSlider;
-    private Slider steerSlider;
+    private final Slider accSlider;
+    private final Slider steerSlider;
 
-    private Button btnD;
-    private Button btnR;
-    private Button btnB;
+    private final Button btnD;
+    private final Button btnR;
+    private final Button btnB;
+
+    private final PauseMenu mPausa;
+    private final ArrayList<Actor> compControles = new ArrayList<>();
 
     public TestOsd(Game miGame, Skin skin) {
 
@@ -144,6 +150,28 @@ public class TestOsd implements Screen, PlayerInput {
         UIStage.addActor(btnD);
         UIStage.addActor(btnR);
         UIStage.addActor(btnB);
+
+        this.mPausa = new PauseMenu(1, skin);
+        UIStage.addActor(mPausa.getBtnPausa());
+
+        for (Actor a : mPausa.getCompPausa()) {
+            UIStage.addActor(a);
+        }
+
+        compControles.add(accSlider);
+        compControles.add(steerSlider);
+        compControles.add(btnD);
+        compControles.add(btnR);
+        compControles.add(btnB);
+
+    }
+
+    public boolean isPaused(){
+        return mPausa.isPaused();
+    }
+
+    public int camMode(){
+        return mPausa.getCamMode();
     }
 
     public boolean isAcelerando() {
@@ -172,11 +200,16 @@ public class TestOsd implements Screen, PlayerInput {
 
     @Override
     public void show() {
+        mPausa.setPaused(false);
         Gdx.input.setInputProcessor(multiplexer);
     }
 
     @Override
     public void render(float delta) {
+
+        for (Actor a : compControles) {
+            a.setVisible(!mPausa.isPaused());
+        }
 
         UIStage.act();
         UIStage.draw();

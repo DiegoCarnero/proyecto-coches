@@ -32,7 +32,7 @@ import com.mygdx.proyectocoches.utils.MiOrthoCam;
 import com.mygdx.proyectocoches.utils.PlayerInput;
 import com.mygdx.proyectocoches.utils.miContactListener;
 
-public class TestRace  implements Screen {
+public class TestRace implements Screen {
 
     private final SpriteBatch miBatch;
     private final World miWorld;
@@ -76,8 +76,8 @@ public class TestRace  implements Screen {
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
 
-        this.jugador = circuito.prepararParrilla(25,20);
-        this.rm = new RaceManager(circuito.getCompetidores(),circuito.cargarSplineControl(),3);
+        this.jugador = circuito.prepararParrilla(25, 20);
+        this.rm = new RaceManager(circuito.getCompetidores(), circuito.cargarSplineControl(), 3);
         miWorld.setContactListener(new miContactListener(rm));
         this.rOsd = new RaceOsd(skin, rm);
         this.pi = osd;
@@ -100,6 +100,7 @@ public class TestRace  implements Screen {
         this.sr = new ShapeRenderer();
         sr.setAutoShapeType(true);
     }
+
     /**
      * Called when this screen becomes the current screen for a {@link Game}.
      */
@@ -111,36 +112,35 @@ public class TestRace  implements Screen {
     @Override
     public void render(float delta) {
         if (asM.update()) {
-            if(init){
-                am.init();
-                init = false;
-            }
-            Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            update(delta);
-            im.update();
-            osd.render(delta);
-            rOsd.render(delta);
-
-            sr.begin();
-            sr.setColor(Color.WHITE);
-            int precision = 1000;
-            for (CatmullRomSpline<Vector2> s : rutas) {
-
-                for (int i = 0; i < precision; ++i) {
-                    float t = i / (float) precision;
-                    Vector2 ini = new Vector2();
-                    Vector2 fin = new Vector2();
-
-                    s.valueAt(ini, t);
-                    s.valueAt(fin, t - (1f / (float) precision));
-
-                    sr.line(ini.x, ini.y, fin.x, fin.y);
+            if (!osd.isPaused()) {
+                if (init) {
+                    am.init();
+                    init = false;
                 }
+                update(delta);
+                im.update();
+                rOsd.render(delta);
             }
-            sr.end();
             draw();
+            osd.render(delta);
+            updateCam();
         }
+    }
+
+    private void updateCam(){
+        switch (osd.camMode()) {
+            case 0:
+                this.miCam.zoom = 0.4f;
+                break;
+            case 1:
+                this.miCam.zoom = 0.8f;
+                break;
+            case 2:
+                this.miCam.AdjustaZoomPorVelo(jugador.getBody());
+                break;
+        }
+        miCam.position.set(jugador.getPosition(), 0);
+        miCam.update();
     }
 
     private void update(float delta) {
@@ -149,18 +149,34 @@ public class TestRace  implements Screen {
         for (Competidor c : circuito.getCompetidores()) {
             if (c instanceof CocheIA) {
                 int destino = ((CocheIA) c).getDestinoActualNdx();
-                int ndx =  ((CocheIA) c).getRutaSelect();
+                int ndx = ((CocheIA) c).getRutaSelect();
                 ((CocheIA) c).setDestinoSensorPosition(rutas[ndx].controlPoints[destino]);
                 ((CocheIA) c).update(delta);
             }
         }
 
-        miCam.position.set(jugador.getPosition(), 0);
-        this.miCam.AdjustaZoomPorVelo(jugador.getBody());
-        miCam.update();
     }
 
     private void draw() {
+        Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        sr.begin();
+        sr.setColor(Color.WHITE);
+        int precision = 1000;
+        for (CatmullRomSpline<Vector2> s : rutas) {
+
+            for (int i = 0; i < precision; ++i) {
+                float t = i / (float) precision;
+                Vector2 ini = new Vector2();
+                Vector2 fin = new Vector2();
+
+                s.valueAt(ini, t);
+                s.valueAt(fin, t - (1f / (float) precision));
+
+                sr.line(ini.x, ini.y, fin.x, fin.y);
+            }
+        }
+        sr.end();
         miBatch.setProjectionMatrix(miCam.combined);
         miB2dr.render(miWorld, miCam.combined);
     }

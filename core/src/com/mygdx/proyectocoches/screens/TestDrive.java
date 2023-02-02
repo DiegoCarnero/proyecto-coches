@@ -1,14 +1,10 @@
 package com.mygdx.proyectocoches.screens;
 
 import static com.mygdx.proyectocoches.Constantes.PPM;
-import static com.mygdx.proyectocoches.Constantes.TELE_ACC;
-import static com.mygdx.proyectocoches.Constantes.TELE_EMBRAG;
-import static com.mygdx.proyectocoches.Constantes.TELE_PARADO;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -17,7 +13,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.proyectocoches.Constantes;
 import com.mygdx.proyectocoches.audio.AudioManager;
 import com.mygdx.proyectocoches.gamemodes.TimeTrialManager;
 import com.mygdx.proyectocoches.entidades.Jugador;
@@ -42,7 +37,7 @@ public class TestDrive implements Screen {
     private final TestOsd osd;
     private final TimeTrialOsd ttOsd;
     private final InputManager im;
-    private final TimeTrialManager rlm;
+    private final TimeTrialManager ttm;
     private final AudioManager am;
     private final AssetManager asM;
     private boolean init = true;
@@ -70,9 +65,9 @@ public class TestDrive implements Screen {
         circuito.cargarCheckpoints();
         this.jugador = circuito.prepararParrilla(0, 0);
 
-        this.rlm = new TimeTrialManager(this.jugador);
-        this.ttOsd = new TimeTrialOsd(skin, rlm);
-        miWorld.setContactListener(new miContactListener(rlm));
+        this.ttm = new TimeTrialManager(this.jugador);
+        this.ttOsd = new TimeTrialOsd(skin, ttm);
+        miWorld.setContactListener(new miContactListener(ttm));
         this.pi = osd;
         im = new InputManager(osd, jugador, this.am);
     }
@@ -88,23 +83,39 @@ public class TestDrive implements Screen {
     @Override
     public void render(float delta) {
         if (asM.update()) {
-            if (init) {
-                am.init();
-                init = false;
+            if (!osd.isPaused()) {
+                if (init) {
+                    am.init();
+                    init = false;
+                }
+                update(delta);
+                im.update();
+                ttOsd.render(delta);
             }
-            update(delta);
             draw();
-            im.update();
             osd.render(delta);
-            ttOsd.render(delta);
+            updateCam();
         }
+    }
+
+    private void updateCam(){
+        switch (osd.camMode()) {
+            case 0:
+                this.miCam.zoom = 0.4f;
+                break;
+            case 1:
+                this.miCam.zoom = 0.8f;
+                break;
+            case 2:
+                this.miCam.AdjustaZoomPorVelo(jugador.getBody());
+                break;
+        }
+        miCam.position.set(jugador.getPosition(), 0);
+        miCam.update();
     }
 
     private void update(float delta) {
 
-        miCam.position.set(jugador.getPosition(), 0);
-        this.miCam.AdjustaZoomPorVelo(jugador.getBody());
-        miCam.update();
         miWorld.step(delta, 6, 2);
     }
 
