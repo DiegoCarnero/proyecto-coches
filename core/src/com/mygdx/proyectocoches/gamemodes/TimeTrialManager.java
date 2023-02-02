@@ -1,18 +1,43 @@
 package com.mygdx.proyectocoches.gamemodes;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.JsonWriter;
 import com.mygdx.proyectocoches.entidades.Competidor;
 import com.mygdx.proyectocoches.entidades.Jugador;
 
-public class TimeTrialManager implements Gamemode{
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+
+public class TimeTrialManager implements Gamemode {
 
     private float tMejorVuelta = Float.MAX_VALUE;
+
     private float tVueltaActual;
     private float tSector1;
     private float tSector2;
     private float tSector3;
     private long tiempoGlobalStart;
-
     private Competidor jugador;
+
+    private void GrabaRecords(){Json j = new Json();
+        JsonReader json = new JsonReader();
+        JsonValue base = json.parse(Gdx.files.external("records.json"));
+        JsonValue t = new JsonValue(tMejorVuelta);
+        JsonValue trackRecords = base.get("test_loop");
+        if(trackRecords.has(jugador.getNombre())){
+            trackRecords.remove(jugador.getNombre());
+        }
+        trackRecords.addChild(jugador.getNombre(),t);
+        Gdx.app.log("json", base.get("test_loop").toString());
+
+        FileHandle file = Gdx.files.external("records.json");
+        file.writeString(base.toString(), false);
+    }
+
 
     public boolean isCruzandoS1() {
         return jugador.isCruzandoS1();
@@ -31,6 +56,7 @@ public class TimeTrialManager implements Gamemode{
 
         if (jugador.isEnVuelta() && jugador.hasCruzadoS3() && jugador.hasCruzadoS1() && jugador.hasCruzadoS2()) {
             tMejorVuelta = tVueltaActual < tMejorVuelta ? tVueltaActual : tMejorVuelta;
+            GrabaRecords();
         }
 
         jugador.setEnVuelta(true);
