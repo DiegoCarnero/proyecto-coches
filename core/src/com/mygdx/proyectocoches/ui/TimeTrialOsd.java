@@ -53,6 +53,7 @@ public class TimeTrialOsd implements Screen {
 
     @Override
     public void render(float delta) {
+        ttm.update(delta);
         lblSector1.setText("Sector1: "+ ttm.gettSector1Str());
         lblSector2.setText("Sector2: "+ ttm.gettSector2Str());
         lblSector3.setText("Sector3: "+ ttm.gettSector3Str());

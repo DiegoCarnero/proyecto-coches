@@ -20,24 +20,27 @@ public class TimeTrialManager implements Gamemode {
     private float tSector1;
     private float tSector2;
     private float tSector3;
-    private long tiempoGlobalStart;
-    private Competidor jugador;
+    private final Competidor jugador;
 
-    private void GrabaRecords(){Json j = new Json();
+    private void GrabaRecords() {
+        Json j = new Json();
         JsonReader json = new JsonReader();
         JsonValue base = json.parse(Gdx.files.external("records.json"));
         JsonValue t = new JsonValue(tMejorVuelta);
         JsonValue trackRecords = base.get("test_loop");
-        if(trackRecords.has(jugador.getNombre())){
+        if (trackRecords.has(jugador.getNombre())) {
             trackRecords.remove(jugador.getNombre());
         }
-        trackRecords.addChild(jugador.getNombre(),t);
+        trackRecords.addChild(jugador.getNombre(), t);
         Gdx.app.log("json", base.get("test_loop").toString());
 
         FileHandle file = Gdx.files.external("records.json");
         file.writeString(base.toString(), false);
     }
 
+    public void update(float delta) {
+        tVueltaActual += delta;
+    }
 
     public boolean isCruzandoS1() {
         return jugador.isCruzandoS1();
@@ -67,32 +70,30 @@ public class TimeTrialManager implements Gamemode {
         jugador.setCruzadoS1(false);
         jugador.setCruzadoS2(false);
         jugador.setCruzadoS3(false);
-        tiempoGlobalStart = System.currentTimeMillis();
 
     }
 
     public void CompletadoSector3() {
         jugador.setCruzadoS3(true);
-        tSector3 = System.currentTimeMillis() - tiempoGlobalStart - tSector1 - tSector2;
+        tSector3 = tVueltaActual - tSector1 - tSector2;
 
     }
 
     public void CompletadoSector2() {
         jugador.setCruzadoS2(true);
-        tSector2 = System.currentTimeMillis() - tiempoGlobalStart - tSector1;
+        tSector2 = tVueltaActual - tSector1;
 
     }
 
     public void CompletadoSector1() {
         jugador.setCruzadoS1(true);
-        tSector1 = System.currentTimeMillis() - tiempoGlobalStart;
+        tSector1 = tVueltaActual;
 
     }
 
     public String gettVueltaActualStr() {
 
         String retorno = "";
-        tVueltaActual = System.currentTimeMillis() - tiempoGlobalStart;
         if (jugador.isEnVuelta()) {
             retorno = getTiempoFormat(tVueltaActual);
         }
@@ -100,10 +101,11 @@ public class TimeTrialManager implements Gamemode {
         return retorno;
     }
 
+    @SuppressWarnings("DefaultLocale")
     private String getTiempoFormat(float t) {
 
-        int milis = (int) (t % 1000);
-        int secs = (int) (t / 1000);
+        int milis = (int) (t * 1000 % 1000);
+        int secs = (int) t;
         int mins = secs / 60;
         secs = secs % 60;
 
@@ -123,7 +125,7 @@ public class TimeTrialManager implements Gamemode {
     public String gettSector1Str() {
         String retorno = "";
         if (isCruzandoS1() && !isCruzandoS2()) {
-            tSector1 = System.currentTimeMillis() - tiempoGlobalStart;
+            tSector1 = tVueltaActual;
             retorno = getTiempoFormat(tSector1);
         } else if (isCruzandoS2()) {
             retorno = getTiempoFormat(tSector1);
@@ -134,7 +136,7 @@ public class TimeTrialManager implements Gamemode {
     public String gettSector2Str() {
         String retorno = "";
         if (jugador.isCruzandoS2() && !jugador.isCruzandoS3()) {
-            tSector2 = System.currentTimeMillis() - tiempoGlobalStart - tSector1;
+            tSector2 = tVueltaActual - tSector1;
             retorno = getTiempoFormat(tSector2);
         } else if (jugador.isCruzandoS3()) {
             retorno = getTiempoFormat(tSector2);
@@ -145,7 +147,7 @@ public class TimeTrialManager implements Gamemode {
     public String gettSector3Str() {
         String retorno = "";
         if (jugador.isCruzandoS3()) {
-            tSector3 = System.currentTimeMillis() - tiempoGlobalStart - tSector1 - tSector2;
+            tSector3 = tVueltaActual - tSector1 - tSector2;
             retorno = getTiempoFormat(tSector3);
         }
         return retorno;
