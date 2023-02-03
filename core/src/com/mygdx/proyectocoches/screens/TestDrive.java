@@ -65,7 +65,7 @@ public class TestDrive implements Screen {
         circuito.cargarCheckpoints();
         this.jugador = circuito.prepararParrilla(0, 0);
 
-        this.ttm = new TimeTrialManager(this.jugador);
+        this.ttm = new TimeTrialManager(this.jugador,"track_1");
         this.ttOsd = new TimeTrialOsd(skin, ttm);
         miWorld.setContactListener(new miContactListener(ttm));
         this.pi = osd;
