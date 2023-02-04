@@ -46,10 +46,11 @@ public class TestDrive implements Screen {
 
     public TestDrive(Game juego, Skin skin) {
 
+        String nomCircuito = "track_1";
         asM = new AssetManager();
         this.am = new AudioManager(asM);
         this.skin = skin;
-        osd = new TestOsd(juego, skin);
+        osd = new TestOsd(1,juego, skin,nomCircuito);
 
         this.miBatch = new SpriteBatch();
         this.miWorld = new World(new Vector2(0, 0), true);
@@ -59,13 +60,13 @@ public class TestDrive implements Screen {
         float aspectRatio = Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
         this.miViewport = new FitViewport(aspectRatio * 720 / PPM, 720 / PPM, miCam);
 
-        this.circuito = new Circuito(miWorld, "track_1");
+        this.circuito = new Circuito(miWorld, nomCircuito);
         circuito.cargarMuros();
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
         this.jugador = circuito.prepararParrilla(0, 0);
 
-        this.ttm = new TimeTrialManager(this.jugador,"track_1");
+        this.ttm = new TimeTrialManager(this.jugador,nomCircuito);
         this.ttOsd = new TimeTrialOsd(skin, ttm);
         miWorld.setContactListener(new miContactListener(ttm));
         this.pi = osd;

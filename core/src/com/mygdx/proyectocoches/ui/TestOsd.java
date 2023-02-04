@@ -36,7 +36,7 @@ public class TestOsd implements Screen, PlayerInput {
     private final PauseMenu mPausa;
     private final ArrayList<Actor> compControles = new ArrayList<>();
 
-    public TestOsd(Game miGame, Skin skin) {
+    public TestOsd(int modo, Game miGame, Skin skin, String nomCircuito) {
 
         UIStage = new Stage(new ScreenViewport());
 
@@ -151,7 +151,7 @@ public class TestOsd implements Screen, PlayerInput {
         UIStage.addActor(btnR);
         UIStage.addActor(btnB);
 
-        this.mPausa = new PauseMenu(1, skin);
+        this.mPausa = new PauseMenu(miGame, modo, skin, nomCircuito);
         UIStage.addActor(mPausa.getBtnPausa());
 
         for (Actor a : mPausa.getCompPausa()) {
@@ -166,11 +166,11 @@ public class TestOsd implements Screen, PlayerInput {
 
     }
 
-    public boolean isPaused(){
+    public boolean isPaused() {
         return mPausa.isPaused();
     }
 
-    public int camMode(){
+    public int camMode() {
         return mPausa.getCamMode();
     }
 
@@ -208,7 +208,7 @@ public class TestOsd implements Screen, PlayerInput {
     public void render(float delta) {
 
         for (Actor a : compControles) {
-            a.setVisible(!mPausa.isPaused());
+            a.setVisible(!isPaused());
         }
 
         UIStage.act();

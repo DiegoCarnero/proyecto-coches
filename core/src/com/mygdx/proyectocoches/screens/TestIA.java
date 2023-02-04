@@ -42,7 +42,7 @@ public class TestIA implements Screen {
 
     private Seek seekSB;
 
-    private Skin skin;
+    private final Skin skin;
 
     public TestIA(Game juego, Skin skin) {
         this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
@@ -61,7 +61,7 @@ public class TestIA implements Screen {
         circuito.cargarCheckpoints();
         circuito.prepararParrilla(25);
 
-        miWorld.setContactListener(new miContactListener(new TimeTrialManager(circuito.getCompetidores().get(0))));
+        miWorld.setContactListener(new miContactListener(new TimeTrialManager(circuito.getCompetidores().get(0),"track_1")));
 
         this.rutas = circuito.cargarRutas();
         for (Competidor c : circuito.getCompetidores()) {

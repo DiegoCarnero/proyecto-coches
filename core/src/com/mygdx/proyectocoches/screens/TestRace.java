@@ -57,11 +57,11 @@ public class TestRace implements Screen {
     private final Skin skin;
 
     public TestRace(Game juego, Skin skin) {
-
+        String nomCircuito = "test_loop";
         asM = new AssetManager();
         this.am = new AudioManager(asM);
         this.skin = skin;
-        osd = new TestOsd(juego, skin);
+        osd = new TestOsd(0, juego, skin, nomCircuito);
 
         this.miBatch = new SpriteBatch();
         this.miWorld = new World(new Vector2(0, 0), true);
@@ -71,7 +71,7 @@ public class TestRace implements Screen {
         float aspectRatio = Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
         this.miViewport = new FitViewport(aspectRatio * 720 / PPM, 720 / PPM, miCam);
 
-        this.circuito = new Circuito(miWorld, "test_loop");
+        this.circuito = new Circuito(miWorld, nomCircuito);
         circuito.cargarMuros();
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
@@ -127,7 +127,7 @@ public class TestRace implements Screen {
         }
     }
 
-    private void updateCam(){
+    private void updateCam() {
         switch (osd.camMode()) {
             case 0:
                 this.miCam.zoom = 0.4f;
