@@ -49,7 +49,7 @@ public class TestOsd implements Screen, PlayerInput {
 
         UIStage.getViewport().getCamera().position.set(screenW / 2f, 0, 0);
 
-        btnD = new TextButton("D", skin);
+        btnD = new TextButton("D", skin, "toggle");
         btnD.setHeight(screenH * 0.1f);
         btnD.setWidth(screenH * 0.1f);
         btnD.setPosition(14 * screenW / 15f, screenH / 4f);
@@ -57,19 +57,21 @@ public class TestOsd implements Screen, PlayerInput {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 adelante = true;
+                btnR.setChecked(false);
                 return true;
             }
         });
+        btnD.setChecked(true);
 
-        btnR = new TextButton("R", skin);
+        btnR = new TextButton("R", skin, "toggle");
         btnR.setHeight(screenH * 0.1f);
         btnR.setWidth(screenH * 0.1f);
         btnR.setPosition(14 * screenW / 15f, screenH / 4f - screenH * 0.13f);
-        btnR.setChecked(true);
         btnR.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 adelante = false;
+                btnD.setChecked(false);
                 return true;
             }
         });
@@ -78,7 +80,6 @@ public class TestOsd implements Screen, PlayerInput {
         btnB.setHeight(screenH * 0.1f);
         btnB.setWidth(screenH * 0.1f);
         btnB.setPosition(14 * screenW / 15f, screenH / 4f - screenH * 0.4f);
-        btnB.setChecked(true);
         btnB.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
