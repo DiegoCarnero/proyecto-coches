@@ -6,6 +6,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -19,6 +20,7 @@ import com.mygdx.proyectocoches.entidades.Jugador;
 import com.mygdx.proyectocoches.formas.Circuito;
 import com.mygdx.proyectocoches.ui.TestOsd;
 import com.mygdx.proyectocoches.ui.TimeTrialOsd;
+import com.mygdx.proyectocoches.utils.ControllerInput;
 import com.mygdx.proyectocoches.utils.InputManager;
 import com.mygdx.proyectocoches.utils.MiOrthoCam;
 import com.mygdx.proyectocoches.utils.PlayerInput;
@@ -69,8 +71,14 @@ public class TestDrive implements Screen {
         this.ttm = new TimeTrialManager(this.jugador,nomCircuito);
         this.ttOsd = new TimeTrialOsd(skin, ttm);
         miWorld.setContactListener(new miContactListener(ttm));
-        this.pi = osd;
-        im = new InputManager(osd, jugador, this.am);
+
+        if (Controllers.getControllers().size > 0){
+            pi = new ControllerInput(Controllers.getControllers().get(0));
+        } else {
+            this.pi = osd;
+        }
+
+        im = new InputManager(pi, jugador, this.am);
     }
 
     /**
