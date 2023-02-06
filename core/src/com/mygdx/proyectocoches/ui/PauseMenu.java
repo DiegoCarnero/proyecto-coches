@@ -133,7 +133,7 @@ public class PauseMenu extends Actor {
                     a.setVisible(paused);
                 }
                 for (Actor a : compRecords) {
-                    a.setVisible(!paused);
+                    a.setVisible(false);
                 }
                 return true;
             }
