@@ -47,9 +47,13 @@ public class RecordsMenu extends Actor {
                 Gdx.app.log("toString", base.get(i).toString());
             }
         } else {
-            recordsAux += base.get(nomCircuito).toString();
+            for (int i = 0; i < base.get(nomCircuito).size; i++) {
+                recordsAux += String.format("%s      %s", base.get(nomCircuito).get(i).name, getTiempoFormat(base.get(nomCircuito).get(i).asFloat()));
+
+            }
         }
         lblRecords.setText(recordsAux);
+        lblRecords.setAlignment(1);
 
         btnAtras = new TextButton("<", skin);
         btnAtras.setSize(screenH / 10f, screenH / 10f);
@@ -73,6 +77,17 @@ public class RecordsMenu extends Actor {
         for (Actor a : compRecords) {
             a.setVisible(showing);
         }
+    }
+
+    @SuppressWarnings("DefaultLocale")
+    private String getTiempoFormat(float t) {
+
+        int milis = (int) (t * 1000 % 1000);
+        int secs = (int) t;
+        int mins = secs / 60;
+        secs = secs % 60;
+
+        return String.format("%d:%02d.%03d", mins, secs, milis);
     }
 
     public Actor getBackButton() {
