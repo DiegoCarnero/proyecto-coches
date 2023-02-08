@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.proyectocoches.ProyectoCOCHES;
+import com.mygdx.proyectocoches.utils.GameSettings;
 
 
 public class ScreenSelector implements Screen {
@@ -27,6 +28,7 @@ public class ScreenSelector implements Screen {
         this.pc = pc;
         stage = new Stage(new ScreenViewport());
         this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+        final GameSettings gs = new GameSettings(10,"test_loop", 0,0,"AAA",3);
 
         multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage);
@@ -43,7 +45,7 @@ public class ScreenSelector implements Screen {
         btn1.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                pc.setScreen(new TestDrive(pc, skin));
+                pc.setScreen(new TestDrive(pc, skin,gs));
                 return true;
             }
         });
@@ -55,7 +57,7 @@ public class ScreenSelector implements Screen {
         btn2.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                pc.setScreen(new TestIA(pc, skin));
+//                pc.setScreen(new TestIA(pc, skin,gs));
                 return true;
             }
         });
@@ -67,7 +69,7 @@ public class ScreenSelector implements Screen {
         btn3.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                pc.setScreen(new TestRace(pc, skin));
+                pc.setScreen(new TestRace(pc, skin,gs));
                 return true;
             }
         });

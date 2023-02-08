@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.proyectocoches.utils.GameSettings;
 import com.mygdx.proyectocoches.utils.PlayerInput;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class TestOsd implements Screen, PlayerInput {
     private final PauseMenu mPausa;
     private final ArrayList<Actor> compControles = new ArrayList<>();
 
-    public TestOsd(int modo, Game miGame, Skin skin, String nomCircuito) {
+    public TestOsd(int modo, Game miGame, Skin skin, GameSettings gs) {
 
         UIStage = new Stage(new ScreenViewport());
 
@@ -152,7 +153,7 @@ public class TestOsd implements Screen, PlayerInput {
         UIStage.addActor(btnR);
         UIStage.addActor(btnB);
 
-        this.mPausa = new PauseMenu(miGame, modo, skin, nomCircuito);
+        this.mPausa = new PauseMenu(miGame, modo, skin, gs.getCircuito());
         UIStage.addActor(mPausa.getBtnPausa());
 
         for (Actor a : mPausa.getCompPausa()) {

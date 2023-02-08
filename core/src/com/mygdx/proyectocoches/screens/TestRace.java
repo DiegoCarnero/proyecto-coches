@@ -27,6 +27,7 @@ import com.mygdx.proyectocoches.formas.Circuito;
 import com.mygdx.proyectocoches.gamemodes.RaceManager;
 import com.mygdx.proyectocoches.ui.RaceOsd;
 import com.mygdx.proyectocoches.ui.TestOsd;
+import com.mygdx.proyectocoches.utils.GameSettings;
 import com.mygdx.proyectocoches.utils.InputManager;
 import com.mygdx.proyectocoches.utils.MiOrthoCam;
 import com.mygdx.proyectocoches.utils.PlayerInput;
@@ -56,12 +57,12 @@ public class TestRace implements Screen {
 
     private final Skin skin;
 
-    public TestRace(Game juego, Skin skin) {
-        String nomCircuito = "test_loop";
+    public TestRace(Game juego, Skin skin, GameSettings gs) {
+        String nomCircuito = gs.getCircuito();
         asM = new AssetManager();
         this.am = new AudioManager(asM);
         this.skin = skin;
-        osd = new TestOsd(0, juego, skin, nomCircuito);
+        osd = new TestOsd(0, juego, skin, gs);
 
         this.miBatch = new SpriteBatch();
         this.miWorld = new World(new Vector2(0, 0), true);
@@ -76,7 +77,7 @@ public class TestRace implements Screen {
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
 
-        this.jugador = circuito.prepararParrilla(25, 20);
+        this.jugador = circuito.prepararParrilla(gs.getNumOpos(), gs.getNumOpos() + 1);
         this.rm = new RaceManager(circuito.getCompetidores(), circuito.cargarSplineControl(), 3);
         miWorld.setContactListener(new miContactListener(rm));
         this.rOsd = new RaceOsd(skin, rm);

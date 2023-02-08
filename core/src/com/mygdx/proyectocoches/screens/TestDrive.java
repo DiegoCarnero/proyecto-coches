@@ -21,6 +21,7 @@ import com.mygdx.proyectocoches.formas.Circuito;
 import com.mygdx.proyectocoches.ui.TestOsd;
 import com.mygdx.proyectocoches.ui.TimeTrialOsd;
 import com.mygdx.proyectocoches.utils.ControllerInput;
+import com.mygdx.proyectocoches.utils.GameSettings;
 import com.mygdx.proyectocoches.utils.InputManager;
 import com.mygdx.proyectocoches.utils.MiOrthoCam;
 import com.mygdx.proyectocoches.utils.PlayerInput;
@@ -46,13 +47,13 @@ public class TestDrive implements Screen {
 
     private final Skin skin;
 
-    public TestDrive(Game juego, Skin skin) {
+    public TestDrive(Game juego, Skin skin, GameSettings gs) {
 
         String nomCircuito = "track_1";
         asM = new AssetManager();
         this.am = new AudioManager(asM);
         this.skin = skin;
-        osd = new TestOsd(1,juego, skin,nomCircuito);
+        osd = new TestOsd(1,juego, skin,gs);
 
         this.miBatch = new SpriteBatch();
         this.miWorld = new World(new Vector2(0, 0), true);
