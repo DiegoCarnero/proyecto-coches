@@ -1,7 +1,5 @@
 package com.mygdx.proyectocoches.screens;
 
-import static com.mygdx.proyectocoches.Constantes.PPM;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -12,9 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.proyectocoches.ui.EventMenu;
 import com.mygdx.proyectocoches.ui.RecordsMenu;
 
 import java.util.ArrayList;
@@ -26,7 +23,9 @@ public class MainMenu implements Screen {
     private final Stage stage;
     private final String[] screens = new String[]{"Evento", "Records", "Ajustes", "Creditos"};
     private final InputMultiplexer multiplexer;
+
     private final RecordsMenu mRecords;
+    private final EventMenu mEvento;
 
     public MainMenu(final Game miGame, final Skin skin) {
 
@@ -42,6 +41,7 @@ public class MainMenu implements Screen {
 
         stage.getViewport().getCamera().position.set(screenW / 2f, 0, 0);
 
+        this.mEvento = new EventMenu(skin,miGame);
         TextButton btn1 = new TextButton(screens[0], skin);
         btn1.setHeight(screenH * 0.5f);
         btn1.setWidth(screenW * 0.5f);
@@ -50,6 +50,10 @@ public class MainMenu implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
+                for (Actor a : compMain) {
+                    a.setVisible(false);
+                }
+                mEvento.setShowing(true);
                 return true;
             }
         });
@@ -99,19 +103,27 @@ public class MainMenu implements Screen {
         compMain.add(btn3);
         compMain.add(btn4);
         compMain.addAll(mRecords.getCompRecords());
+        compMain.addAll(mEvento.getCompEvento());
 
-        mRecords.getBackButton().addListener(new InputListener() {
+        InputListener backBtnList = new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 for (Actor a : compMain) {
                     a.setVisible(true);
+                }
+                for (Actor a : mEvento.getCompEvento()) {
+                    a.setVisible(false);
                 }
                 for (Actor a : mRecords.getCompRecords()) {
                     a.setVisible(false);
                 }
                 return true;
             }
-        });
+        };
+
+        mRecords.getBackButton().addListener(backBtnList);
+
+        mEvento.getBackButton().addListener(backBtnList);
 
         for (Actor a : compMain) {
             stage.addActor(a);
