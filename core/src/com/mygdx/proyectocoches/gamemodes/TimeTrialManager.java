@@ -37,10 +37,11 @@ public class TimeTrialManager implements Gamemode {
         JsonValue t = new JsonValue(tMejorVuelta);
         JsonValue trackRecords = base.get(nomCircuito);
         if (trackRecords.has(jugador.getNombre())) {
-            trackRecords.remove(jugador.getNombre());
+            if (trackRecords.get(jugador.getNombre()).asFloat() > tMejorVuelta) {
+                trackRecords.remove(jugador.getNombre());
+            }
         }
         trackRecords.addChild(jugador.getNombre(), t);
-        Gdx.app.log("json", base.get(nomCircuito).toString());
 
         FileHandle file = Gdx.files.external("records.json");
         file.writeString(base.toString(), false);
@@ -58,7 +59,7 @@ public class TimeTrialManager implements Gamemode {
         return jugador.isCruzandoS2();
     }
 
-    public TimeTrialManager(Competidor jugador,String nomCircuito) {
+    public TimeTrialManager(Competidor jugador, String nomCircuito) {
         this.jugador = jugador;
         this.nomCircuito = nomCircuito;
     }
