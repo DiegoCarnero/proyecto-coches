@@ -168,6 +168,10 @@ public class TestOsd implements Screen, PlayerInput {
 
     }
 
+    public PauseMenu getmPausa(){
+        return mPausa;
+    }
+
     public boolean isPaused() {
         return mPausa.isPaused();
     }

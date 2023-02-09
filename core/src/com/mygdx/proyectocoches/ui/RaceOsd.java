@@ -12,12 +12,12 @@ public class RaceOsd implements Screen {
 
     private final Stage UIStage;
     private final RaceManager rm;
-    private Label lblLista;
-    private Label lblPosicion;
-    private Label lblVuelta;
-    private Label lblFin;
+    private final Label lblLista;
+    private final Label lblPosicion;
+    private final Label lblVuelta;
+    private final Label lblFin;
 
-    private Label lblCountdown;
+    private final Label lblCountdown;
 
     public RaceOsd(Skin skin, RaceManager rm) {
         UIStage = new Stage(new ScreenViewport());
@@ -34,6 +34,7 @@ public class RaceOsd implements Screen {
 
         this.lblCountdown = new Label("GO", skin);
         lblCountdown.setPosition(screenW / 2f, 0);
+        lblCountdown.setVisible(false);
 
         this.lblLista = new Label("lista\nlista2", skin);
         lblLista.setPosition(0, 0);
@@ -61,12 +62,17 @@ public class RaceOsd implements Screen {
      *
      * @param delta The time in seconds since the last render.
      */
+    @SuppressWarnings("DefaultLocale")
     @Override
     public void render(float delta) {
 
         rm.update();
         if (rm.isJugadorAcabo()){
-            lblFin.setText("Has acabado "+rm.getPosJugador());
+            lblFin.setVisible(true);
+            lblFin.setText(String.format("%s %d","Has terminado ",rm.getPosJugador()));
+            lblLista.setVisible(false);
+            lblPosicion.setVisible(false);
+            lblVuelta.setVisible(false);
         }
         lblVuelta.setText("Vuelta " + rm.getVueltaJugador() + "/" + rm.getvVueltas());
         lblPosicion.setText("Pos " + rm.getPosJugador() + "/" + rm.getnCompetidores());
