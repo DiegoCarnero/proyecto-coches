@@ -9,6 +9,10 @@ public class GameSettings {
     private final String PlayerName;
     private final int nVueltas;
 
+    public int getnVueltas() {
+        return nVueltas;
+    }
+
     public int getNumOpos() {
         return numOpos;
     }

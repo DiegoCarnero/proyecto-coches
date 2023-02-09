@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.mygdx.proyectocoches.screens.TestDrive;
 import com.mygdx.proyectocoches.screens.TestRace;
 import com.mygdx.proyectocoches.utils.GameSettings;
 
@@ -35,15 +36,16 @@ public class EventMenu {
     private final Label lblNumOpos;
     private final Button opoUp;
     private final Button opoDown;
-//    private final Label lblNumVueltas;
-//    private final Button vueltaUp;
-//    private final Button vueltaDown;
+    private final Label lblNumVueltas;
+    private final Button vueltaUp;
+    private final Button vueltaDown;
 
     private final String[] modos = new String[]{"Carrera", "Contrarreloj"};
     private final String[] circuitos = new String[]{"test_loop", "track_1"};
     private int contModo = 0;
     private int contCircuito = 0;
-    private int numOpos = 0;
+    private int numOpos = 4;
+    private int numVueltas = 3;
 
     public EventMenu(final Skin skin, final Game g) {
 
@@ -60,7 +62,7 @@ public class EventMenu {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 contCircuito = contCircuito == circuitos.length - 1 ? 0 : contCircuito + 1;
-                Texture texture = new Texture("worlds/"+circuitos[contCircuito]+"_mini.png");
+                Texture texture = new Texture("worlds/" + circuitos[contCircuito] + "_mini.png");
                 Drawable drawable = new TextureRegionDrawable(new TextureRegion(texture));
                 lblCircuito.setText(circuitos[contCircuito]);
                 return true;
@@ -73,7 +75,7 @@ public class EventMenu {
         lblCircuito.setPosition(screenW / 2f, screenH / 4f - screenH / 7f);
         lblCircuito.setVisible(false);
 
-        lblNumOpos = new Label("0", skin);
+        lblNumOpos = new Label(numOpos+"", skin);
         lblNumOpos.setPosition(2 * screenW / 12f + screenH / 10f, screenH / 2f - screenH / 10f);
         lblNumOpos.setVisible(false);
 
@@ -103,6 +105,36 @@ public class EventMenu {
         });
         opoDown.setVisible(false);
 
+        lblNumVueltas = new Label(numVueltas+"", skin);
+        lblNumVueltas.setPosition(10 * screenW / 12f + screenH / 10f, screenH / 2f - screenH / 10f);
+        lblNumVueltas.setVisible(false);
+
+        vueltaUp = new TextButton(">", skin);
+        vueltaUp.setSize(screenH / 10f, screenH / 10f);
+        vueltaUp.setPosition(10 * screenW / 12f, screenH / 2f - screenH / 10f);
+        vueltaUp.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                numVueltas = numVueltas == 9 ? 1 : numVueltas + 1;
+                lblNumVueltas.setText(numVueltas);
+                return true;
+            }
+        });
+        vueltaUp.setVisible(false);
+
+        vueltaDown = new TextButton("<", skin);
+        vueltaDown.setSize(screenH / 10f, screenH / 10f);
+        vueltaDown.setPosition(10 * screenW / 12f + screenH / 10f, screenH / 2f - 2 * screenH / 10f);
+        vueltaDown.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                numVueltas = numVueltas == 1 ? 1 : numVueltas - 1;
+                lblNumVueltas.setText(numVueltas);
+                return true;
+            }
+        });
+        vueltaDown.setVisible(false);
+
         btnAtras = new TextButton("<", skin);
         btnAtras.setSize(screenH / 10f, screenH / 10f);
         btnAtras.setPosition(0, -screenH / 2f + screenH / 10f);
@@ -123,6 +155,15 @@ public class EventMenu {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 contModo = contModo == modos.length - 1 ? 0 : contModo + 1;
                 lblModo.setText(modos[contModo]);
+
+                // deshabilitar si contrarreloj
+                opoDown.setVisible(contModo != 1);
+                opoUp.setVisible(contModo != 1);
+                lblNumOpos.setVisible(contModo != 1);
+                vueltaDown.setVisible(contModo != 1);
+                vueltaUp.setVisible(contModo != 1);
+                lblNumVueltas.setVisible(contModo != 1);
+
                 return true;
             }
         });
@@ -134,8 +175,13 @@ public class EventMenu {
         btnJugar.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GameSettings gs = new GameSettings(numOpos,circuitos[contCircuito], contModo,0,"AAA",3);
-                g.setScreen(new TestRace(g,skin,gs));
+                GameSettings gs = new GameSettings(numOpos, circuitos[contCircuito], contModo, 0, "AAA", numVueltas);
+                if (contModo == 0) {
+                    g.setScreen(new TestRace(g, skin, gs));
+                } else if (contModo == 1) {
+                    g.setScreen(new TestDrive(g, skin, gs));
+                }
+
                 return true;
             }
         });
@@ -150,6 +196,9 @@ public class EventMenu {
         compEvento.add(btnCircuito);
         compEvento.add(lblCircuito);
         compEvento.add(lblNumOpos);
+        compEvento.add(vueltaDown);
+        compEvento.add(vueltaUp);
+        compEvento.add(lblNumVueltas);
 
     }
 
