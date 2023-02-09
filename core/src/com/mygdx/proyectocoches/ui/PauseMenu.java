@@ -2,6 +2,7 @@ package com.mygdx.proyectocoches.ui;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -39,6 +40,11 @@ public class PauseMenu extends Actor {
     private boolean recordShowing = false;
     private final String[] camModes = {"Cerca", "Lejos", "Dinamica"};
     private int cont = 0;
+    private Screen screen;
+
+    public void setScreen(Screen screen){
+        this.screen = screen;
+    }
 
     public PauseMenu(final Game game, int modo, final Skin skin, String nomCircuito) {
 
@@ -102,7 +108,7 @@ public class PauseMenu extends Actor {
                     a.setVisible(false);
                 }
                 mRecords.setShowing(true);
-                mRecords.getBackButton().setVisible(true);
+                mRecords.getBackBtn().setVisible(true);
                 return true;
             }
         });
@@ -116,6 +122,7 @@ public class PauseMenu extends Actor {
         btnSalir.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                screen.dispose();
                 game.setScreen(new ScreenSelector(((ProyectoCOCHES) game)));
                 return true;
             }
@@ -149,7 +156,7 @@ public class PauseMenu extends Actor {
             compPausa.addAll(mRecords.getCompRecords());
             compPausa.add(btnRecords);
         }
-        mRecords.getBackButton().addListener(new InputListener() {
+        mRecords.getBackBtn().addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 for (Actor a : compPausa) {
@@ -183,4 +190,7 @@ public class PauseMenu extends Actor {
         this.paused = paused;
     }
 
+    public Actor getSalir() {
+        return btnSalir;
+    }
 }
