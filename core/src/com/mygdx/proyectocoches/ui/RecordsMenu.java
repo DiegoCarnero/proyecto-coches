@@ -19,11 +19,12 @@ public class RecordsMenu extends Actor {
     private final Label lblRecords;
     private final Button btnAtras;
     private final ArrayList<Actor> compRecords = new ArrayList<>();
+    private final String nomCircuito;
 
     public RecordsMenu(String nomCircuito, Skin skin) {
 
         lblRecords = new Label("", skin);
-
+        this.nomCircuito = nomCircuito;
         int screenH;
         screenH = Gdx.graphics.getHeight();
         lblRecords.setPosition(screenH, 0);
@@ -31,28 +32,7 @@ public class RecordsMenu extends Actor {
         lblRecords.setTouchable(Touchable.disabled);
         lblRecords.setVisible(false);
 
-        JsonReader json = new JsonReader();
-        JsonValue base;
-        FileHandle a = Gdx.files.external("records.json");
-        if (!a.exists()) {
-            JsonValue template = json.parse(Gdx.files.internal("records_template.json"));
-            a.writeString(template.toString(), false);
-        }
-
-        base = json.parse(Gdx.files.external("records.json"));
-        String recordsAux = "";
-        if (nomCircuito.equals("")) {
-            for (int i = 0; i < base.size; i++) {
-                recordsAux += base.get(i).toString();
-                Gdx.app.log("toString", base.get(i).toString());
-            }
-        } else {
-            for (int i = 0; i < base.get(nomCircuito).size; i++) {
-                recordsAux += String.format("%s      %s", base.get(nomCircuito).get(i).name, getTiempoFormat(base.get(nomCircuito).get(i).asFloat()));
-
-            }
-        }
-        lblRecords.setText(recordsAux);
+        lblRecords.setText("");
         lblRecords.setAlignment(1);
 
         btnAtras = new TextButton("<", skin);
@@ -76,6 +56,29 @@ public class RecordsMenu extends Actor {
         this.showing = showing;
         for (Actor a : compRecords) {
             a.setVisible(showing);
+        }
+
+        if (showing) {
+            JsonReader json = new JsonReader();
+            JsonValue base;
+            FileHandle a = Gdx.files.external("records.json");
+            if (!a.exists()) {
+                JsonValue template = json.parse(Gdx.files.internal("records_template.json"));
+                a.writeString(template.toString(), false);
+            }
+
+            base = json.parse(Gdx.files.external("records.json"));
+            String recordsAux = "";
+            if (nomCircuito.equals("")) {
+                for (int i = 0; i < base.size; i++) {
+                    recordsAux += base.get(i).toString();
+                }
+            } else {
+                for (int i = 0; i < base.get(nomCircuito).size; i++) {
+                    recordsAux += String.format("%s      %s", base.get(nomCircuito).get(i).name, getTiempoFormat(base.get(nomCircuito).get(i).asFloat()));
+                }
+            }
+            lblRecords.setText(recordsAux);
         }
     }
 
