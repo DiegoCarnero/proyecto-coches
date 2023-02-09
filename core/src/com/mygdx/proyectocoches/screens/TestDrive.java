@@ -49,7 +49,7 @@ public class TestDrive implements Screen {
 
     public TestDrive(Game juego, Skin skin, GameSettings gs) {
 
-        String nomCircuito = "track_1";
+        String nomCircuito = gs.getCircuito();
         asM = new AssetManager();
         this.am = new AudioManager(asM);
         this.skin = skin;
