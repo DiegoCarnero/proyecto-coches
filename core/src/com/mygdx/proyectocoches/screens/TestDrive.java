@@ -67,7 +67,7 @@ public class TestDrive implements Screen {
         circuito.cargarMuros();
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
-        this.jugador = circuito.prepararParrilla(0, 0);
+        this.jugador = circuito.prepararParrilla(-1, 0);
 
         this.ttm = new TimeTrialManager(this.jugador,nomCircuito);
         this.ttOsd = new TimeTrialOsd(skin, ttm);
@@ -88,6 +88,7 @@ public class TestDrive implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(osd.getMultiplexer());
+        osd.getmPausa().setScreen(this);
     }
 
     @Override
@@ -161,6 +162,8 @@ public class TestDrive implements Screen {
         miB2dr.dispose();
         osd.dispose();
         ttOsd.dispose();
+        am.dispose();
+        asM.dispose();
     }
 
 }
