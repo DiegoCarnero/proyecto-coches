@@ -77,7 +77,7 @@ public class AudioManager implements Disposable {
         sonMedio1 = asM.get("audio/medio1.ogg");
 
         try {
-            Thread.sleep(600);
+            Thread.sleep(700);
         } catch (InterruptedException e) {
         }
 
@@ -90,6 +90,9 @@ public class AudioManager implements Disposable {
      */
     @Override
     public void dispose() {
+        sonParado1.stop();
+        sonParado2.stop();
+
         soniAct.dispose();
         sonParado1.dispose();
         sonParado2.dispose();
