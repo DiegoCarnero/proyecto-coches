@@ -4,19 +4,17 @@ import static com.mygdx.proyectocoches.Constantes.track_1_vGrid;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.proyectocoches.screens.TestDrive;
 import com.mygdx.proyectocoches.screens.TestRace;
 import com.mygdx.proyectocoches.utils.GameSettings;
@@ -42,35 +40,45 @@ public class EventMenu {
 
     private final String[] modos = new String[]{"Carrera", "Contrarreloj"};
     private final String[] circuitos = new String[]{"test_loop", "track_1"};
+    private final String[] circuitoNames = new String[]{"Dirtona 500", "Circuito Nacional de Zusuka"};
+    private boolean showing;
     private int contModo = 0;
     private int contCircuito = 0;
     private int numOpos = 4;
     private int numVueltas = 3;
+    private Sprite s;
+    private final AssetManager am;
 
-    public EventMenu(final Skin skin, final Game g) {
+    public Sprite getS() {
+        return s;
+    }
 
-        int screenH = Gdx.graphics.getHeight();
-        int screenW = Gdx.graphics.getWidth();
+    public EventMenu(final Skin skin, final Game g, final AssetManager am) {
+        this.am = am;
+        final int screenH = Gdx.graphics.getHeight();
+        final int screenW = Gdx.graphics.getWidth();
+        s = new Sprite((Texture) am.get("worlds/test_loop_mini.png"));
+        s.setPosition(screenW / 2f, screenH / 4f);
+        s.setSize(screenH / 7f, screenH / 7f);
 
-        Texture texture = new Texture("worlds/test_loop_mini.png");
-        Drawable drawable = new TextureRegionDrawable(new TextureRegion(texture));
-
-        btnCircuito = new ImageButton(drawable);
+        btnCircuito = new TextButton("test_loop",skin);
         btnCircuito.setSize(screenH / 7f, screenH / 7f);
         btnCircuito.setPosition(screenW / 2f, screenH / 4f);
         btnCircuito.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 contCircuito = contCircuito == circuitos.length - 1 ? 0 : contCircuito + 1;
-                Texture texture = new Texture("worlds/" + circuitos[contCircuito] + "_mini.png");
-                Drawable drawable = new TextureRegionDrawable(new TextureRegion(texture));
-                lblCircuito.setText(circuitos[contCircuito]);
+                s.set(new Sprite((Texture) am.get("worlds/" + circuitos[contCircuito] + "_mini.png")));
+                s.setX(screenW / 2f);
+                s.setY(screenH / 4f);
+                s.setSize(screenH / 7f, screenH / 7f);
+                lblCircuito.setText(circuitoNames[contCircuito]);
                 return true;
             }
         });
         btnCircuito.setVisible(false);
 
-        lblCircuito = new Label(circuitos[0], skin);
+        lblCircuito = new Label(circuitoNames[0], skin);
         lblCircuito.setAlignment(1);
         lblCircuito.setPosition(screenW / 2f, screenH / 4f - screenH / 7f);
         lblCircuito.setVisible(false);
@@ -203,9 +211,13 @@ public class EventMenu {
     }
 
     public void setShowing(boolean showing) {
-
+        this.showing = showing;
+        contCircuito = 0;
+        contModo = 0;
+        lblCircuito.setText(circuitos[contCircuito]);
+        lblModo.setText(modos[contModo]);
         for (Actor a : compEvento) {
-            a.setVisible(true);
+            a.setVisible(showing);
         }
 
     }
@@ -214,7 +226,11 @@ public class EventMenu {
         return compEvento;
     }
 
-    public Actor getBackButton() {
+    public Actor getBackBtn() {
         return btnAtras;
+    }
+
+    public boolean isShowing() {
+        return showing;
     }
 }
