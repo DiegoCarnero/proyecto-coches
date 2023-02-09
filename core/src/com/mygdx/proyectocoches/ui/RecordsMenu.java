@@ -71,7 +71,11 @@ public class RecordsMenu extends Actor {
             String recordsAux = "";
             if (nomCircuito.equals("")) {
                 for (int i = 0; i < base.size; i++) {
-                    recordsAux += base.get(i).toString();
+                    recordsAux += String.format("%s\n",base.get(i).name);
+                    for (int j = 0; j < base.get(i).size; j++) {
+                        recordsAux += String.format("%s      %s\n", base.get(i).get(j).name, getTiempoFormat(base.get(i).get(j).asFloat()));
+                    }
+                    recordsAux += "\n";
                 }
             } else {
                 for (int i = 0; i < base.get(nomCircuito).size; i++) {
@@ -93,7 +97,7 @@ public class RecordsMenu extends Actor {
         return String.format("%d:%02d.%03d", mins, secs, milis);
     }
 
-    public Actor getBackButton() {
+    public Actor getBackBtn() {
         return btnAtras;
     }
 }
