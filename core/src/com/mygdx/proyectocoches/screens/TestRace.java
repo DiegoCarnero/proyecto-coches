@@ -108,6 +108,7 @@ public class TestRace implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(osd.getMultiplexer());
+        osd.getmPausa().setScreen(this);
     }
 
     @Override
@@ -120,10 +121,13 @@ public class TestRace implements Screen {
                 }
                 update(delta);
                 im.update();
-                rOsd.render(delta);
+                if (rm.isJugadorAcabo()){
+                    osd.getmPausa().getSalir().setVisible(true);
+                }
             }
             draw();
             osd.render(delta);
+            rOsd.render(delta);
             updateCam();
         }
     }
@@ -161,23 +165,7 @@ public class TestRace implements Screen {
     private void draw() {
         Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        sr.begin();
-        sr.setColor(Color.WHITE);
-        int precision = 1000;
-        for (CatmullRomSpline<Vector2> s : rutas) {
 
-            for (int i = 0; i < precision; ++i) {
-                float t = i / (float) precision;
-                Vector2 ini = new Vector2();
-                Vector2 fin = new Vector2();
-
-                s.valueAt(ini, t);
-                s.valueAt(fin, t - (1f / (float) precision));
-
-                sr.line(ini.x, ini.y, fin.x, fin.y);
-            }
-        }
-        sr.end();
         miBatch.setProjectionMatrix(miCam.combined);
         miB2dr.render(miWorld, miCam.combined);
     }
