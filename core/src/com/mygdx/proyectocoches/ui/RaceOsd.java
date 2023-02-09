@@ -15,6 +15,9 @@ public class RaceOsd implements Screen {
     private Label lblLista;
     private Label lblPosicion;
     private Label lblVuelta;
+    private Label lblFin;
+
+    private Label lblCountdown;
 
     public RaceOsd(Skin skin, RaceManager rm) {
         UIStage = new Stage(new ScreenViewport());
@@ -24,6 +27,13 @@ public class RaceOsd implements Screen {
 
         UIStage.getViewport().getCamera().position.set(screenW / 2f, 0, 0);
         this.rm = rm;
+
+        this.lblFin = new Label("GO", skin);
+        lblFin.setPosition(screenW / 2f, 0);
+        lblFin.setVisible(false);
+
+        this.lblCountdown = new Label("GO", skin);
+        lblCountdown.setPosition(screenW / 2f, 0);
 
         this.lblLista = new Label("lista\nlista2", skin);
         lblLista.setPosition(0, 0);
@@ -37,6 +47,8 @@ public class RaceOsd implements Screen {
         UIStage.addActor(lblLista);
         UIStage.addActor(lblPosicion);
         UIStage.addActor(lblVuelta);
+        UIStage.addActor(lblCountdown);
+        UIStage.addActor(lblFin);
     }
 
     @Override
@@ -53,8 +65,11 @@ public class RaceOsd implements Screen {
     public void render(float delta) {
 
         rm.update();
-        lblVuelta.setText("Vuelta "+rm.getVueltaJugador()+"/"+rm.getvVueltas());
-        lblPosicion.setText("Pos "+rm.getPosJugador()+"/"+rm.getnCompetidores());
+        if (rm.isJugadorAcabo()){
+            lblFin.setText("Has acabado "+rm.getPosJugador());
+        }
+        lblVuelta.setText("Vuelta " + rm.getVueltaJugador() + "/" + rm.getvVueltas());
+        lblPosicion.setText("Pos " + rm.getPosJugador() + "/" + rm.getnCompetidores());
         lblLista.setText(rm.toString());
         UIStage.act();
         UIStage.draw();

@@ -22,6 +22,11 @@ public class RaceManager implements Gamemode {
     private final int nVueltas;
     private int nVueltaJugador = 0;
     private int posJugador = 0;
+    private boolean jugadorAcabo;
+
+    public boolean isJugadorAcabo() {
+        return jugadorAcabo;
+    }
 
     public int getnCompetidores() {
         return nCompetidores;
@@ -111,6 +116,10 @@ public class RaceManager implements Gamemode {
 
         if (userData.getClass() == Jugador.class) {
             nVueltaJugador = userData.getVuelta();
+            if(nVueltaJugador > nVueltas){
+                Gdx.app.log("acabado","jugador acabó de "+getPosJugador());
+                jugadorAcabo = true;
+            }
         }
     }
 
