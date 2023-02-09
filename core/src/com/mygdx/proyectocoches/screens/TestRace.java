@@ -78,7 +78,7 @@ public class TestRace implements Screen {
         circuito.cargarCheckpoints();
 
         this.jugador = circuito.prepararParrilla(gs.getNumOpos(), gs.getNumOpos() + 1);
-        this.rm = new RaceManager(circuito.getCompetidores(), circuito.cargarSplineControl(), 3);
+        this.rm = new RaceManager(circuito.getCompetidores(), circuito.cargarSplineControl(), gs.getnVueltas());
         miWorld.setContactListener(new miContactListener(rm));
         this.rOsd = new RaceOsd(skin, rm);
         this.pi = osd;
