@@ -237,7 +237,7 @@ public class Circuito {
             if (cont >= oponentes) {
                 break;
             }
-            CocheIA c = new CocheIA("IA_"+cont,Coche.generaCoche(v, mundo, tamCoche, false));
+            CocheIA c = new CocheIA("IA_" + cont, Coche.generaCoche(v, mundo, tamCoche, false));
             c.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
             competidores.add(c);
             cont++;
@@ -285,18 +285,18 @@ public class Circuito {
         int cont = 0;
 
         for (Vector2 v : vGrid) {
-            if (cont >= oponentes) {
+            if (cont >= oponentes + 1) {
                 break;
             }
 
-            if (cont == posJug) {
+            if (cont == posJug - 1) {
                 jugador = new Jugador(Coche.generaCoche(v, mundo, tamCoche, true));
                 jugador.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
                 jugador.getBody().getFixtureList().get(0).setUserData(jugador);
                 competidores.add(jugador);
                 jugInit = true;
             } else {
-                CocheIA c = new CocheIA("IA_"+cont,Coche.generaCoche(v, mundo, tamCoche, false));
+                CocheIA c = new CocheIA("IA_" + cont, Coche.generaCoche(v, mundo, tamCoche, false));
                 c.getBody().getFixtureList().get(0).setUserData(c);
                 c.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
                 competidores.add(c);
