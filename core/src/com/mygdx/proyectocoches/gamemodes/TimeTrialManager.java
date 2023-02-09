@@ -39,9 +39,11 @@ public class TimeTrialManager implements Gamemode {
         if (trackRecords.has(jugador.getNombre())) {
             if (trackRecords.get(jugador.getNombre()).asFloat() > tMejorVuelta) {
                 trackRecords.remove(jugador.getNombre());
+                trackRecords.addChild(jugador.getNombre(), t);
             }
+        } else {
+            trackRecords.addChild(jugador.getNombre(), t);
         }
-        trackRecords.addChild(jugador.getNombre(), t);
 
         FileHandle file = Gdx.files.external("records.json");
         file.writeString(base.toString(), false);
