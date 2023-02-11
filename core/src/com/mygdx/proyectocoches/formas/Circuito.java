@@ -64,17 +64,32 @@ enum TipoPoly {
  */
 public class Circuito {
 
+    /**
+     * Conjunto de todos los competidores en el Evento actual
+     */
     final private ArrayList<Competidor> competidores;
+    /**
+     * Nombre del circuito en el sistema de archivos
+     */
     final private String nomCircuito;
+    /**
+     * {@link World} en el que se posicionarán los {@link Body} presentes en el Evento
+     */
     final private World mundo;
-    final private String[] sprites = new String[]{"citroen_xsara_m.png", "ford_escort_rs_m.png", "ford_focus_m.png"};
+    /**
+     * Rutas internas a los sprites para los vehiculos
+     */
+    final private String[] sprites = new String[]{"vehicles/citroen_xsara_m.png", "vehicles/ford_escort_rs_m.png", "vehicles/ford_focus_m.png"};
+    /**
+     * AssetManager donde se encuentran los sprites de los vehiculos
+     */
     final private AssetManager am;
 
     /**
      * Genera un nuevo objeto Circuito
-     *
      * @param mundo       World a utilizar para crear los polígonos tipo Body que conformarán el circuito
      * @param nomCircuito nombre del circuito. Debe coincidir con el nombre del archivo donde se encuentran los polígonos deeste circuito, y éste estar assets/worlds
+     * @param am AssetManager donde se encuentran los sprites de los vehiculos ya cargados
      */
     public Circuito(World mundo, String nomCircuito, AssetManager am) {
         this.mundo = mundo;
@@ -318,6 +333,10 @@ public class Circuito {
         return jugador;
     }
 
+    /**
+     * Carga las rutas disponibles en el {@link Circuito} desde archivo. Cada ruta debe estar representada en su propia "Layer" por un solo polígono
+     * @return array con las rutas que la Ia podrá tomar
+     */
     public CatmullRomSpline<Vector2>[] cargarRutas() {
 
         TiledMap miTiledMap = new TmxMapLoader().load("worlds/" + nomCircuito + ".tmx");
@@ -357,6 +376,10 @@ public class Circuito {
         return rutas;
     }
 
+    /**
+     * Carga desde un archivo los puntos que se utilizan para determinar la posición de los competidores. Debe estar representada en su propia "Layer" por un solo polígono
+     * @return {@link CatmullRomSpline} con los vertices del polígono
+     */
     public CatmullRomSpline<Vector2> cargarSplineControl() {
         TiledMap miTiledMap = new TmxMapLoader().load("worlds/" + nomCircuito + ".tmx");
         Vector2[] coordV;

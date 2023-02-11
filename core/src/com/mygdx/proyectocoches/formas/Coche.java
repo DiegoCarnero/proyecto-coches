@@ -21,6 +21,14 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Coche {
 
+    /**
+     * Genera un {@link Body} y lo posiciona en el {@link World} en las coordenadas pasados por parámetro
+     * @param pos posición en el mundo
+     * @param mundo World en el que se implantará el Body
+     * @param tam tamaño del Body
+     * @param tipo tipo de {@link com.mygdx.proyectocoches.entidades.Competidor} al que se asociará el Body generado. 'true' si es {@link com.mygdx.proyectocoches.entidades.Jugador}, false si es {@link com.mygdx.proyectocoches.entidades.CocheIA}
+     * @return
+     */
     public static Body generaCoche(Vector2 pos, World mundo, Vector2 tam, boolean tipo) {
         BodyDef bdef;
         Body body;

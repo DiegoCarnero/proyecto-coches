@@ -16,13 +16,26 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.proyectocoches.entidades.CocheIA;
 
+/**
+ * Objeto que controla el destino de un {@link CocheIA} al que está asociado
+ */
 public class Sensor implements Steerable {
 
+    /**
+     * {@link Body} representado el sensor
+     */
     private final Body b;
-
+    /**
+     * Posición del sensor
+     */
     private Vector2 pos;
 
-    public Sensor(World mundo, CocheIA dono){
+    /**
+     * Objeto que controla el destino de un {@link CocheIA} al que está asociado
+     * @param mundo donde se implantará el {@link Body} representando el sensor
+     * @param owner CocheIA al que está asociado el Sensor
+     */
+    public Sensor(World mundo, CocheIA owner){
         BodyDef bdef;
 
         // definir body
@@ -41,7 +54,7 @@ public class Sensor implements Steerable {
         fDef.filter.categoryBits = CAT_COCHE_IA_SENSOR;
         fDef.filter.maskBits = CAT_COCHE_IA;
         this.b.createFixture(fDef);
-        this.b.getFixtureList().get(0).setUserData(dono);
+        this.b.getFixtureList().get(0).setUserData(owner);
         this.pos = new Vector2(0,0);
         pShape.dispose();
     }

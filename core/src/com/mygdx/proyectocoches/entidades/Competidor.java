@@ -7,32 +7,89 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public class Competidor {
 
+    /**
+     * Numero de vueltas completadas
+     */
     private int vuelta = 0;
+    /**
+     * Si el {@link Competidor} a comenzado una vuelta. Se establece a true cuando se cruza la meta por primera vez
+     */
     private boolean enVuelta = false;
+    /**
+     * Si el {@link Competidor} está en la primera vuelta del Evento
+     */
     private boolean primeraVuelta = true;
+    /**
+     * Si el {@link Competidor} está cruzando la meta
+     */
     private boolean cruzandoMeta;
+    /**
+     * Si el {@link Competidor} está cruzando el Sector 1
+     */
     private boolean cruzandoS1;
+    /**
+     * Si el {@link Competidor} está cruzando el Sector 2
+     */
     private boolean cruzandoS2;
+    /**
+     * Si el {@link Competidor} está cruzando el Sector 3
+     */
     private boolean cruzandoS3;
+    /**
+     * Si el {@link Competidor} ha completado el Sector 1
+     */
     private boolean cruzadoS1;
+    /**
+     * Si el {@link Competidor} ha completado el Sector 2
+     */
     private boolean cruzadoS2;
+    /**
+     * Si el {@link Competidor} ha completado el Sector 3
+     */
     private boolean cruzadoS3;
+    /**
+     * {@link Body} asociado a este Competidor
+     */
     private final Body body;
+    /**
+     * Nombre de este {@link Competidor}
+     */
     private final String nombre;
+    /**
+     * {@link Sprite} que representa a este Competidor
+     */
     private final Sprite s;
 
+    /**
+     * Devuelve el Sprite representa a este Competidor
+     * @return sprite asociado a este {@link Competidor}
+     */
     public Sprite getS() {
         return s;
     }
 
+    /**
+     * Devuelve el numero de vuelta actual
+     * @return numero de vuelta
+     */
     public int getVuelta() {
         return vuelta;
     }
 
+    /**
+     * Establece el número de vuelta en la que se encuentra este {@link Competidor}
+     * @param vuelta nuevo número de vuelta
+     */
     public void setVuelta(int vuelta) {
         this.vuelta = vuelta;
     }
 
+    /**
+     * 
+     * @param nombre nombre de este competido
+     * @param b {@link Body} de este competido
+     * @param s textura asociada a este competidor
+     */
     public Competidor(String nombre, Body b, Texture s) {
         this.nombre = nombre;
         this.body = b;

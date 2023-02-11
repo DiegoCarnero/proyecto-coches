@@ -1,12 +1,10 @@
 package com.mygdx.proyectocoches.entidades;
-/**
- * https://github.com/libgdx/gdx-ai/blob/master/tests/src/com/badlogic/gdx/ai/tests/steer/box2d/Box2dSteeringEntity.java
- */
 
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_BACK;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_FORW;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELO_IA;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
@@ -19,38 +17,98 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.proyectocoches.formas.Sensor;
 
+/**
+ * Competidor que serán controlados por la CPU
+ */
 public class CocheIA extends Competidor implements Steerable<Vector2> {
 
+    /**
+     * Sensor que indica a esta IA su proximo destino. En cuanto la IA lo alcanza, se mueve a la sieguiente posicion
+     */
     public Sensor destinoSensor;
+
     private boolean tagged;
+    /**
+     * Velocidad angular máxima para el {@link Body} de este competidor IA
+     */
     private float maxAngularSpeed;
+    /**
+     * Numero de posiciones para el sensor en la ruta asignada a este  {@link CocheIA}
+     */
     private int numDestinosRuta;
+    /**
+     * Destino actual dentro de la ruta asignada a este  {@link CocheIA}
+     */
     private int destinoActualNdx;
 
+    /**
+     * Devulve el indice de la ruta asignada a este {@link CocheIA} dentro de un array de {@link com.badlogic.gdx.math.CatmullRomSpline}
+     * @return indice de la ruta asignada
+     */
     public int getRutaSelect() {
         return rutaSelect;
     }
 
+    /**
+     * Asigna el indice de la ruta para este {@link CocheIA} dentro de un array de {@link com.badlogic.gdx.math.CatmullRomSpline}
+     * @param rutaSelect  indice de la ruta asiganda
+     */
     public void setRutaSelect(int rutaSelect) {
         this.rutaSelect = rutaSelect;
     }
 
+    /**
+     * Indice de la ruta asignada a este {@link CocheIA} dentro de un array de {@link com.badlogic.gdx.math.CatmullRomSpline}
+     */
     private int rutaSelect;
 
+    /**
+     *
+     * Velocidad lineal máxima para el {@link Body} de este competidor IA
+     */
     private float maxLinearSpeed;
+    /**
+     * Aceleración angular máxima para el {@link Body} de este competidor IA
+     */
     private float maxAngularAcceleration;
+    /**
+     * Aceleración lineal máxima para el {@link Body} de este competidor IA
+     */
     private float maxLinearAcceleration;
 
+    /**
+     * A SteeringBehavior calculates the linear and/or angular accelerations to be applied to its owner.
+     * El tipo de {@link SteeringBehavior} que se va a utilizar, dependiendo de la distancia al sensor
+     */
     SteeringBehavior<Vector2> behavior;
+    /**
+     *  SteeringAcceleration is a movement requested by the steering system. It is made up of two components, linear and angular acceleration.
+     */
     SteeringAcceleration<Vector2> steerOut;
 
-    private Arrive<Vector2> arriveSB;
-    private Seek<Vector2> seekSB;
+    /**
+     * SteeringBehavior de tipo {@link Arrive} se que utiliza si el {@link Sensor} es próximo al {@link CocheIA}
+     */
+    private final Arrive<Vector2> arriveSB;
+    /**
+     * SteeringBehavior de tipo {{@link Seek} que utiliza si el {@link CocheIA} está lejos del {@link Sensor} destino
+     */
+    private final Seek<Vector2> seekSB;
 
+    /**
+     * Establece la cantidad de destinos que puede tomar el {@link Sensor}
+     * @param numDestinosRuta numero de destino que tiene la ruta asignada
+     */
     public void setNumDestinosRuta(int numDestinosRuta) {
         this.numDestinosRuta = numDestinosRuta;
     }
 
+    /**
+     * Competidor que será controlado por la CPU
+     * @param nom nombre de este competido
+     * @param b {@link Body} de este competido
+     * @param s textura asociada a este competidor
+     */
     public CocheIA(String nom, Body b, Texture s) {
         super(nom,b,s);
         this.numDestinosRuta = 0;
@@ -71,6 +129,10 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
         this.seekSB = new Seek<>(this, this.destinoSensor);
     }
 
+    /**
+     * Actualiza las fuerzas aplicadas al {@link Body} de este CocheIA
+     * @param delta deltaTime
+     */
     public void update(float delta) {
 
         if (behavior != null) {
@@ -79,6 +141,10 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
         }
     }
 
+    /**
+     * Aplica las nuevas fuerzas calculadas al cuerpo
+     * @param delta
+     */
     private void applySteering(float delta) {
 
         boolean anyAccelerations = false;
@@ -293,23 +359,41 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
         return outVector;
     }
 
+    /**
+     * Creates a new location.
+     * <p>
+     * This method is used internally to instantiate locations of the correct type parameter {@code T}. This technique keeps the API
+     * simple and makes the API easier to use with the GWT backend because avoids the use of reflection.
+     *
+     * @return the newly created location.
+     */
     @Override
     public Location<Vector2> newLocation() {
         return null;
     }
 
-    public SteeringBehavior<Vector2> getSteeringBehavior() {
-        return behavior;
-    }
-
+    /**
+     * Establece el Steering Behavior que se debe usar con este {@link CocheIA}
+     * @param steeringBehavior
+     */
     public void setSteeringBehavior(SteeringBehavior<Vector2> steeringBehavior) {
         this.behavior = steeringBehavior;
     }
 
+    /**
+     * Calcula la distancia entre dos puntos
+     * @param a punto 1
+     * @param b punto 2
+     * @return distancia lineal
+     */
     private float distanciaEntrePuntos(Vector2 a, Vector2 b) {
         return (float) Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
     }
 
+    /**
+     * Establece la nueva posición que debe tomar el {@link Sensor} y, dependiendo de la distancia entre este y el {@link CocheIA} actualiza el Steering Behavior utilizado
+     * @param posicion posición en el {@link com.badlogic.gdx.physics.box2d.World}
+     */
     public void setDestinoSensorPosition(Vector2 posicion) {
 
         float dist = distanciaEntrePuntos(posicion, getBody().getPosition());
@@ -328,10 +412,17 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
         this.destinoSensor.setPos(posicion);
     }
 
+    /**
+     * Devuelve el Sensor asociado a este {@link CocheIA}
+     * @return
+     */
     public Sensor getDestinoSensor() {
         return destinoSensor;
     }
 
+    /**
+     * Actualiza el indice en el {@link com.badlogic.gdx.math.CatmullRomSpline}  en el que debe ponerse el {@link Sensor}
+     */
     public void nextDestino() {
         destinoActualNdx++;
         if (destinoActualNdx == numDestinosRuta) {
@@ -339,6 +430,10 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
         }
     }
 
+    /**
+     * Devuelve el indice en el {@link com.badlogic.gdx.math.CatmullRomSpline} en el que se encuentra el {@link Sensor}
+     * @return
+     */
     public int getDestinoActualNdx() {
         return destinoActualNdx;
     }
