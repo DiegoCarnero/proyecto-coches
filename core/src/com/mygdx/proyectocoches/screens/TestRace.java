@@ -219,6 +219,8 @@ public class TestRace implements Screen {
         miB2dr.dispose();
         osd.dispose();
         rOsd.dispose();
+        asM.dispose();
+        am.dispose();
     }
 
 }
