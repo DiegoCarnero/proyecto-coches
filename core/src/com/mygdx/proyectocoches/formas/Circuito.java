@@ -21,7 +21,8 @@ import static com.mygdx.proyectocoches.Constantes.test_loop_vGrid;
 import static com.mygdx.proyectocoches.Constantes.track_1_ang;
 import static com.mygdx.proyectocoches.Constantes.track_1_vGrid;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
@@ -66,6 +67,8 @@ public class Circuito {
     final private ArrayList<Competidor> competidores;
     final private String nomCircuito;
     final private World mundo;
+    final private String[] sprites = new String[]{"citroen_xsara_m.png", "ford_escort_rs_m.png", "ford_focus_m.png"};
+    final private AssetManager am;
 
     /**
      * Genera un nuevo objeto Circuito
@@ -73,10 +76,11 @@ public class Circuito {
      * @param mundo       World a utilizar para crear los polígonos tipo Body que conformarán el circuito
      * @param nomCircuito nombre del circuito. Debe coincidir con el nombre del archivo donde se encuentran los polígonos deeste circuito, y éste estar assets/worlds
      */
-    public Circuito(World mundo, String nomCircuito) {
+    public Circuito(World mundo, String nomCircuito, AssetManager am) {
         this.mundo = mundo;
         this.competidores = new ArrayList<>();
         this.nomCircuito = nomCircuito;
+        this.am = am;
     }
 
     /**
@@ -237,7 +241,7 @@ public class Circuito {
             if (cont >= oponentes) {
                 break;
             }
-            CocheIA c = new CocheIA("IA_" + cont, Coche.generaCoche(v, mundo, tamCoche, false));
+            CocheIA c = new CocheIA("IA_" + cont, Coche.generaCoche(v, mundo, tamCoche, false), (Texture) am.get(sprites[(int) (Math.random() * 2)]));
             c.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
             competidores.add(c);
             cont++;
@@ -290,13 +294,13 @@ public class Circuito {
             }
 
             if (cont == posJug - 1) {
-                jugador = new Jugador(Coche.generaCoche(v, mundo, tamCoche, true));
+                jugador = new Jugador(Coche.generaCoche(v, mundo, tamCoche, true), (Texture) am.get(sprites[2]));
                 jugador.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
                 jugador.getBody().getFixtureList().get(0).setUserData(jugador);
                 competidores.add(jugador);
                 jugInit = true;
             } else {
-                CocheIA c = new CocheIA("IA_" + cont, Coche.generaCoche(v, mundo, tamCoche, false));
+                CocheIA c = new CocheIA("IA_" + cont, Coche.generaCoche(v, mundo, tamCoche, false), (Texture) am.get(sprites[(int) (Math.random() * 2)]));
                 c.getBody().getFixtureList().get(0).setUserData(c);
                 c.getBody().setTransform(v, (float) -(angulo * Math.PI / 180));
                 competidores.add(c);
@@ -305,7 +309,7 @@ public class Circuito {
         }
 
         if (!jugInit) {
-            jugador = new Jugador(Coche.generaCoche(vGrid[vGrid.length - 1], mundo, tamCoche, true));
+            jugador = new Jugador(Coche.generaCoche(vGrid[vGrid.length - 1], mundo, tamCoche, true), (Texture) am.get(sprites[2]));
             jugador.getBody().setTransform(jugador.getPosition(), (float) -(angulo * Math.PI / 180));
             jugador.getBody().getFixtureList().get(0).setUserData(jugador);
             competidores.add(jugador);
@@ -328,7 +332,7 @@ public class Circuito {
                 numPaths = TRACK_1_PATHS;
                 break;
             default:
-                numPaths = TEST_LOOP_PATHS;
+                numPaths = 1;
                 break;
         }
 

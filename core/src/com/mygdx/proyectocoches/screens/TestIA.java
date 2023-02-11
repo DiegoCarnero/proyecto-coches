@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -52,16 +53,16 @@ public class TestIA implements Screen {
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new OrthographicCamera();
         miCam.zoom = 4f;
-        miCam.position.set(new Vector2(0,17),0);
+        miCam.position.set(new Vector2(0, 17), 0);
         this.miViewport = new FitViewport(Gdx.graphics.getWidth() / PPM, Gdx.graphics.getHeight() / PPM, miCam);
 
-        this.circuito = new Circuito(miWorld, "track_1");
+        this.circuito = new Circuito(miWorld, "track_1", new AssetManager());
         circuito.cargarMuros();
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
         circuito.prepararParrilla(25);
 
-        miWorld.setContactListener(new miContactListener(new TimeTrialManager(circuito.getCompetidores().get(0),"track_1")));
+        miWorld.setContactListener(new miContactListener(new TimeTrialManager(circuito.getCompetidores().get(0), "track_1")));
 
         this.rutas = circuito.cargarRutas();
         for (Competidor c : circuito.getCompetidores()) {
@@ -91,7 +92,7 @@ public class TestIA implements Screen {
         for (Competidor c : circuito.getCompetidores()) {
             if (c instanceof CocheIA) {
                 int destino = ((CocheIA) c).getDestinoActualNdx();
-                int ndx =  ((CocheIA) c).getRutaSelect();
+                int ndx = ((CocheIA) c).getRutaSelect();
                 ((CocheIA) c).setDestinoSensorPosition(rutas[ndx].controlPoints[destino]);
                 ((CocheIA) c).update(delta);
             }

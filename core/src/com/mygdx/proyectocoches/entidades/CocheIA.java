@@ -13,6 +13,8 @@ import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.utils.Location;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.proyectocoches.formas.Sensor;
@@ -49,8 +51,8 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
         this.numDestinosRuta = numDestinosRuta;
     }
 
-    public CocheIA(String nom, Body b) {
-        super(nom,b);
+    public CocheIA(String nom, Body b, Texture s) {
+        super(nom,b,s);
         this.numDestinosRuta = 0;
         this.maxAngularAcceleration = 10f;
         this.maxLinearSpeed = MAX_VELO_IA;

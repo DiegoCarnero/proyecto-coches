@@ -10,6 +10,7 @@ import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.CatmullRomSpline;
@@ -69,10 +70,15 @@ public class TestRace implements Screen {
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new MiOrthoCam();
 
+        asM.load("citroen_xsara_m.png", Texture.class);
+        asM.load("ford_escort_rs_m.png", Texture.class);
+        asM.load("ford_focus_m.png", Texture.class);
+        asM.finishLoading();
+
         float aspectRatio = Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
         this.miViewport = new FitViewport(aspectRatio * 720 / PPM, 720 / PPM, miCam);
 
-        this.circuito = new Circuito(miWorld, nomCircuito);
+        this.circuito = new Circuito(miWorld, nomCircuito, asM);
         circuito.cargarMuros();
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
@@ -121,7 +127,7 @@ public class TestRace implements Screen {
                 }
                 update(delta);
                 im.update();
-                if (rm.isJugadorAcabo()){
+                if (rm.isJugadorAcabo()) {
                     osd.getmPausa().getSalir().setVisible(true);
                 }
             }
@@ -166,7 +172,23 @@ public class TestRace implements Screen {
         Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
         miBatch.setProjectionMatrix(miCam.combined);
+        miBatch.begin();
+        for (Competidor c : circuito.getCompetidores()) {
+
+            c.getS().setOrigin(0, 0);
+            c.getS().setCenterX(c.getBody().getPosition().x);
+            c.getS().setCenterY(c.getBody().getPosition().y);
+            c.getS().setOriginCenter();
+            c.getS().setSize(0.25f, 0.5f);
+            float rotation = (float) Math.toDegrees(c.getBody().getAngle());
+            c.getS().setRotation(rotation);
+
+            c.getS().draw(miBatch);
+        }
+
+        miBatch.end();
         miB2dr.render(miWorld, miCam.combined);
     }
 

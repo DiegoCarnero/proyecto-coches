@@ -1,5 +1,7 @@
 package com.mygdx.proyectocoches.entidades;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
@@ -16,7 +18,12 @@ public class Competidor {
     private boolean cruzadoS2;
     private boolean cruzadoS3;
     private final Body body;
-    private String nombre;
+    private final String nombre;
+    private final Sprite s;
+
+    public Sprite getS() {
+        return s;
+    }
 
     public int getVuelta() {
         return vuelta;
@@ -26,9 +33,10 @@ public class Competidor {
         this.vuelta = vuelta;
     }
 
-    public Competidor(String nombre,Body b) {
+    public Competidor(String nombre, Body b, Texture s) {
         this.nombre = nombre;
         this.body = b;
+        this.s = new Sprite(s);
     }
 
     public Body getBody() {

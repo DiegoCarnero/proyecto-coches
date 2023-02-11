@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -15,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.proyectocoches.audio.AudioManager;
+import com.mygdx.proyectocoches.entidades.CocheIA;
+import com.mygdx.proyectocoches.entidades.Competidor;
 import com.mygdx.proyectocoches.gamemodes.TimeTrialManager;
 import com.mygdx.proyectocoches.entidades.Jugador;
 import com.mygdx.proyectocoches.formas.Circuito;
@@ -53,7 +56,10 @@ public class TestDrive implements Screen {
         asM = new AssetManager();
         this.am = new AudioManager(asM);
         this.skin = skin;
-        osd = new TestOsd(1,juego, skin,gs);
+        osd = new TestOsd(1, juego, skin, gs);
+
+        asM.load("ford_focus_m.png", Texture.class);
+        asM.finishLoading();
 
         this.miBatch = new SpriteBatch();
         this.miWorld = new World(new Vector2(0, 0), true);
@@ -63,17 +69,17 @@ public class TestDrive implements Screen {
         float aspectRatio = Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
         this.miViewport = new FitViewport(aspectRatio * 720 / PPM, 720 / PPM, miCam);
 
-        this.circuito = new Circuito(miWorld, nomCircuito);
+        this.circuito = new Circuito(miWorld, nomCircuito, asM);
         circuito.cargarMuros();
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
         this.jugador = circuito.prepararParrilla(-1, 0);
 
-        this.ttm = new TimeTrialManager(this.jugador,nomCircuito);
+        this.ttm = new TimeTrialManager(this.jugador, nomCircuito);
         this.ttOsd = new TimeTrialOsd(skin, ttm);
         miWorld.setContactListener(new miContactListener(ttm));
 
-        if (Controllers.getControllers().size > 0){
+        if (Controllers.getControllers().size > 0) {
             pi = new ControllerInput(Controllers.getControllers().get(0));
         } else {
             this.pi = osd;
@@ -109,7 +115,7 @@ public class TestDrive implements Screen {
         }
     }
 
-    private void updateCam(){
+    private void updateCam() {
         switch (osd.camMode()) {
             case 0:
                 this.miCam.zoom = 0.4f;
@@ -132,6 +138,18 @@ public class TestDrive implements Screen {
 
     private void draw() {
         miBatch.setProjectionMatrix(miCam.combined);
+        miBatch.begin();
+        jugador.getS().setOrigin(0, 0);
+        jugador.getS().setCenterX(jugador.getBody().getPosition().x);
+        jugador.getS().setCenterY(jugador.getBody().getPosition().y);
+        jugador.getS().setOriginCenter();
+        jugador.getS().setSize(0.25f, 0.5f);
+        float rotation = (float) Math.toDegrees(jugador.getBody().getAngle());
+        jugador.getS().setRotation(rotation);
+
+        jugador.getS().draw(miBatch);
+
+        miBatch.end();
         miB2dr.render(miWorld, miCam.combined);
     }
 
