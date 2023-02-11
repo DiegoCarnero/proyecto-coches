@@ -58,7 +58,7 @@ public class TestDrive implements Screen {
         this.skin = skin;
         osd = new TestOsd(1, juego, skin, gs);
 
-        asM.load("ford_focus_m.png", Texture.class);
+        asM.load("vehicles/ford_focus_m.png", Texture.class);
         asM.finishLoading();
 
         this.miBatch = new SpriteBatch();

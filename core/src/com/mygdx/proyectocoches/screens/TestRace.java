@@ -70,9 +70,9 @@ public class TestRace implements Screen {
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new MiOrthoCam();
 
-        asM.load("citroen_xsara_m.png", Texture.class);
-        asM.load("ford_escort_rs_m.png", Texture.class);
-        asM.load("ford_focus_m.png", Texture.class);
+        asM.load("vehicles/citroen_xsara_m.png", Texture.class);
+        asM.load("vehicles/ford_escort_rs_m.png", Texture.class);
+        asM.load("vehicles/ford_focus_m.png", Texture.class);
         asM.finishLoading();
 
         float aspectRatio = Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
