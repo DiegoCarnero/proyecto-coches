@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.proyectocoches.ui.EventMenu;
 import com.mygdx.proyectocoches.ui.RecordsMenu;
+import com.mygdx.proyectocoches.ui.SettingsMenu;
 import com.mygdx.proyectocoches.ui.TutorialMenu;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class MainMenu implements Screen {
     private final AssetManager am;
     private final RecordsMenu mRecords;
     private final EventMenu mEvento;
+    private final SettingsMenu mSettings;
     private final TutorialMenu mTutorial;
     private final SpriteBatch batch;
 
@@ -87,6 +89,7 @@ public class MainMenu implements Screen {
             }
         });
 
+        this.mSettings = new SettingsMenu(skin);
         TextButton btn3 = new TextButton(screens[2], skin);
         btn3.setHeight(screenH * 0.5f);
         btn3.setWidth(screenW * 0.5f);
@@ -95,6 +98,10 @@ public class MainMenu implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
+                for (Actor a : compMain) {
+                    a.setVisible(false);
+                }
+                mSettings.setShowing(true);
                 return true;
             }
         });
@@ -122,6 +129,7 @@ public class MainMenu implements Screen {
         compMain.addAll(mRecords.getCompRecords());
         compMain.addAll(mEvento.getCompEvento());
         compMain.addAll(mTutorial.getCompTutorial());
+        compMain.addAll(mSettings.getCompSettings());
 
         InputListener backBtnList = new InputListener() {
             @Override
@@ -132,6 +140,7 @@ public class MainMenu implements Screen {
                 mEvento.setShowing(false);
                 mTutorial.setShowing(false);
                 mRecords.setShowing(false);
+                mSettings.setShowing(false);
                 return true;
             }
         };
@@ -139,6 +148,7 @@ public class MainMenu implements Screen {
         mRecords.getBackBtn().addListener(backBtnList);
         mTutorial.getBackBtn().addListener(backBtnList);
         mEvento.getBackBtn().addListener(backBtnList);
+        mSettings.getBackBtn().addListener(backBtnList);
 
         for (Actor a : compMain) {
             stage.addActor(a);

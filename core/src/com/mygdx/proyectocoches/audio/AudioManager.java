@@ -1,9 +1,13 @@
 package com.mygdx.proyectocoches.audio;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.mygdx.proyectocoches.Constantes;
 
 /**
@@ -49,13 +53,29 @@ public class AudioManager implements Disposable {
      * Indica si sonAct está reproduciendose
      */
     private boolean isPlaying;
+    /**
+     * Volumen de los efectos de sonido
+     */
+    private final float sfxVol;
+    /**
+     * Volumen de la musica
+     */
+    private final float musicVol;
 
     /**
      * Crea un nuevo objeto AudioManager
+     *
      * @param asM AssetManager que se va a utilizar
      */
     public AudioManager(AssetManager asM) {
         this.asM = asM;
+
+        JsonValue base;
+        JsonReader json = new JsonReader();
+        base = json.parse(Gdx.files.external("usersettings.json"));
+        musicVol = base.get("music").asFloat();
+        sfxVol = base.get("sfx").asFloat();
+
         asM.load("audio/parado1.ogg", Sound.class);
         asM.load("audio/parado2.ogg", Sound.class);
         asM.load("audio/marcha1.ogg", Sound.class);
@@ -81,8 +101,8 @@ public class AudioManager implements Disposable {
         } catch (InterruptedException e) {
         }
 
-        sonParado1.loop();
-        sonParado2.loop();
+        sonParado1.loop(sfxVol * 0.6f);
+        sonParado2.loop(sfxVol * 0.6f);
     }
 
     /**
@@ -104,6 +124,7 @@ public class AudioManager implements Disposable {
 
     /**
      * Cambia el efecto de sonido del coche según el mensaje recibido
+     *
      * @param msg tipo de sonido que se debe reproducir
      */
     public void cambiaSonido(int msg) {
@@ -114,7 +135,7 @@ public class AudioManager implements Disposable {
                         soniAct.stop();
                     }
                     soniAct = sonAcc1;
-                    soniAct.play(0.3f);
+                    soniAct.play(sfxVol);
                     isPlaying = true;
                 }
                 break;
@@ -124,7 +145,7 @@ public class AudioManager implements Disposable {
                         soniAct.stop();
                     }
                     soniAct = this.sonEmbr1;
-                    soniAct.play(0.3f);
+                    soniAct.play(sfxVol);
                 }
                 break;
             case Constantes.TELE_MAX:
@@ -134,7 +155,7 @@ public class AudioManager implements Disposable {
                     }
 
                     soniAct = sonMax1;
-                    soniAct.loop(.2f);
+                    soniAct.loop(sfxVol * 0.6f);
                     isPlaying = true;
                 }
                 break;
@@ -145,7 +166,7 @@ public class AudioManager implements Disposable {
                     }
 
                     soniAct = sonMedio1;
-                    soniAct.loop(.3f);
+                    soniAct.loop(sfxVol);
                     isPlaying = true;
                 }
                 break;

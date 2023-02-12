@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.mygdx.proyectocoches.ProyectoCOCHES;
 import com.mygdx.proyectocoches.screens.ScreenSelector;
 
@@ -39,7 +41,7 @@ public class PauseMenu extends Actor {
 
     private boolean recordShowing = false;
     private final String[] camModes = {"Cerca", "Lejos", "Dinamica"};
-    private int cont = 0;
+    private int cont;
     private Screen screen;
 
     public void setScreen(Screen screen){
@@ -70,6 +72,11 @@ public class PauseMenu extends Actor {
         btnContinua.setVisible(false);
 
         vertOffset++;
+
+        JsonValue base;
+        JsonReader json = new JsonReader();
+        base = json.parse(Gdx.files.external("usersettings.json"));
+        cont = base.getInt("cam");
 
         lblCameroMode = new Label(camModes[cont], skin);
         lblCameroMode.setSize(screenW / 10f, screenH / 10f);
