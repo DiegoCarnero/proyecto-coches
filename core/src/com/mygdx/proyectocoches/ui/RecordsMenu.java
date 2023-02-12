@@ -79,7 +79,7 @@ public class RecordsMenu extends Actor {
                 }
             } else {
                 for (int i = 0; i < base.get(nomCircuito).size; i++) {
-                    recordsAux += String.format("%s      %s", base.get(nomCircuito).get(i).name, getTiempoFormat(base.get(nomCircuito).get(i).asFloat()));
+                    recordsAux += String.format("%s      %s\n", base.get(nomCircuito).get(i).name, getTiempoFormat(base.get(nomCircuito).get(i).asFloat()));
                 }
             }
             lblRecords.setText(recordsAux);
