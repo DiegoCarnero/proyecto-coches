@@ -134,6 +134,8 @@ public class AudioManager implements Disposable {
                     if (isPlaying) {
                         soniAct.stop();
                     }
+
+                    Gdx.input.vibrate(200);
                     soniAct = sonAcc1;
                     soniAct.play(sfxVol);
                     isPlaying = true;
@@ -144,6 +146,7 @@ public class AudioManager implements Disposable {
                     if (isPlaying) {
                         soniAct.stop();
                     }
+                    Gdx.input.vibrate(200);
                     soniAct = this.sonEmbr1;
                     soniAct.play(sfxVol);
                 }
@@ -154,6 +157,7 @@ public class AudioManager implements Disposable {
                         soniAct.stop();
                     }
 
+                    Gdx.input.vibrate(200);
                     soniAct = sonMax1;
                     soniAct.loop(sfxVol * 0.6f);
                     isPlaying = true;
@@ -165,6 +169,7 @@ public class AudioManager implements Disposable {
                         soniAct.stop();
                     }
 
+                    Gdx.input.vibrate(200);
                     soniAct = sonMedio1;
                     soniAct.loop(sfxVol);
                     isPlaying = true;
