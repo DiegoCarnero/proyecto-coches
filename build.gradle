@@ -44,6 +44,39 @@ project(":android") {
     apply plugin: "com.android.application"
 
     configurations { natives }
+    android.applicationVariants.all { variant ->
+        task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
+            description "Generates Javadoc for $variant.name."
+            source = variant.javaCompile.source
+            destinationDir = file("${project.buildDir}/outputs/javadoc/")
+            ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+            doFirst {classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)}
+            options.links("http://docs.oracle.com/javase/8/docs/api/");
+            options.links("http://d.android.com/reference/");
+        }
+    }
+    task javadoc(type: Javadoc) {
+        doFirst {
+            configurations.implementation
+                    .filter { it.name.endsWith('.aar') }
+                    .each { aar ->
+                        copy {
+                            from zipTree(aar)
+                            include "**/classes.jar"
+                            into "$buildDir/tmp/aarsToJars/${aar.name.replace('.aar', '')}/"
+                        }
+                    }
+        }
+        configurations.implementation.setCanBeResolved(true)
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+        classpath += configurations.implementation
+        classpath += fileTree(dir: "$buildDir/tmp/aarsToJars/")
+        destinationDir = file("${project.buildDir}/outputs/javadoc/")
+        failOnError false
+        exclude '**/BuildConfig.java'
+        exclude '**/R.java'
+    }
 
     dependencies {
         implementation project(":core")
