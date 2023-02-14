@@ -38,15 +38,15 @@ public class Constantes {
     /**
      * Velocidad máxima para la IA
      */
-    public static final float MAX_VELO_IA = 24.0f;
+    public static final float MAX_VELO_IA = 50.0f;
     /**
      * Velocidad máxima para el jugador hacia delante
      */
-    public static final float MAX_VELOCIDAD_FORW = 9.0f;
+    public static final float MAX_VELOCIDAD_FORW = 14.0f;
     /**
      * Velocidad máxima para el jugador hacia atrás
      */
-    public static final float MAX_VELOCIDAD_BACK = 4.0f;
+    public static final float MAX_VELOCIDAD_BACK = 6.0f;
     /**
      * Factor por el que se restringe la velocidad lateral de un coche por debajo de una cierta velocidad lineal
      */
@@ -122,8 +122,21 @@ public class Constantes {
      */
     public static final int TELE_ACC = 1;
     public static final int TELE_EMBRAG = 2;
-    public static final int TELE_BAJO = 3;
     public static final int TELE_MEDIO = 4;
     public static final int TELE_MAX = 5;
     public static final int TELE_PARADO = 0;
+
+    /**
+     * Valores para renderizar test_loop
+     */
+    public static final float LOOP_CENTER_X = 0.25f;
+    public static final float LOOP_CENTER_Y = -0.9f;
+    public static final float LOOP_ESCALA = 27f;
+
+    /**
+     * Valores para renderizar track_1
+     */
+    public static final float TRACK_1_CENTER_X = 1.5f;
+    public static final float TRACK_1_CENTER_Y = 19f;
+    public static final float TRACK_1_ESCALA = 66f;
 }

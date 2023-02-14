@@ -1,12 +1,19 @@
 package com.mygdx.proyectocoches.screens;
 
+import static com.mygdx.proyectocoches.Constantes.LOOP_CENTER_X;
+import static com.mygdx.proyectocoches.Constantes.LOOP_CENTER_Y;
+import static com.mygdx.proyectocoches.Constantes.LOOP_ESCALA;
 import static com.mygdx.proyectocoches.Constantes.PPM;
+import static com.mygdx.proyectocoches.Constantes.TRACK_1_CENTER_X;
+import static com.mygdx.proyectocoches.Constantes.TRACK_1_CENTER_Y;
+import static com.mygdx.proyectocoches.Constantes.TRACK_1_ESCALA;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -48,6 +55,10 @@ public class TestDrive implements Screen {
     private final AssetManager asM;
     private boolean init = true;
 
+    private final float circuitoCenterX;
+    private final float circuitoCenterY;
+    private final float circuitoEscala;
+
     private final Skin skin;
 
     public TestDrive(Game juego, Skin skin, GameSettings gs) {
@@ -75,6 +86,20 @@ public class TestDrive implements Screen {
         circuito.cargarCheckpoints();
         this.jugador = circuito.prepararParrilla(-1, 0);
 
+        switch (nomCircuito) {
+            default:
+            case "test_loop":
+                circuitoCenterX = LOOP_CENTER_X;
+                circuitoCenterY = LOOP_CENTER_Y;
+                circuitoEscala = LOOP_ESCALA;
+                break;
+            case "track_1":
+                circuitoCenterX = TRACK_1_CENTER_X;
+                circuitoCenterY = TRACK_1_CENTER_Y;
+                circuitoEscala = TRACK_1_ESCALA;
+                break;
+        }
+
         this.ttm = new TimeTrialManager(this.jugador, nomCircuito);
         this.ttOsd = new TimeTrialOsd(skin, ttm);
         miWorld.setContactListener(new miContactListener(ttm));
@@ -100,6 +125,7 @@ public class TestDrive implements Screen {
     @Override
     public void render(float delta) {
         if (asM.update()) {
+            draw();
             if (!osd.isPaused()) {
                 if (init) {
                     am.init();
@@ -109,9 +135,10 @@ public class TestDrive implements Screen {
                 im.update();
                 ttOsd.render(delta);
             }
-            draw();
             osd.render(delta);
             updateCam();
+        } else {
+
         }
     }
 
@@ -139,6 +166,12 @@ public class TestDrive implements Screen {
     private void draw() {
         miBatch.setProjectionMatrix(miCam.combined);
         miBatch.begin();
+        circuito.getS().setOrigin(0, 0);
+        circuito.getS().setCenter(circuitoCenterX,circuitoCenterY);
+        circuito.getS().setSize(circuitoEscala * 2f, circuitoEscala);
+        circuito.getS().setOriginCenter();
+        circuito.getS().draw(miBatch);
+
         jugador.getS().setOrigin(0, 0);
         jugador.getS().setCenterX(jugador.getBody().getPosition().x);
         jugador.getS().setCenterY(jugador.getBody().getPosition().y);
@@ -146,7 +179,6 @@ public class TestDrive implements Screen {
         jugador.getS().setSize(0.25f, 0.5f);
         float rotation = (float) Math.toDegrees(jugador.getBody().getAngle());
         jugador.getS().setRotation(rotation);
-
         jugador.getS().draw(miBatch);
 
         miBatch.end();

@@ -1,14 +1,19 @@
 package com.mygdx.proyectocoches.screens;
 
+import static com.mygdx.proyectocoches.Constantes.LOOP_CENTER_X;
+import static com.mygdx.proyectocoches.Constantes.LOOP_CENTER_Y;
+import static com.mygdx.proyectocoches.Constantes.LOOP_ESCALA;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_FORW;
 import static com.mygdx.proyectocoches.Constantes.PPM;
+import static com.mygdx.proyectocoches.Constantes.TRACK_1_CENTER_X;
+import static com.mygdx.proyectocoches.Constantes.TRACK_1_CENTER_Y;
+import static com.mygdx.proyectocoches.Constantes.TRACK_1_ESCALA;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -54,6 +59,10 @@ public class TestRace implements Screen {
     private final AssetManager asM;
     private boolean init = true;
 
+    private final float circuitoCenterX;
+    private final float circuitoCenterY;
+    private final float circuitoEscala;
+
     private Seek seekSB;
 
     private final Skin skin;
@@ -82,6 +91,20 @@ public class TestRace implements Screen {
         circuito.cargarMuros();
         circuito.cargarMeta();
         circuito.cargarCheckpoints();
+
+        switch (nomCircuito) {
+            default:
+            case "test_loop":
+                circuitoCenterX = LOOP_CENTER_X;
+                circuitoCenterY = LOOP_CENTER_Y;
+                circuitoEscala = LOOP_ESCALA;
+                break;
+            case "track_1":
+                circuitoCenterX = TRACK_1_CENTER_X;
+                circuitoCenterY = TRACK_1_CENTER_Y;
+                circuitoEscala = TRACK_1_ESCALA;
+                break;
+        }
 
         this.jugador = circuito.prepararParrilla(gs.getNumOpos(), gs.getNumOpos() + 1);
         this.rm = new RaceManager(circuito.getCompetidores(), circuito.cargarSplineControl(), gs.getnVueltas());
@@ -120,18 +143,22 @@ public class TestRace implements Screen {
     @Override
     public void render(float delta) {
         if (asM.update()) {
+            draw();
             if (!osd.isPaused()) {
                 if (init) {
                     am.init();
                     init = false;
                 }
-                update(delta);
+                if (delta > 1) {
+                    rm.CuentaAtrasSet();
+                } else if (rm.CuentaAtras(delta)) {
+                    update(delta);
+                }
                 im.update();
                 if (rm.isJugadorAcabo()) {
                     osd.getmPausa().getSalir().setVisible(true);
                 }
             }
-            draw();
             osd.render(delta);
             rOsd.render(delta);
             updateCam();
@@ -175,6 +202,12 @@ public class TestRace implements Screen {
 
         miBatch.setProjectionMatrix(miCam.combined);
         miBatch.begin();
+        circuito.getS().setOrigin(0, 0);
+        circuito.getS().setCenter(circuitoCenterX, circuitoCenterY);
+        circuito.getS().setSize(circuitoEscala * 2f, circuitoEscala);
+        circuito.getS().setOriginCenter();
+        circuito.getS().draw(miBatch);
+
         for (Competidor c : circuito.getCompetidores()) {
 
             c.getS().setOrigin(0, 0);
