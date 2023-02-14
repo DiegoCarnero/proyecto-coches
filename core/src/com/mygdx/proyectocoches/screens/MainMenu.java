@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,7 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.proyectocoches.ui.CreditsScreen;
 import com.mygdx.proyectocoches.ui.EventMenu;
 import com.mygdx.proyectocoches.ui.RecordsMenu;
 import com.mygdx.proyectocoches.ui.SettingsMenu;
@@ -27,13 +30,13 @@ public class MainMenu implements Screen {
     private final ArrayList<Actor> compMain = new ArrayList<>();
     private final ArrayList<Actor> compEvento = new ArrayList<>();
     private final Stage stage;
-    private final String[] screens = new String[]{"Evento", "Records", "Ajustes", "Tutoriales"};
     private final InputMultiplexer multiplexer;
     private final AssetManager am;
     private final RecordsMenu mRecords;
     private final EventMenu mEvento;
     private final SettingsMenu mSettings;
     private final TutorialMenu mTutorial;
+    private final CreditsScreen credits;
     private final SpriteBatch batch;
 
     public MainMenu(final Game miGame, final Skin skin) {
@@ -42,9 +45,13 @@ public class MainMenu implements Screen {
         am.load("worlds/track_1_mini.png", Texture.class);
         am.load("worlds/test_loop_mini.png", Texture.class);
         am.load("badlogic.jpg", Texture.class);
+        am.load("locale/locale", I18NBundle.class);
         am.finishLoading();
+        I18NBundle locale = am.get("locale/locale");
 
         stage = new Stage(new ScreenViewport());
+
+        int vertOffset = 0;
 
         multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage);
@@ -57,10 +64,9 @@ public class MainMenu implements Screen {
         stage.getViewport().getCamera().position.set(screenW / 2f, 0, 0);
 
         this.mEvento = new EventMenu(skin, miGame, am);
-        TextButton btn1 = new TextButton(screens[0], skin);
-        btn1.setHeight(screenH * 0.5f);
-        btn1.setWidth(screenW * 0.5f);
-        btn1.setPosition(0, -screenH / 2f);
+        TextButton btn1 = new TextButton(locale.get("mainmenu.empezar"), skin);
+        btn1.setSize(screenW / 10f, screenH / 10f);
+        btn1.setPosition(screenW / 2f - screenW / 20f, 0);
         btn1.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -72,11 +78,12 @@ public class MainMenu implements Screen {
                 return true;
             }
         });
+        vertOffset++;
 
         this.mRecords = new RecordsMenu("", skin);
-        TextButton btn2 = new TextButton(screens[1], skin);
-        btn2.setHeight(screenH * 0.5f);
-        btn2.setWidth(screenW * 0.5f);
+        TextButton btn2 = new TextButton(locale.get("mainmenu.records"), skin);
+        btn2.setSize(screenW / 10f, screenH / 10f);
+        btn2.setPosition(screenW / 2f - screenW / 20f, -vertOffset * screenH / 10f);
         btn2.setPosition(screenW / 2f, -screenH / 2f);
         btn2.addListener(new InputListener() {
             @Override
@@ -88,12 +95,12 @@ public class MainMenu implements Screen {
                 return true;
             }
         });
+        vertOffset++;
 
         this.mSettings = new SettingsMenu(skin);
-        TextButton btn3 = new TextButton(screens[2], skin);
-        btn3.setHeight(screenH * 0.5f);
-        btn3.setWidth(screenW * 0.5f);
-        btn3.setPosition(screenW / 2f, 0);
+        TextButton btn3 = new TextButton(locale.get("mainmenu.ajustes"), skin);
+        btn3.setSize(screenW / 10f, screenH / 10f);
+        btn3.setPosition(screenW / 2f - screenW / 20f, -vertOffset * screenH / 10f);
         btn3.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -105,12 +112,12 @@ public class MainMenu implements Screen {
                 return true;
             }
         });
+        vertOffset++;
 
         this.mTutorial = new TutorialMenu(skin, am);
-        TextButton btn4 = new TextButton(screens[3], skin);
-        btn4.setHeight(screenH * 0.5f);
-        btn4.setWidth(screenW * 0.5f);
-        btn4.setPosition(0, 0);
+        TextButton btn4 = new TextButton(locale.get("mainmenu.tutoriales"), skin);
+        btn4.setSize(screenW / 10f, screenH / 10f);
+        btn4.setPosition(screenW / 2f - screenW / 20f, -vertOffset * screenH / 10f);
         btn4.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -121,15 +128,33 @@ public class MainMenu implements Screen {
                 return true;
             }
         });
+        vertOffset++;
+
+        this.credits = new CreditsScreen(skin);
+        TextButton btn5 = new TextButton(locale.get("mainmenu.creditos"), skin);
+        btn5.setSize(screenW / 10f, screenH / 10f);
+        btn5.setPosition(screenW / 2f - screenW / 20f, -vertOffset * screenH / 10f);
+        btn5.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                for (Actor a : compMain) {
+                    a.setVisible(false);
+                }
+                credits.setShowing(true);
+                return true;
+            }
+        });
 
         compMain.add(btn1);
         compMain.add(btn2);
         compMain.add(btn3);
         compMain.add(btn4);
+        compMain.add(btn5);
         compMain.addAll(mRecords.getCompRecords());
         compMain.addAll(mEvento.getCompEvento());
         compMain.addAll(mTutorial.getCompTutorial());
         compMain.addAll(mSettings.getCompSettings());
+        compMain.addAll(credits.getCompCredits());
 
         InputListener backBtnList = new InputListener() {
             @Override
@@ -141,6 +166,7 @@ public class MainMenu implements Screen {
                 mTutorial.setShowing(false);
                 mRecords.setShowing(false);
                 mSettings.setShowing(false);
+                credits.setShowing(false);
                 return true;
             }
         };
@@ -149,6 +175,7 @@ public class MainMenu implements Screen {
         mTutorial.getBackBtn().addListener(backBtnList);
         mEvento.getBackBtn().addListener(backBtnList);
         mSettings.getBackBtn().addListener(backBtnList);
+        credits.getBackBtn().addListener(backBtnList);
 
         for (Actor a : compMain) {
             stage.addActor(a);

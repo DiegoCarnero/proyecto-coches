@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayList;
 
@@ -21,8 +22,8 @@ public class TutorialMenu {
     private final Label lblDescip;
     private final Button btnSig;
     private final Button btnPrev;
-    private final String[] titulos = {"tit1", "tit2"};
-    private final String[] descrips = {"descrip1", "descrip2"};
+    private final String[] titulos = {"tit1", "tit2", "tit3", "tit4"};
+    private final String[] descrips ={"descrip1", "descrip2", "descrip3", "descrip4"};
     private final Sprite[] sprites;
     private int cont = 0;
     private final Button btnAtras;
@@ -44,6 +45,16 @@ public class TutorialMenu {
         lblDescip = new Label("Descip", skin);
         lblDescip.setPosition(screenW * 2 / 4f, screenH / 2f - screenH / 5f);
         lblDescip.setVisible(false);
+
+        I18NBundle locale = am.get("locale/locale");
+        titulos[0]=locale.get("tutorial.t1");
+        descrips[0]=locale.get("tutorial.d1");
+        titulos[1]=locale.get("tutorial.t2");
+        descrips[1]=locale.get("tutorial.d2");
+        titulos[2]=locale.get("tutorial.t3");
+        descrips[2]=locale.get("tutorial.d3");
+        titulos[3]=locale.get("tutorial.t4");
+        descrips[3]=locale.get("tutorial.d4");
 
         sprites = new Sprite[1];
         sprites[0] = new Sprite((Texture) am.get("badlogic.jpg"));
