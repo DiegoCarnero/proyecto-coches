@@ -18,6 +18,7 @@ public class RaceOsd implements Screen {
     private final Label lblFin;
 
     private final Label lblCountdown;
+    private float contGo;
 
     public RaceOsd(Skin skin, RaceManager rm) {
         UIStage = new Stage(new ScreenViewport());
@@ -35,6 +36,8 @@ public class RaceOsd implements Screen {
         this.lblCountdown = new Label("GO", skin);
         lblCountdown.setPosition(screenW / 2f, 0);
         lblCountdown.setVisible(false);
+        lblCountdown.setFontScale(2f);
+        lblCountdown.setAlignment(1);
 
         this.lblLista = new Label("lista\nlista2", skin);
         lblLista.setPosition(0, 0);
@@ -67,6 +70,15 @@ public class RaceOsd implements Screen {
     public void render(float delta) {
 
         rm.update();
+        if (rm.getCuentaAtras() > 0){
+            lblCountdown.setVisible(true);
+            lblCountdown.setText(rm.getCuentaAtras()+"");
+        }else if(rm.getCuentaAtras() < 0 && rm.getCuentaAtras() > -2){
+            lblCountdown.setText("GO");
+        } else {
+            lblCountdown.setVisible(false);
+        }
+
         if (rm.isJugadorAcabo()){
             lblFin.setVisible(true);
             lblFin.setText(String.format("%s %d","Has terminado ",rm.getPosJugador()));

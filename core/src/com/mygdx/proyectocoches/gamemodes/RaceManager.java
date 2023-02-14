@@ -23,6 +23,11 @@ public class RaceManager implements Gamemode {
     private int nVueltaJugador = 0;
     private int posJugador = 0;
     private boolean jugadorAcabo;
+    private float cuentaAtras = 8;
+
+    public float getCuentaAtras() {
+        return cuentaAtras;
+    }
 
     public boolean isJugadorAcabo() {
         return jugadorAcabo;
@@ -36,6 +41,18 @@ public class RaceManager implements Gamemode {
 
     public int getVueltaJugador() {
         return nVueltaJugador;
+    }
+
+    public boolean CuentaAtras(float delta) {
+
+        cuentaAtras -= delta;
+        Gdx.app.log("cuentaAtras",cuentaAtras+"");
+        if (cuentaAtras <= 0) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     public RaceManager(ArrayList<Competidor> competidores, CatmullRomSpline<Vector2> s, int nVueltas) {
@@ -108,7 +125,7 @@ public class RaceManager implements Gamemode {
             int nVuelta = userData.getVuelta();
             userData.setVuelta(nVuelta + 1);
         }
-		
+
         userData.setEnVuelta(true);
         userData.setCruzadoS1(false);
         userData.setCruzadoS2(false);
@@ -116,7 +133,7 @@ public class RaceManager implements Gamemode {
 
         if (userData.getClass() == Jugador.class) {
             nVueltaJugador = userData.getVuelta();
-            if(nVueltaJugador > nVueltas){
+            if (nVueltaJugador > nVueltas) {
                 jugadorAcabo = true;
             }
         }
@@ -175,7 +192,7 @@ public class RaceManager implements Gamemode {
                 if (entry.getValue().equals(num)) {
                     listaComp += String.format(Locale.ROOT, "%d. %s\n", cont, entry.getKey().getNombre());
                     if (entry.getKey() instanceof Jugador) {
-                        if(!jugadorAcabo) {
+                        if (!jugadorAcabo) {
                             posJugador = cont;
                         }
                     }
@@ -195,4 +212,7 @@ public class RaceManager implements Gamemode {
         return posJugador;
     }
 
+    public void CuentaAtrasSet() {
+        cuentaAtras = 3;
+    }
 }
