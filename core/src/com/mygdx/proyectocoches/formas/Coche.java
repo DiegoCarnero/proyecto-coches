@@ -26,8 +26,8 @@ public class Coche {
      * @param pos posición en el mundo
      * @param mundo World en el que se implantará el Body
      * @param tam tamaño del Body
-     * @param tipo tipo de {@link com.mygdx.proyectocoches.entidades.Competidor} al que se asociará el Body generado. 'true' si es {@link com.mygdx.proyectocoches.entidades.Jugador}, false si es {@link com.mygdx.proyectocoches.entidades.CocheIA}
-     * @return
+     * @param tipo tipo de {@link com.mygdx.proyectocoches.entidades.Competidor} al que se asociará el Body generado. Determina la densidad de este. 'true' si es {@link com.mygdx.proyectocoches.entidades.Jugador}, false si es {@link com.mygdx.proyectocoches.entidades.CocheIA}
+     * @return Body generado
      */
     public static Body generaCoche(Vector2 pos, World mundo, Vector2 tam, boolean tipo) {
         BodyDef bdef;
@@ -44,11 +44,12 @@ public class Coche {
         pShape.setAsBox(tam.x / PPM, tam.y / PPM);
         FixtureDef fDef = new FixtureDef();
         fDef.shape = pShape;
-        fDef.density = DENSIDAD_COCHE;
         if (tipo) {  //jugador
+            fDef.density = DENSIDAD_COCHE;
             fDef.filter.categoryBits = CAT_COCHE_JUG;
             fDef.filter.maskBits = CAT_CIRCUITO_MUROS | CAT_CIRCUITO_META | CAT_CIRCUITO_CHECKP1 | CAT_CIRCUITO_CHECKP2 | CAT_CIRCUITO_CHECKP3 | CAT_COCHE_IA;
         } else { // IA
+            fDef.density = 0.5f;
             fDef.filter.categoryBits = CAT_COCHE_IA;
             fDef.filter.maskBits = CAT_CIRCUITO_MUROS | CAT_CIRCUITO_META | CAT_CIRCUITO_CHECKP1 | CAT_CIRCUITO_CHECKP2 | CAT_CIRCUITO_CHECKP3 | CAT_COCHE_IA_SENSOR | CAT_COCHE_IA | CAT_COCHE_JUG;
         }
