@@ -123,8 +123,6 @@ public class Constantes {
     public static final int TELE_ACC = 1;
     public static final int TELE_EMBRAG = 2;
     public static final int TELE_MEDIO = 4;
-    public static final int TELE_MAX = 5;
-    public static final int TELE_PARADO = 0;
 
     /**
      * Valores para renderizar test_loop

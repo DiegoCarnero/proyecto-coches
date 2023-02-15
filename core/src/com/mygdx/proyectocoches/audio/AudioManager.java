@@ -2,6 +2,7 @@ package com.mygdx.proyectocoches.audio;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
@@ -63,6 +64,11 @@ public class AudioManager implements Disposable {
     private final float musicVol;
 
     /**
+     * Cancion que se está reproduciendo
+     */
+    private Music cancion;
+
+    /**
      * Crea un nuevo objeto AudioManager
      *
      * @param asM AssetManager que se va a utilizar
@@ -76,33 +82,39 @@ public class AudioManager implements Disposable {
         musicVol = base.get("music").asFloat();
         sfxVol = base.get("sfx").asFloat();
 
-        asM.load("audio/parado1.ogg", Sound.class);
-        asM.load("audio/parado2.ogg", Sound.class);
-        asM.load("audio/marcha1.ogg", Sound.class);
-        asM.load("audio/max1.ogg", Sound.class);
-        asM.load("audio/medio1.ogg", Sound.class);
-        asM.load("audio/embragando1.ogg", Sound.class);
+        asM.load("audio/sfx/parado1.ogg", Sound.class);
+        asM.load("audio/sfx/parado2.ogg", Sound.class);
+        asM.load("audio/sfx/marcha1.ogg", Sound.class);
+        asM.load("audio/sfx/max1.ogg", Sound.class);
+        asM.load("audio/sfx/medio1.ogg", Sound.class);
+        asM.load("audio/sfx/embragando1.ogg", Sound.class);
+        asM.load("audio/music/EvanSchaeffer-Bounce.mp3", Music.class);
+        asM.finishLoading();
     }
 
     /**
      * Isigna los archivos a las variables pertinentes
      */
     public void init() {
-        sonParado1 = asM.get("audio/parado1.ogg");
-        sonParado2 = asM.get("audio/parado2.ogg");
+        sonParado1 = asM.get("audio/sfx/parado1.ogg");
+        sonParado2 = asM.get("audio/sfx/parado2.ogg");
 
-        sonAcc1 = asM.get("audio/marcha1.ogg");
-        sonEmbr1 = asM.get("audio/embragando1.ogg");
-        sonMax1 = asM.get("audio/max1.ogg");
-        sonMedio1 = asM.get("audio/medio1.ogg");
+        sonAcc1 = asM.get("audio/sfx/marcha1.ogg");
+        sonEmbr1 = asM.get("audio/sfx/embragando1.ogg");
+        sonMax1 = asM.get("audio/sfx/max1.ogg");
+        sonMedio1 = asM.get("audio/sfx/medio1.ogg");
+        cancion = asM.get("audio/music/EvanSchaeffer-Bounce.mp3");
 
         try {
-            Thread.sleep(700);
+            Thread.sleep(600);
         } catch (InterruptedException e) {
         }
 
-        sonParado1.loop(sfxVol * 0.6f);
-        sonParado2.loop(sfxVol * 0.6f);
+        sonParado1.loop(sfxVol);
+        sonParado2.loop(sfxVol);
+        cancion.setVolume(musicVol);
+        cancion.setLooping(true);
+        cancion.play();
     }
 
     /**
@@ -151,18 +163,6 @@ public class AudioManager implements Disposable {
                     soniAct.play(sfxVol);
                 }
                 break;
-            case Constantes.TELE_MAX:
-                if (soniAct != sonMax1) {
-                    if (isPlaying) {
-                        soniAct.stop();
-                    }
-
-                    Gdx.input.vibrate(200);
-                    soniAct = sonMax1;
-                    soniAct.loop(sfxVol * 0.6f);
-                    isPlaying = true;
-                }
-                break;
             case Constantes.TELE_MEDIO:
                 if (soniAct != sonMedio1) {
                     if (isPlaying) {
@@ -174,8 +174,6 @@ public class AudioManager implements Disposable {
                     soniAct.loop(sfxVol);
                     isPlaying = true;
                 }
-                break;
-            case Constantes.TELE_PARADO:
                 break;
         }
     }

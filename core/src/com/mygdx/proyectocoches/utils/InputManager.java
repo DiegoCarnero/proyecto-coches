@@ -7,10 +7,8 @@ import static com.mygdx.proyectocoches.Constantes.DERRAPE_BAJO;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_BACK;
 import static com.mygdx.proyectocoches.Constantes.MAX_VELOCIDAD_FORW;
 import static com.mygdx.proyectocoches.Constantes.TELE_ACC;
-import static com.mygdx.proyectocoches.Constantes.TELE_MAX;
 import static com.mygdx.proyectocoches.Constantes.TELE_EMBRAG;
 import static com.mygdx.proyectocoches.Constantes.TELE_MEDIO;
-import static com.mygdx.proyectocoches.Constantes.TELE_PARADO;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -120,12 +118,9 @@ public class InputManager {
             am.cambiaSonido(TELE_ACC);
         } else if (((nuevaVelo - ultimaVelo) < -0.5f) || input.getAccValue() == 0) {
             am.cambiaSonido(TELE_EMBRAG);
-        } else if (nuevaVelo > MAX_VELOCIDAD_FORW * 0.9) {
-            am.cambiaSonido(TELE_MAX);
-        } else if (nuevaVelo > MAX_VELOCIDAD_FORW * 0.3) {
+        }
+        if (input.getAccValue() > 0.5f) {
             am.cambiaSonido(TELE_MEDIO);
-        } else if (nuevaVelo < MAX_VELOCIDAD_FORW * 0.3) {
-            am.cambiaSonido(TELE_PARADO);
         }
     }
 }
