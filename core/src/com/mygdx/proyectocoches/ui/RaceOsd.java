@@ -2,6 +2,9 @@ package com.mygdx.proyectocoches.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -29,11 +32,23 @@ public class RaceOsd implements Screen {
         UIStage.getViewport().getCamera().position.set(screenW / 2f, 0, 0);
         this.rm = rm;
 
-        this.lblFin = new Label("GO", skin);
+        this.lblFin = new Label("", skin);
         lblFin.setPosition(screenW / 2f, 0);
         lblFin.setVisible(false);
 
-        this.lblCountdown = new Label("GO", skin);
+        FreeTypeFontGenerator ftfg = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Segment7Standard.otf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        param.size = 50;
+        param.shadowColor = Color.BLACK;
+        param.shadowOffsetX = 1;
+        param.shadowOffsetY = 1;
+        BitmapFont font = ftfg.generateFont(param);
+        ftfg.dispose();
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = font;
+
+        this.lblCountdown = new Label("GO", labelStyle);
         lblCountdown.setPosition(screenW / 2f, 0);
         lblCountdown.setVisible(false);
         lblCountdown.setFontScale(2f);
@@ -70,18 +85,18 @@ public class RaceOsd implements Screen {
     public void render(float delta) {
 
         rm.update();
-        if (rm.getCuentaAtras() > 0){
+        if (rm.getCuentaAtras() > 0) {
             lblCountdown.setVisible(true);
-            lblCountdown.setText(rm.getCuentaAtras()+"");
-        }else if(rm.getCuentaAtras() < 0 && rm.getCuentaAtras() > -2){
+            lblCountdown.setText(String.format("%.0f", rm.getCuentaAtras() + 1));
+        } else if (rm.getCuentaAtras() < 0 && rm.getCuentaAtras() > -1.5) {
             lblCountdown.setText("GO");
         } else {
             lblCountdown.setVisible(false);
         }
 
-        if (rm.isJugadorAcabo()){
+        if (rm.isJugadorAcabo()) {
             lblFin.setVisible(true);
-            lblFin.setText(String.format("%s %d","Has terminado ",rm.getPosJugador()));
+            lblFin.setText(String.format("%s %d", "Has terminado ", rm.getPosJugador()));
             lblLista.setVisible(false);
             lblPosicion.setVisible(false);
             lblVuelta.setVisible(false);
