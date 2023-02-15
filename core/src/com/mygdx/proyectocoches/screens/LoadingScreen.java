@@ -18,29 +18,25 @@ public class LoadingScreen implements Screen {
 
     private Stage stage;
     private GameSettings gs;
-    private boolean b = true;
     private Game g;
     private Skin s;
+    private boolean b = true;
+    private AssetManager am;
 
-    public LoadingScreen(AssetManager am,Game juego, Skin skin, GameSettings gs, String cargando) {
-
+    public LoadingScreen(AssetManager am, Game juego, Skin skin, GameSettings gs, String cargando) {
+        this.am = am;
         this.gs = gs;
         this.g = juego;
         this.s = skin;
         stage = new Stage(new ScreenViewport());
 
-        FreeTypeFontGenerator ftfg = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Designer.otf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        param.size = 30;
-        param.color = Color.WHITE;
-        BitmapFont font = ftfg.generateFont(param);
-        ftfg.dispose();
+        BitmapFont font = am.get("fonts/Designer.otf");
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = font;
 
         Label lblLoading = new Label(cargando, labelStyle);
-        lblLoading.setPosition(0,0);
+        lblLoading.setPosition(0, 0);
 
         stage.addActor(lblLoading);
 
@@ -51,7 +47,6 @@ public class LoadingScreen implements Screen {
      */
     @Override
     public void show() {
-
     }
 
     /**
@@ -61,14 +56,15 @@ public class LoadingScreen implements Screen {
      */
     @Override
     public void render(float delta) {
-        if(b){
-            if (gs.getModo() == 0){
-                g.setScreen(new TestRace(g, s, gs));
-            }else if(gs.getModo() == 1){
-                g.setScreen(new TestDrive(g, s, gs));
+        if (b) {
+            if (gs.getModo() == 0) {
+                g.setScreen(new TestRace(g, s, gs, am));
+            } else if (gs.getModo() == 1) {
+                g.setScreen(new TestDrive(g, s, gs, am));
             }
             b = false;
         }
+
         Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

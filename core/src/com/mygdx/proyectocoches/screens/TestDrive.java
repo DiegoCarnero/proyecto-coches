@@ -61,7 +61,7 @@ public class TestDrive implements Screen {
 
     private final Skin skin;
 
-    public TestDrive(Game juego, Skin skin, GameSettings gs) {
+    public TestDrive(Game juego, Skin skin, GameSettings gs, AssetManager am){
 
         String nomCircuito = gs.getCircuito();
         asM = new AssetManager();
@@ -101,7 +101,7 @@ public class TestDrive implements Screen {
         }
 
         this.ttm = new TimeTrialManager(this.jugador, nomCircuito);
-        this.ttOsd = new TimeTrialOsd(skin, ttm);
+        this.ttOsd = new TimeTrialOsd(skin, ttm, am);
         miWorld.setContactListener(new miContactListener(ttm));
 
         if (Controllers.getControllers().size > 0) {

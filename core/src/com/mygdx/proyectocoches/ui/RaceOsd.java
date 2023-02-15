@@ -2,6 +2,7 @@ package com.mygdx.proyectocoches.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -22,8 +23,13 @@ public class RaceOsd implements Screen {
 
     private final Label lblCountdown;
     private float contGo;
+    private AssetManager am;
 
-    public RaceOsd(Skin skin, RaceManager rm) {
+    public RaceOsd(Skin skin, RaceManager rm, AssetManager am) {
+        this.am = am;
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = am.get("fonts/Cabin-Regular.ttf");
+
         UIStage = new Stage(new ScreenViewport());
         int screenW, screenH;
         screenW = Gdx.graphics.getWidth();
@@ -32,7 +38,7 @@ public class RaceOsd implements Screen {
         UIStage.getViewport().getCamera().position.set(screenW / 2f, 0, 0);
         this.rm = rm;
 
-        this.lblFin = new Label("", skin);
+        this.lblFin = new Label("", labelStyle);
         lblFin.setPosition(screenW / 2f, 0);
         lblFin.setVisible(false);
 
@@ -45,22 +51,22 @@ public class RaceOsd implements Screen {
         BitmapFont font = ftfg.generateFont(param);
         ftfg.dispose();
 
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = font;
+        Label.LabelStyle lblStyleCountdown = new Label.LabelStyle();
+        lblStyleCountdown.font = font;
 
-        this.lblCountdown = new Label("GO", labelStyle);
+        this.lblCountdown = new Label("GO", lblStyleCountdown);
         lblCountdown.setPosition(screenW / 2f, 0);
         lblCountdown.setVisible(false);
         lblCountdown.setFontScale(2f);
         lblCountdown.setAlignment(1);
 
-        this.lblLista = new Label("lista\nlista2", skin);
+        this.lblLista = new Label("lista\nlista2", labelStyle);
         lblLista.setPosition(0, 0);
 
-        this.lblPosicion = new Label("Pos 0/0", skin);
+        this.lblPosicion = new Label("Pos 0/0", labelStyle);
         lblPosicion.setPosition(screenW / 2f, -9 * screenH / 20f);
 
-        this.lblVuelta = new Label("Vuelta 0/0", skin);
+        this.lblVuelta = new Label("Vuelta 0/0", labelStyle);
         lblVuelta.setPosition(screenW / 2f, -8 * screenH / 20f);
 
         UIStage.addActor(lblLista);

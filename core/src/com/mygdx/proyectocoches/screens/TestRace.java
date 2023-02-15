@@ -67,7 +67,7 @@ public class TestRace implements Screen {
 
     private final Skin skin;
 
-    public TestRace(Game juego, Skin skin, GameSettings gs) {
+    public TestRace(Game juego, Skin skin, GameSettings gs,AssetManager am) {
         String nomCircuito = gs.getCircuito();
         asM = new AssetManager();
         this.am = new AudioManager(asM);
@@ -109,7 +109,7 @@ public class TestRace implements Screen {
         this.jugador = circuito.prepararParrilla(gs.getNumOpos(), gs.getNumOpos() + 1);
         this.rm = new RaceManager(circuito.getCompetidores(), circuito.cargarSplineControl(), gs.getnVueltas());
         miWorld.setContactListener(new miContactListener(rm));
-        this.rOsd = new RaceOsd(skin, rm);
+        this.rOsd = new RaceOsd(skin, rm,am);
         this.pi = osd;
         im = new InputManager(osd, jugador, this.am);
 
