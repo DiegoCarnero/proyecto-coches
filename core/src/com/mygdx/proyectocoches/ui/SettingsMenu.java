@@ -1,6 +1,7 @@
 package com.mygdx.proyectocoches.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
@@ -27,15 +29,24 @@ public class SettingsMenu {
     private final Label lblCameroMode;
     private final Label lblSfx;
     private final Label lblMusic;
-    private final String[] camModes = {"Cerca", "Lejos", "Dinamica"};
+    private final String[] camModes = new String[3];
     private final char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
     private int contLetras = 0;
     private int contCam = 0;
     private float musicVol = 0;
     private float sfxVol = 0;
     private boolean showing;
+    private final AssetManager am;
 
-    public SettingsMenu(final Skin skin) {
+    public SettingsMenu(final Skin skin, AssetManager am,I18NBundle locale) {
+
+        this.am = am;
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = am.get("fonts/Cabin-Regular.ttf");
+
+        camModes[0] = locale.get("camera.cerca");
+        camModes[1] = locale.get("camera.lejos");
+        camModes[2] = locale.get("camera.dinamica");
 
         final int screenH = Gdx.graphics.getHeight();
         final int screenW = Gdx.graphics.getWidth();
@@ -71,7 +82,6 @@ public class SettingsMenu {
                 j = new JsonValue(sfxVol);
                 base.addChild("sfx", j);
 
-                Gdx.app.log("sett", base.toString());
                 FileHandle file = Gdx.files.external("usersettings.json");
                 file.writeString(base.toString(), false);
                 super.touchUp(event, x, y, pointer, button);
@@ -83,7 +93,7 @@ public class SettingsMenu {
 
         int x = 0;
         for (int i = 0; i < 3; i++) {
-            final Label l = new Label("A", skin);
+            final Label l = new Label("A", labelStyle);
             l.setPosition(x, 0);
             l.setVisible(false);
 
@@ -123,7 +133,7 @@ public class SettingsMenu {
         float volX = screenW / 2f;
         float volY = 0;
         //sfx
-        lblSfx = new Label("Efectos", skin);
+        lblSfx = new Label(locale.get("settings.efectos"), labelStyle);
         lblSfx.setPosition(volX, volY);
         compSettings.add(lblSfx);
         lblSfx.setVisible(false);
@@ -162,7 +172,7 @@ public class SettingsMenu {
         volX = screenW / 2f;
         volY -= 80;
         //music
-        lblMusic = new Label("Musica", skin);
+        lblMusic = new Label(locale.get("settings.music"), labelStyle);
         lblMusic.setPosition(volX, volY);
         volX += 120;
         compSettings.add(lblMusic);
@@ -199,7 +209,7 @@ public class SettingsMenu {
             volX += 80;
         }
 
-        lblCameroMode = new Label(camModes[contCam], skin);
+        lblCameroMode = new Label(camModes[contCam], labelStyle);
         lblCameroMode.setSize(screenW / 10f, screenH / 10f);
         lblCameroMode.setPosition(screenW / 2f - screenW / 20f, 4 * screenH / 10f);
         lblCameroMode.setTouchable(Touchable.disabled);
@@ -243,7 +253,7 @@ public class SettingsMenu {
             ndxNom++;
         }
 
-        contCam= base.getInt("cam");
+        contCam = base.getInt("cam");
         lblCameroMode.setText(camModes[contCam]);
 
         float music = base.getFloat("music");

@@ -5,14 +5,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.I18NBundle;
@@ -46,8 +53,29 @@ public class MainMenu implements Screen {
         am.load("worlds/test_loop_mini.png", Texture.class);
         am.load("badlogic.jpg", Texture.class);
         am.load("locale/locale", I18NBundle.class);
-//        am.load("fonts/Designer.otf");
+
+        FileHandleResolver resolver = new InternalFileHandleResolver();
+        am.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+        am.setLoader(BitmapFont.class, ".otf", new FreetypeFontLoader(resolver));
+        am.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+
+        String[] fuentes = new String[]{"fonts/Designer.otf", "fonts/Cabin-Regular.ttf"};
+        int[] fontSizes = new int[]{30, 20, 20};
+        for (int i = 0; i < fuentes.length; i++) {
+
+            FreetypeFontLoader.FreeTypeFontLoaderParameter param = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+            param.fontFileName = fuentes[i];
+            param.fontParameters.size = fontSizes[i];
+            param.fontParameters.color = Color.WHITE;
+            param.fontParameters.borderColor = Color.BLACK;
+            param.fontParameters.borderWidth = 2.0f;
+
+            am.load(fuentes[i], BitmapFont.class, param);
+
+        }
+
         am.finishLoading();
+
         I18NBundle locale = am.get("locale/locale");
 
         stage = new Stage(new ScreenViewport());
@@ -64,8 +92,11 @@ public class MainMenu implements Screen {
 
         stage.getViewport().getCamera().position.set(screenW / 2f, 0, 0);
 
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = am.get(fuentes[0]);
+
         this.mEvento = new EventMenu(skin, miGame, am, locale);
-        TextButton btn1 = new TextButton(locale.get("mainmenu.empezar"), skin);
+        TextButton btn1 = new TextButton(locale.get("mainmenu.evento"), skin);
         btn1.setSize(screenW / 10f, screenH / 10f);
         btn1.setPosition(screenW / 2f - screenW / 20f, 0);
         btn1.addListener(new InputListener() {
@@ -98,7 +129,7 @@ public class MainMenu implements Screen {
         });
         vertOffset++;
 
-        this.mSettings = new SettingsMenu(skin);
+        this.mSettings = new SettingsMenu(skin, am, locale);
         TextButton btn3 = new TextButton(locale.get("mainmenu.ajustes"), skin);
         btn3.setSize(screenW / 10f, screenH / 10f);
         btn3.setPosition(screenW / 2f - screenW / 20f, -vertOffset * screenH / 10f);
