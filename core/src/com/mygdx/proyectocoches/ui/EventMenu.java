@@ -95,7 +95,7 @@ public class EventMenu {
         opoUp.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                numOpos = numOpos == track_1_vGrid.length - 1 ? 0 : numOpos + 1;
+                numOpos = numOpos == 17 ? 0 : numOpos + 1;
                 lblNumOpos.setText(numOpos);
                 return true;
             }
@@ -108,7 +108,7 @@ public class EventMenu {
         opoDown.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                numOpos = numOpos == 0 ? 0 : contModo - 1;
+                numOpos = numOpos == 0 ? 17 : numOpos - 1;
                 lblNumOpos.setText(numOpos);
                 return true;
             }
@@ -138,7 +138,7 @@ public class EventMenu {
         vueltaDown.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                numVueltas = numVueltas == 1 ? 1 : numVueltas - 1;
+                numVueltas = numVueltas == 1 ? 9 : numVueltas - 1;
                 lblNumVueltas.setText(numVueltas);
                 return true;
             }
