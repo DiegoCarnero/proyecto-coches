@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.I18NBundle;
+import com.mygdx.proyectocoches.screens.LoadingScreen;
 import com.mygdx.proyectocoches.screens.TestDrive;
 import com.mygdx.proyectocoches.screens.TestRace;
 import com.mygdx.proyectocoches.utils.GameSettings;
@@ -53,7 +55,7 @@ public class EventMenu {
         return s;
     }
 
-    public EventMenu(final Skin skin, final Game g, final AssetManager am) {
+    public EventMenu(final Skin skin, final Game g, final AssetManager am, final I18NBundle bundle) {
         this.am = am;
         final int screenH = Gdx.graphics.getHeight();
         final int screenW = Gdx.graphics.getWidth();
@@ -61,7 +63,7 @@ public class EventMenu {
         s.setPosition(screenW / 2f, screenH / 4f);
         s.setSize(screenH / 7f, screenH / 7f);
 
-        btnCircuito = new TextButton("test_loop",skin);
+        btnCircuito = new TextButton("test_loop", skin);
         btnCircuito.setSize(screenH / 7f, screenH / 7f);
         btnCircuito.setPosition(screenW / 2f, screenH / 4f);
         btnCircuito.addListener(new InputListener() {
@@ -83,7 +85,7 @@ public class EventMenu {
         lblCircuito.setPosition(screenW / 2f, screenH / 4f - screenH / 7f);
         lblCircuito.setVisible(false);
 
-        lblNumOpos = new Label(numOpos+"", skin);
+        lblNumOpos = new Label(numOpos + "", skin);
         lblNumOpos.setPosition(2 * screenW / 12f + screenH / 10f, screenH / 2f - screenH / 10f);
         lblNumOpos.setVisible(false);
 
@@ -113,7 +115,7 @@ public class EventMenu {
         });
         opoDown.setVisible(false);
 
-        lblNumVueltas = new Label(numVueltas+"", skin);
+        lblNumVueltas = new Label(numVueltas + "", skin);
         lblNumVueltas.setPosition(10 * screenW / 12f + screenH / 10f, screenH / 2f - screenH / 10f);
         lblNumVueltas.setVisible(false);
 
@@ -183,12 +185,9 @@ public class EventMenu {
         btnJugar.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GameSettings gs = new GameSettings(numOpos, circuitos[contCircuito], contModo, 0, "AAA", numVueltas);
-                if (contModo == 0) {
-                    g.setScreen(new TestRace(g, skin, gs));
-                } else if (contModo == 1) {
-                    g.setScreen(new TestDrive(g, skin, gs));
-                }
+                GameSettings gs = new GameSettings(numOpos, circuitos[contCircuito], contModo, 0, "AAA", numVueltas,bundle);
+
+                g.setScreen(new LoadingScreen(am,g, skin, gs, "Caricamento"));
 
                 return true;
             }

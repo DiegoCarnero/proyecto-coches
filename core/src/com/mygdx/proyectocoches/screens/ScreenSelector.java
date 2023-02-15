@@ -28,7 +28,7 @@ public class ScreenSelector implements Screen {
         this.pc = pc;
         stage = new Stage(new ScreenViewport());
         this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-        final GameSettings gs = new GameSettings(10,"test_loop", 0,0,"AAA",3);
+//        final GameSettings gs = new GameSettings(10, "track_1", 0, 0, "AAA", 3);
 
         multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage);
@@ -45,7 +45,7 @@ public class ScreenSelector implements Screen {
         btn1.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                pc.setScreen(new TestDrive(pc, skin,gs));
+//                pc.setScreen(new LoadingScreen(pc, skin, gs, "loading"));
                 return true;
             }
         });
@@ -69,7 +69,7 @@ public class ScreenSelector implements Screen {
         btn3.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                pc.setScreen(new TestRace(pc, skin,gs));
+//                pc.setScreen(new LoadingScreen(pc, skin, gs, "cargando"));
                 return true;
             }
         });
@@ -77,7 +77,7 @@ public class ScreenSelector implements Screen {
         TextButton btn4 = new TextButton(screens[3], this.skin);
         btn4.setHeight(screenH * 0.5f);
         btn4.setWidth(screenW * 0.5f);
-        btn4.setPosition(screenW / 2f,screenH / 2f);
+        btn4.setPosition(screenW / 2f, screenH / 2f);
         btn4.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

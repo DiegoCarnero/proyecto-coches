@@ -46,6 +46,7 @@ public class MainMenu implements Screen {
         am.load("worlds/test_loop_mini.png", Texture.class);
         am.load("badlogic.jpg", Texture.class);
         am.load("locale/locale", I18NBundle.class);
+//        am.load("fonts/Designer.otf");
         am.finishLoading();
         I18NBundle locale = am.get("locale/locale");
 
@@ -63,7 +64,7 @@ public class MainMenu implements Screen {
 
         stage.getViewport().getCamera().position.set(screenW / 2f, 0, 0);
 
-        this.mEvento = new EventMenu(skin, miGame, am);
+        this.mEvento = new EventMenu(skin, miGame, am, locale);
         TextButton btn1 = new TextButton(locale.get("mainmenu.empezar"), skin);
         btn1.setSize(screenW / 10f, screenH / 10f);
         btn1.setPosition(screenW / 2f - screenW / 20f, 0);
