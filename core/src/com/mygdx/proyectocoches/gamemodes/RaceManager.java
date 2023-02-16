@@ -46,7 +46,6 @@ public class RaceManager implements Gamemode {
     public boolean CuentaAtras(float delta) {
 
         cuentaAtras -= delta;
-        Gdx.app.log("cuentaAtras",cuentaAtras+"");
         if (cuentaAtras <= 0) {
             return true;
         } else {
