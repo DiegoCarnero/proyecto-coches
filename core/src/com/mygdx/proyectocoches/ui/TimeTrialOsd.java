@@ -35,15 +35,15 @@ public class TimeTrialOsd implements Screen {
         UIStage.getViewport().getCamera().position.set(screenW / 2f, 0, 0);
 
         lblSector1 = new Label("Sector1", labelStyle);
-        lblSector1.setPosition(7 * screenW / 15f, -screenH / 3f);
+        lblSector1.setPosition(6 * screenW / 15f, -screenH / 3f);
         lblSector2 = new Label("Sector2", labelStyle);
-        lblSector2.setPosition(7 * screenW / 15f, -screenH / 3f - 20);
+        lblSector2.setPosition(6 * screenW / 15f, -screenH / 3f - 0.5f * (0.041167f * screenW));
         lblSector3 = new Label("Sector3", labelStyle);
-        lblSector3.setPosition(7 * screenW / 15f, -screenH / 3f - 40);
+        lblSector3.setPosition(6 * screenW / 15f, -screenH / 3f - (0.041167f * screenW));
         lblVueltaActual = new Label("overallTime", labelStyle);
-        lblVueltaActual.setPosition(7 * screenW / 15f, -screenH / 3f - 60);
+        lblVueltaActual.setPosition(6 * screenW / 15f, -screenH / 3f - 1.5f * (0.041167f * screenW));
         lblMejorVuelta = new Label("mejorVuelta", labelStyle);
-        lblMejorVuelta.setPosition(7 * screenW / 15f, -screenH / 3f - 80);
+        lblMejorVuelta.setPosition(6 * screenW / 15f, -screenH / 3f - 2f * (0.041167f * screenW));
 
         UIStage.addActor(lblSector1);
         UIStage.addActor(lblSector2);
