@@ -119,7 +119,7 @@ public class InputManager {
         } else if (((nuevaVelo - ultimaVelo) < -0.5f) || input.getAccValue() == 0) {
             am.cambiaSonido(TELE_EMBRAG);
         }
-        if (input.getAccValue() > 0.5f) {
+        if (input.getAccValue() > 0.6f) {
             am.cambiaSonido(TELE_MEDIO);
         }
     }
