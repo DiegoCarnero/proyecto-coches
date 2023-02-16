@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -64,14 +64,14 @@ public class TutorialMenu {
         btnSig = new TextButton(">", skin);
         btnSig.setSize(screenH / 10f, screenH / 10f);
         btnSig.setPosition(2 * screenW / 12f, screenH / 2f - screenH / 10f);
-        btnSig.addListener(new InputListener() {
+        btnSig.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 cont = cont == titulos.length - 1 ? 0 : cont + 1;
                 lblTitulo.setText(titulos[cont]);
                 lblDescip.setText(descrips[cont]);
                 // TODO cambia imagen
-                return true;
+                super.touchUp(event, x, y, pointer, button);
             }
         });
         btnSig.setVisible(false);
@@ -79,14 +79,14 @@ public class TutorialMenu {
         btnPrev = new TextButton("<", skin);
         btnPrev.setSize(screenH / 10f, screenH / 10f);
         btnPrev.setPosition(2 * screenW / 12f + screenH / 10f, screenH / 2f - 2 * screenH / 10f);
-        btnPrev.addListener(new InputListener() {
+        btnPrev.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 cont = cont == 0 ? 0 : titulos.length - 1;
                 lblTitulo.setText(titulos[cont]);
                 lblDescip.setText(descrips[cont]);
                 // TODO cambia imagen
-                return true;
+                super.touchUp(event, x, y, pointer, button);
             }
         });
         btnPrev.setVisible(false);

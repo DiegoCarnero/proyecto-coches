@@ -13,7 +13,7 @@ public class Constantes {
     /**
      * Densidad del coche para calculos Box2D
      */
-    public static final float DENSIDAD_COCHE = 1f;
+    public static final float DENSIDAD_COCHE = 1.5f;
     /**
      * Tamaño de los tiles del archivo del circuito
      */

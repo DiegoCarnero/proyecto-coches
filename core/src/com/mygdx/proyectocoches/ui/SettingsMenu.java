@@ -29,6 +29,8 @@ public class SettingsMenu {
     private final Label lblCameroMode;
     private final Label lblSfx;
     private final Label lblMusic;
+    private final Label lblCam;
+    private final Label lblNom;
     private final String[] camModes = new String[3];
     private final char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
     private int contLetras = 0;
@@ -57,7 +59,7 @@ public class SettingsMenu {
         btnAtras.setVisible(false);
         btnAtras.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 JsonReader json = new JsonReader();
                 JsonValue base;
                 FileHandle a = Gdx.files.external("usersettings.json");
@@ -85,13 +87,18 @@ public class SettingsMenu {
                 FileHandle file = Gdx.files.external("usersettings.json");
                 file.writeString(base.toString(), false);
                 super.touchUp(event, x, y, pointer, button);
-                return true;
             }
 
         });
         compSettings.add(btnAtras);
 
-        int x = 0;
+        int x =20;
+        lblNom = new Label(locale.get("settings.nombre"), labelStyle);
+        lblNom.setPosition(x, 90 + screenH / 10f);
+        lblNom.setAlignment(1);
+        lblNom.setVisible(false);
+		compSettings.add(lblNom);
+		
         for (int i = 0; i < 3; i++) {
             final Label l = new Label("A", labelStyle);
             l.setPosition(x, 0);
@@ -194,7 +201,7 @@ public class SettingsMenu {
                     for (Button btn : btnsMusic) {
                         if (btn == b) {
                             btn.setChecked(true);
-                            ;
+
                             musicVol++;
                             break;
                         } else {
@@ -208,6 +215,13 @@ public class SettingsMenu {
             });
             volX += 80;
         }
+		
+
+        lblCam = new Label(locale.get("settings.camara"), labelStyle);
+        lblCam.setSize(screenW / 10f, screenH / 10f);
+        lblCam.setPosition(4*screenW / 10f - screenW / 20f, 4 * screenH / 10f);
+        lblCam.setAlignment(1);
+        lblCam.setVisible(false);
 
         lblCameroMode = new Label(camModes[contCam], labelStyle);
         lblCameroMode.setSize(screenW / 10f, screenH / 10f);
@@ -219,18 +233,19 @@ public class SettingsMenu {
         btnCameraMode = new Button(skin);
         btnCameraMode.setSize(screenW / 10f, screenH / 10f);
         btnCameraMode.setPosition(screenW / 2f - screenW / 20f, 4 * screenH / 10f);
-        btnCameraMode.addListener(new InputListener() {
+        btnCameraMode.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 contCam = contCam == 2 ? 0 : contCam + 1;
                 lblCameroMode.setText(camModes[contCam]);
-                return true;
+                super.touchUp(event, x, y, pointer, button);
             }
         });
         btnCameraMode.setVisible(false);
 
         compSettings.add(btnCameraMode);
         compSettings.add(lblCameroMode);
+        compSettings.add(lblCam);
 
         setDesdeUserSettings();
     }

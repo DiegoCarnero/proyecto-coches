@@ -9,8 +9,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.proyectocoches.gamemodes.RaceManager;
+
+import java.util.Locale;
 
 public class RaceOsd implements Screen {
 
@@ -23,12 +26,15 @@ public class RaceOsd implements Screen {
 
     private final Label lblCountdown;
     private float contGo;
+    private final I18NBundle locale;
     private AssetManager am;
 
     public RaceOsd(Skin skin, RaceManager rm, AssetManager am) {
         this.am = am;
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = am.get("fonts/Cabin-Regular.ttf");
+
+        locale = am.get("locale/locale");
 
         UIStage = new Stage(new ScreenViewport());
         int screenW, screenH;
@@ -39,6 +45,7 @@ public class RaceOsd implements Screen {
         this.rm = rm;
 
         this.lblFin = new Label("", labelStyle);
+        lblFin.setAlignment(1);
         lblFin.setPosition(screenW / 2f, 0);
         lblFin.setVisible(false);
 
@@ -60,7 +67,7 @@ public class RaceOsd implements Screen {
         lblCountdown.setFontScale(2f);
         lblCountdown.setAlignment(1);
 
-        this.lblLista = new Label("lista\nlista2", labelStyle);
+        this.lblLista = new Label("lista\nlista2",skin);
         lblLista.setPosition(0, 0);
 
         this.lblPosicion = new Label("Pos 0/0", labelStyle);
@@ -102,7 +109,15 @@ public class RaceOsd implements Screen {
 
         if (rm.isJugadorAcabo()) {
             lblFin.setVisible(true);
-            lblFin.setText(String.format("%s %d", "Has terminado ", rm.getPosJugador()));
+
+            String msg = locale.get("osd.fin");
+            if (locale.getLocale() == Locale.ENGLISH) {
+                msg += " " + locale.get("osd.simboloPos") + "" + rm.getPosJugador();
+            } else {
+                msg += " " + rm.getPosJugador() + locale.get("osd.simboloPos");
+            }
+
+            lblFin.setText(msg);
             lblLista.setVisible(false);
             lblPosicion.setVisible(false);
             lblVuelta.setVisible(false);
