@@ -137,8 +137,6 @@ public class TestDrive implements Screen {
             }
             osd.render(delta);
             updateCam();
-        } else {
-
         }
     }
 
@@ -176,7 +174,7 @@ public class TestDrive implements Screen {
         jugador.getS().setCenterX(jugador.getBody().getPosition().x);
         jugador.getS().setCenterY(jugador.getBody().getPosition().y);
         jugador.getS().setOriginCenter();
-        jugador.getS().setSize(0.25f, 0.5f);
+        jugador.getS().setSize(0.4f, 0.8f);
         float rotation = (float) Math.toDegrees(jugador.getBody().getAngle());
         jugador.getS().setRotation(rotation);
         jugador.getS().draw(miBatch);

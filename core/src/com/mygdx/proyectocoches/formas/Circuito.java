@@ -316,7 +316,7 @@ public class Circuito {
             oponentes = maxOponentes;
         }
 
-        Vector2 tamCoche = new Vector2(5, 10);
+        Vector2 tamCoche = new Vector2(8, 16);
         boolean jugInit = false;
         int cont = 0;
 

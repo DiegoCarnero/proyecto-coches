@@ -49,7 +49,7 @@ public class Coche {
             fDef.filter.categoryBits = CAT_COCHE_JUG;
             fDef.filter.maskBits = CAT_CIRCUITO_MUROS | CAT_CIRCUITO_META | CAT_CIRCUITO_CHECKP1 | CAT_CIRCUITO_CHECKP2 | CAT_CIRCUITO_CHECKP3 | CAT_COCHE_IA;
         } else { // IA
-            fDef.density = 0.5f;
+            fDef.density = 0.2f;
             fDef.filter.categoryBits = CAT_COCHE_IA;
             fDef.filter.maskBits = CAT_CIRCUITO_MUROS | CAT_CIRCUITO_META | CAT_CIRCUITO_CHECKP1 | CAT_CIRCUITO_CHECKP2 | CAT_CIRCUITO_CHECKP3 | CAT_COCHE_IA_SENSOR | CAT_COCHE_IA | CAT_COCHE_JUG;
         }
