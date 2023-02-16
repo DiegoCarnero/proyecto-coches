@@ -259,8 +259,8 @@
    <polygon points="0,0 0,-133.333 -4.33337,-132.667 -4.33333,-0.333337"/>
   </object>
  </objectgroup>
- <objectgroup id="10" name="Checkpoint1" visible="0">
-  <object id="63" x="183.242" y="958.878">
+ <objectgroup id="10" name="Checkpoint1">
+  <object id="63" x="181.242" y="958.878">
    <polygon points="50.6667,-22 49.3333,-154.666 45.25,-154.417 46.0833,-21.6667"/>
   </object>
  </objectgroup>
