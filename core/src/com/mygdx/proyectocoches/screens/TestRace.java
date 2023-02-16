@@ -153,9 +153,10 @@ public class TestRace implements Screen {
                     rm.CuentaAtrasSet();
                 } else if (rm.CuentaAtras(delta)) {
                     update(delta);
+                    im.update();
                 }
-                im.update();
                 if (rm.isJugadorAcabo()) {
+                    osd.getmPausa().getBtnPausa().setVisible(false);
                     osd.getmPausa().getSalir().setVisible(true);
                 }
             }
@@ -214,7 +215,7 @@ public class TestRace implements Screen {
             c.getS().setCenterX(c.getBody().getPosition().x);
             c.getS().setCenterY(c.getBody().getPosition().y);
             c.getS().setOriginCenter();
-            c.getS().setSize(0.25f, 0.5f);
+            c.getS().setSize(0.4f, 0.8f);
             float rotation = (float) Math.toDegrees(c.getBody().getAngle());
             c.getS().setRotation(rotation);
 
