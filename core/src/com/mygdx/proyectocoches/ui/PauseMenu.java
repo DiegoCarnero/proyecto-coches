@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.mygdx.proyectocoches.ProyectoCOCHES;
-import com.mygdx.proyectocoches.screens.ScreenSelector;
+import com.mygdx.proyectocoches.screens.MainMenu;
 
 import java.util.ArrayList;
 
@@ -130,7 +130,7 @@ public class PauseMenu extends Actor {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 screen.dispose();
-                game.setScreen(new ScreenSelector(((ProyectoCOCHES) game)));
+                game.setScreen(new MainMenu(((ProyectoCOCHES) game)));
                 return true;
             }
         });
