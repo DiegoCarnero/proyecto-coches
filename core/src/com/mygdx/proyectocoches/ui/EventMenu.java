@@ -23,10 +23,14 @@ public class EventMenu {
 
     private final ArrayList<Actor> compEvento = new ArrayList<>();
 
+    private final Label lblOpos;
+    private final Label lblVueltas;
+    private final Label lblModo;
+
     private final Button btnCircuito;
     private final Label lblCircuito;
     private final Button btnModo;
-    private final Label lblModo;
+    private final Label lblModoName;
     private final Button btnAtras;
     private final Button btnJugar;
     private final Label lblJugar;
@@ -58,7 +62,7 @@ public class EventMenu {
         final int screenW = Gdx.graphics.getWidth();
         s = new Sprite((Texture) am.get("worlds/test_loop_mini.png"));
         s.setPosition(screenW / 2f, screenH / 4f);
-        s.setSize(screenH / 7f, screenH / 7f);
+        s.setSize(screenH / 17f, screenH / 17f);
 
         final I18NBundle locale = am.get("locale/locale");
 
@@ -70,7 +74,7 @@ public class EventMenu {
         circuitoNames[0] = locale.get("circuitos.test_loop");
         circuitoNames[1] = locale.get("circuitos.track_1");
 
-        btnCircuito = new TextButton("test_loop", skin);
+        btnCircuito = new TextButton("", skin);
         btnCircuito.setSize(screenH / 7f, screenH / 7f);
         btnCircuito.setPosition(screenW / 2f, screenH / 4f);
         btnCircuito.addListener(new ClickListener() {
@@ -87,13 +91,19 @@ public class EventMenu {
         });
         btnCircuito.setVisible(false);
 
-        lblCircuito = new Label(circuitoNames[0], skin);
+        lblCircuito = new Label(circuitoNames[0], labelStyle);
         lblCircuito.setAlignment(1);
         lblCircuito.setPosition(screenW / 2f, screenH / 4f - screenH / 7f);
         lblCircuito.setVisible(false);
 
-        lblNumOpos = new Label(numOpos + "", skin);
+        lblModo = new Label(locale.get("event.modo"), labelStyle);
+        lblModo.setAlignment(1);
+        lblModo.setPosition(screenW / 2f - screenW / 20f, screenH / 10f);
+        lblModo.setVisible(false);
+
+        lblNumOpos = new Label(numOpos + "", labelStyle);
         lblNumOpos.setPosition(2 * screenW / 12f + screenH / 10f, screenH / 2f - screenH / 10f);
+        lblNumOpos.setAlignment(1);
         lblNumOpos.setVisible(false);
 
         opoUp = new TextButton(">", skin);
@@ -122,9 +132,20 @@ public class EventMenu {
         });
         opoDown.setVisible(false);
 
-        lblNumVueltas = new Label(numVueltas + "", skin);
+        lblNumVueltas = new Label(numVueltas + "", labelStyle);
         lblNumVueltas.setPosition(10 * screenW / 12f + screenH / 10f, screenH / 2f - screenH / 10f);
         lblNumVueltas.setVisible(false);
+        lblNumVueltas.setAlignment(1);
+
+        lblVueltas = new Label(locale.get("event.vueltas"), labelStyle);
+        lblVueltas.setPosition(10 * screenW / 12f + screenH / 10f, screenH / 2f - screenH / 10f);
+        lblVueltas.setTouchable(Touchable.disabled);lblVueltas.setAlignment(1);
+        lblVueltas.setVisible(false);
+
+        lblOpos = new Label(locale.get("event.opos"), labelStyle);
+        lblOpos.setPosition(2 * screenW / 12f + screenH / 10f, screenH / 2f - screenH / 10f);
+        lblOpos.setTouchable(Touchable.disabled);lblOpos.setAlignment(1);
+        lblOpos.setVisible(false);
 
         vueltaUp = new TextButton(">", skin);
         vueltaUp.setSize(screenH / 10f, screenH / 10f);
@@ -157,12 +178,12 @@ public class EventMenu {
         btnAtras.setPosition(0, -screenH / 2f + screenH / 10f);
         btnAtras.setVisible(false);
 
-        lblModo = new Label(modos[contModo], skin);
-        lblModo.setSize(screenW / 10f, screenH / 10f);
-        lblModo.setPosition(screenW / 2f - screenW / 20f, screenH / 10f);
-        lblModo.setTouchable(Touchable.disabled);
-        lblModo.setAlignment(1);
-        lblModo.setVisible(false);
+        lblModoName = new Label(modos[contModo], labelStyle);
+        lblModoName.setSize(screenW / 10f, screenH / 10f);
+        lblModoName.setPosition(screenW / 2f - screenW / 20f, screenH / 10f);
+        lblModoName.setTouchable(Touchable.disabled);
+        lblModoName.setAlignment(1);
+        lblModoName.setVisible(false);
 
         btnModo = new Button(skin);
         btnModo.setSize(screenW / 10f, screenH / 10f);
@@ -171,7 +192,7 @@ public class EventMenu {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 contModo = contModo == modos.length - 1 ? 0 : contModo + 1;
-                lblModo.setText(modos[contModo]);
+                lblModoName.setText(modos[contModo]);
 
                 // deshabilitar si contrarreloj
                 opoDown.setVisible(contModo != 1);
@@ -180,6 +201,8 @@ public class EventMenu {
                 vueltaDown.setVisible(contModo != 1);
                 vueltaUp.setVisible(contModo != 1);
                 lblNumVueltas.setVisible(contModo != 1);
+                lblOpos.setVisible(contModo != 1);
+                lblVueltas.setVisible(contModo != 1);
                 super.touchUp(event, x, y, pointer, button);
             }
         });
@@ -207,18 +230,21 @@ public class EventMenu {
         btnJugar.setVisible(false);
 
         compEvento.add(btnModo);
-        compEvento.add(lblModo);
+        compEvento.add(lblModoName);
         compEvento.add(opoUp);
         compEvento.add(opoDown);
         compEvento.add(btnAtras);
         compEvento.add(btnJugar);
         compEvento.add(lblJugar);
+        compEvento.add(lblVueltas);
+        compEvento.add(lblOpos);
         compEvento.add(btnCircuito);
         compEvento.add(lblCircuito);
         compEvento.add(lblNumOpos);
         compEvento.add(vueltaDown);
         compEvento.add(vueltaUp);
         compEvento.add(lblNumVueltas);
+        compEvento.add(lblModo);
 
     }
 
@@ -227,7 +253,7 @@ public class EventMenu {
         contCircuito = 0;
         contModo = 0;
         lblCircuito.setText(circuitos[contCircuito]);
-        lblModo.setText(modos[contModo]);
+        lblModoName.setText(modos[contModo]);
         for (Actor a : compEvento) {
             a.setVisible(showing);
         }
