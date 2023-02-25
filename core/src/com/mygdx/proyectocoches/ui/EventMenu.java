@@ -218,19 +218,19 @@ public class EventMenu {
         lblJugar = new Label(locale.get("event.empezar"), labelStyle);
         lblJugar.setAlignment(1);
         lblJugar.setSize(screenW / 10f, screenH / 10f);
-        lblJugar.setPosition(screenW / 2f - screenW / 10, -screenH / 2f);
+        lblJugar.setPosition(screenW / 2f - screenW / 10f, -screenH / 2f);
         lblJugar.setVisible(false);
         lblJugar.setTouchable(Touchable.disabled);
 
         btnJugar = new TextButton("", skin);
         btnJugar.setSize(screenW / 10f, screenH / 10f);
-        btnJugar.setPosition(screenW / 2f - screenW / 10, -screenH / 2f);
+        btnJugar.setPosition(screenW / 2f - screenW / 10f, -screenH / 2f);
         btnJugar.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                GameSettings gs = new GameSettings(numOpos, circuitos[contCircuito], contModo, 0, "AAA", numVueltas, bundle);
+                GameSettings gs = new GameSettings(numOpos, circuitos[contCircuito], contModo, numVueltas);
                 setShowing(false);
-                g.setScreen(new LoadingScreen(am, g, skin, gs, locale.get("cargando")));
+                g.setScreen(new LoadingScreen(am, g, skin, gs));
                 super.touchUp(event, x, y, pointer, button);
             }
         });
