@@ -165,7 +165,7 @@ public class PauseMenu extends Actor {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 screen.dispose();
-                game.setScreen(new MainMenu(((ProyectoCOCHES) game)));
+                game.setScreen(new MainMenu(game));
                 return true;
             }
         });
@@ -224,6 +224,10 @@ public class PauseMenu extends Actor {
     }
 
     public Button getBtnPausa() {
+        return btnPausa;
+    }
+
+    public Button getLblSalir() {
         return btnPausa;
     }
 
