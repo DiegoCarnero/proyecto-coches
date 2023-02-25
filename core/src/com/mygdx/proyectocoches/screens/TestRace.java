@@ -14,6 +14,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -33,6 +34,7 @@ import com.mygdx.proyectocoches.formas.Circuito;
 import com.mygdx.proyectocoches.gamemodes.RaceManager;
 import com.mygdx.proyectocoches.ui.RaceOsd;
 import com.mygdx.proyectocoches.ui.TestOsd;
+import com.mygdx.proyectocoches.utils.ControllerInput;
 import com.mygdx.proyectocoches.utils.GameSettings;
 import com.mygdx.proyectocoches.utils.InputManager;
 import com.mygdx.proyectocoches.utils.MiOrthoCam;
@@ -110,8 +112,13 @@ public class TestRace implements Screen {
         this.rm = new RaceManager(circuito.getCompetidores(), circuito.cargarSplineControl(), gs.getnVueltas());
         miWorld.setContactListener(new miContactListener(rm));
         this.rOsd = new RaceOsd(skin, rm,am);
-        this.pi = osd;
-        im = new InputManager(osd, jugador, this.am);
+
+        if (Controllers.getControllers().size > 0) {
+            pi = new ControllerInput(Controllers.getControllers().get(0));
+        } else {
+            this.pi = osd;
+        }
+        im = new InputManager(pi, jugador, this.am);
 
         this.rutas = circuito.cargarRutas();
         for (Competidor c : circuito.getCompetidores()) {
@@ -158,6 +165,7 @@ public class TestRace implements Screen {
                 if (rm.isJugadorAcabo()) {
                     osd.getmPausa().getBtnPausa().setVisible(false);
                     osd.getmPausa().getSalir().setVisible(true);
+                    osd.getmPausa().getLblSalir().setVisible(true);
                 }
             }
             osd.render(delta);
