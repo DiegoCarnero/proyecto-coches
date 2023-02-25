@@ -72,7 +72,7 @@ public class TestRace implements Screen {
         asM = new AssetManager();
         this.am = new AudioManager(asM);
         this.skin = skin;
-        osd = new TestOsd(0, juego, skin, gs);
+        osd = new TestOsd(0, juego, skin, gs, am);
 
         this.miBatch = new SpriteBatch();
         this.miWorld = new World(new Vector2(0, 0), true);

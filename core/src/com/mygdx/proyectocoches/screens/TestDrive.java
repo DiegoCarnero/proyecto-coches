@@ -67,7 +67,7 @@ public class TestDrive implements Screen {
         asM = new AssetManager();
         this.am = new AudioManager(asM);
         this.skin = skin;
-        osd = new TestOsd(1, juego, skin, gs);
+        osd = new TestOsd(1, juego, skin, gs, am);
 
         asM.load("vehicles/ford_focus_m.png", Texture.class);
         asM.finishLoading();

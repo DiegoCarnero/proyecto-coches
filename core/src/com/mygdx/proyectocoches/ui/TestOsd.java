@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -37,7 +38,7 @@ public class TestOsd implements Screen, PlayerInput {
     private final PauseMenu mPausa;
     private final ArrayList<Actor> compControles = new ArrayList<>();
 
-    public TestOsd(int modo, Game miGame, Skin skin, GameSettings gs) {
+    public TestOsd(int modo, Game miGame, Skin skin, GameSettings gs, AssetManager am) {
 
         UIStage = new Stage(new ScreenViewport());
 
@@ -153,7 +154,7 @@ public class TestOsd implements Screen, PlayerInput {
         UIStage.addActor(btnR);
         UIStage.addActor(btnB);
 
-        this.mPausa = new PauseMenu(miGame, modo, skin, gs.getCircuito());
+        this.mPausa = new PauseMenu(miGame, modo, skin, gs.getCircuito(), am);
         UIStage.addActor(mPausa.getBtnPausa());
 
         for (Actor a : mPausa.getCompPausa()) {
@@ -168,7 +169,7 @@ public class TestOsd implements Screen, PlayerInput {
 
     }
 
-    public PauseMenu getmPausa(){
+    public PauseMenu getmPausa() {
         return mPausa;
     }
 

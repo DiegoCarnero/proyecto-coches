@@ -43,14 +43,16 @@ public class EventMenu {
 
     private final String[] modos = new String[]{"carrera", "contrarreloj"};
     private final String[] circuitos = new String[]{"test_loop", "track_1"};
-    private final String[] circuitoNames = new String[]{"test_loop", "track_1"};
+    private final String[] circuitoNames = new String[]{"Dirtona 500", "track_1"};
     private boolean showing;
     private int contModo = 0;
     private int contCircuito = 0;
     private int numOpos = 4;
     private int numVueltas = 3;
-    private Sprite s;
+    private final Sprite s;
     private final AssetManager am;
+    final int screenH = Gdx.graphics.getHeight();
+    final int screenW = Gdx.graphics.getWidth();
 
     public Sprite getS() {
         return s;
@@ -58,10 +60,8 @@ public class EventMenu {
 
     public EventMenu(final Skin skin, final Game g, final AssetManager am, final I18NBundle bundle) {
         this.am = am;
-        final int screenH = Gdx.graphics.getHeight();
-        final int screenW = Gdx.graphics.getWidth();
         s = new Sprite((Texture) am.get("worlds/test_loop_mini.png"));
-        s.setPosition(screenW / 2f, screenH / 4f);
+        s.setPosition(screenW / 2f, 2 * screenH / 5f);
         s.setSize(screenH / 17f, screenH / 17f);
 
         final I18NBundle locale = am.get("locale/locale");
@@ -75,15 +75,15 @@ public class EventMenu {
         circuitoNames[1] = locale.get("circuitos.track_1");
 
         btnCircuito = new TextButton("", skin);
-        btnCircuito.setSize(screenH / 7f, screenH / 7f);
-        btnCircuito.setPosition(screenW / 2f, screenH / 4f);
+        btnCircuito.setSize(screenW / 5f, screenH / 9f);
+        btnCircuito.setPosition(screenW / 2f, -3 * screenH / 10f);
         btnCircuito.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 contCircuito = contCircuito == circuitos.length - 1 ? 0 : contCircuito + 1;
                 s.set(new Sprite((Texture) am.get("worlds/" + circuitos[contCircuito] + "_mini.png")));
                 s.setX(screenW / 2f);
-                s.setY(screenH / 4f);
+                s.setY(2 * screenH / 5f);
                 s.setSize(screenH / 7f, screenH / 7f);
                 lblCircuito.setText(circuitoNames[contCircuito]);
                 super.touchUp(event, x, y, pointer, button);
@@ -92,23 +92,28 @@ public class EventMenu {
         btnCircuito.setVisible(false);
 
         lblCircuito = new Label(circuitoNames[0], labelStyle);
+        lblCircuito.setSize(screenW / 5f, screenH / 9f);
         lblCircuito.setAlignment(1);
-        lblCircuito.setPosition(screenW / 2f, screenH / 4f - screenH / 7f);
+        lblCircuito.setTouchable(Touchable.disabled);
+        lblCircuito.setWrap(true);
+        lblCircuito.setPosition(screenW / 2f, -3 * screenH / 10f);
         lblCircuito.setVisible(false);
 
         lblModo = new Label(locale.get("event.modo"), labelStyle);
+        lblModo.setSize(screenH / 10f, screenH / 10f);
+        lblModo.setPosition(screenW / 12f, screenH / 2f - 5 * screenH / 10f);
         lblModo.setAlignment(1);
-        lblModo.setPosition(screenW / 2f - screenW / 20f, screenH / 10f);
         lblModo.setVisible(false);
 
         lblNumOpos = new Label(numOpos + "", labelStyle);
-        lblNumOpos.setPosition(2 * screenW / 12f + screenH / 10f, screenH / 2f - screenH / 10f);
+        lblNumOpos.setSize(screenH / 10f, screenH / 10f);
+        lblNumOpos.setPosition(screenW / 12f + screenH / 10f, screenH / 2f - 2 * screenH / 10f);
         lblNumOpos.setAlignment(1);
         lblNumOpos.setVisible(false);
 
         opoUp = new TextButton(">", skin);
         opoUp.setSize(screenH / 10f, screenH / 10f);
-        opoUp.setPosition(2 * screenW / 12f, screenH / 2f - screenH / 10f);
+        opoUp.setPosition(screenW / 12f + 2 * screenH / 10f, screenH / 2f - 2 * screenH / 10f);
         opoUp.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -121,7 +126,7 @@ public class EventMenu {
 
         opoDown = new TextButton("<", skin);
         opoDown.setSize(screenH / 10f, screenH / 10f);
-        opoDown.setPosition(2 * screenW / 12f + screenH / 10f, screenH / 2f - 2 * screenH / 10f);
+        opoDown.setPosition(screenW / 12f, screenH / 2f - 2 * screenH / 10f);
         opoDown.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -133,23 +138,25 @@ public class EventMenu {
         opoDown.setVisible(false);
 
         lblNumVueltas = new Label(numVueltas + "", labelStyle);
-        lblNumVueltas.setPosition(10 * screenW / 12f + screenH / 10f, screenH / 2f - screenH / 10f);
+        lblNumVueltas.setSize(screenH / 10f, screenH / 10f);
+        lblNumVueltas.setPosition(screenW / 12f + screenH / 10f, screenH / 2f - 4 * screenH / 10f);
         lblNumVueltas.setVisible(false);
         lblNumVueltas.setAlignment(1);
 
         lblVueltas = new Label(locale.get("event.vueltas"), labelStyle);
-        lblVueltas.setPosition(10 * screenW / 12f + screenH / 10f, screenH / 2f - screenH / 10f);
-        lblVueltas.setTouchable(Touchable.disabled);lblVueltas.setAlignment(1);
+        lblVueltas.setPosition(screenW / 12f, screenH / 2f - 3 * screenH / 10f);
+        lblVueltas.setTouchable(Touchable.disabled);
         lblVueltas.setVisible(false);
 
         lblOpos = new Label(locale.get("event.opos"), labelStyle);
-        lblOpos.setPosition(2 * screenW / 12f + screenH / 10f, screenH / 2f - screenH / 10f);
-        lblOpos.setTouchable(Touchable.disabled);lblOpos.setAlignment(1);
+        lblOpos.setSize(screenH / 10f, screenH / 10f);
+        lblOpos.setPosition(screenW / 12f, screenH / 2f - screenH / 10f);
+        lblOpos.setTouchable(Touchable.disabled);
         lblOpos.setVisible(false);
 
         vueltaUp = new TextButton(">", skin);
         vueltaUp.setSize(screenH / 10f, screenH / 10f);
-        vueltaUp.setPosition(10 * screenW / 12f, screenH / 2f - screenH / 10f);
+        vueltaUp.setPosition(screenW / 12f + 2 * screenH / 10f, screenH / 2f - 4 * screenH / 10f);
         vueltaUp.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -162,7 +169,7 @@ public class EventMenu {
 
         vueltaDown = new TextButton("<", skin);
         vueltaDown.setSize(screenH / 10f, screenH / 10f);
-        vueltaDown.setPosition(10 * screenW / 12f + screenH / 10f, screenH / 2f - 2 * screenH / 10f);
+        vueltaDown.setPosition(screenW / 12f, screenH / 2f - 4 * screenH / 10f);
         vueltaDown.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -179,15 +186,15 @@ public class EventMenu {
         btnAtras.setVisible(false);
 
         lblModoName = new Label(modos[contModo], labelStyle);
-        lblModoName.setSize(screenW / 10f, screenH / 10f);
-        lblModoName.setPosition(screenW / 2f - screenW / 20f, screenH / 10f);
+        lblModoName.setSize(screenW / 7f, screenH / 10f);
+        lblModoName.setPosition(screenW / 12f, screenH / 2f - 6 * screenH / 10f);
         lblModoName.setTouchable(Touchable.disabled);
         lblModoName.setAlignment(1);
         lblModoName.setVisible(false);
 
         btnModo = new Button(skin);
-        btnModo.setSize(screenW / 10f, screenH / 10f);
-        btnModo.setPosition(screenW / 2f - screenW / 20f, screenH / 10f);
+        btnModo.setSize(screenW / 7f, screenH / 10f);
+        btnModo.setPosition(screenW / 12f, screenH / 2f - 6 * screenH / 10f);
         btnModo.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -211,13 +218,13 @@ public class EventMenu {
         lblJugar = new Label(locale.get("event.empezar"), labelStyle);
         lblJugar.setAlignment(1);
         lblJugar.setSize(screenW / 10f, screenH / 10f);
-        lblJugar.setPosition(0, -screenH / 2f);
+        lblJugar.setPosition(screenW / 2f - screenW / 10, -screenH / 2f);
         lblJugar.setVisible(false);
         lblJugar.setTouchable(Touchable.disabled);
 
         btnJugar = new TextButton("", skin);
         btnJugar.setSize(screenW / 10f, screenH / 10f);
-        btnJugar.setPosition(0, -screenH / 2f);
+        btnJugar.setPosition(screenW / 2f - screenW / 10, -screenH / 2f);
         btnJugar.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -252,7 +259,10 @@ public class EventMenu {
         this.showing = showing;
         contCircuito = 0;
         contModo = 0;
-        lblCircuito.setText(circuitos[contCircuito]);
+        s.set(new Sprite((Texture) am.get("worlds/" + circuitos[contCircuito] + "_mini.png")));
+        s.setX(screenW / 2f);
+        s.setY(2 * screenH / 5f);
+        lblCircuito.setText(circuitoNames[contCircuito]);
         lblModoName.setText(modos[contModo]);
         for (Actor a : compEvento) {
             a.setVisible(showing);

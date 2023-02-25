@@ -1,6 +1,7 @@
 package com.mygdx.proyectocoches.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
@@ -20,10 +22,16 @@ public class RecordsMenu extends Actor {
     private final Button btnAtras;
     private final ArrayList<Actor> compRecords = new ArrayList<>();
     private final String nomCircuito;
+    private final I18NBundle locale;
 
-    public RecordsMenu(String nomCircuito, Skin skin) {
+    public RecordsMenu(String nomCircuito, Skin skin, AssetManager am) {
 
-        lblRecords = new Label("", skin);
+        locale = am.get("locale/locale");
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = am.get("fonts/Cabin-Regular.ttf");
+
+        lblRecords = new Label("", labelStyle);
         this.nomCircuito = nomCircuito;
         int screenH;
         screenH = Gdx.graphics.getHeight();
@@ -71,7 +79,8 @@ public class RecordsMenu extends Actor {
             String recordsAux = "";
             if (nomCircuito.equals("")) {
                 for (int i = 0; i < base.size; i++) {
-                    recordsAux += String.format("%s\n",base.get(i).name);
+                    String circuitNomLocal = locale.get("circuitos."+base.get(i).name);
+                    recordsAux += String.format("%s\n", circuitNomLocal);
                     for (int j = 0; j < base.get(i).size; j++) {
                         recordsAux += String.format("%s      %s\n", base.get(i).get(j).name, getTiempoFormat(base.get(i).get(j).asFloat()));
                     }
