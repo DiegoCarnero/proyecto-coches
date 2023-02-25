@@ -105,6 +105,7 @@ public class AudioManager implements Disposable {
         sonMedio1 = asM.get("audio/sfx/medio1.ogg");
         cancion = asM.get("audio/music/EvanSchaeffer-Bounce.mp3");
 
+        soniAct = sonMedio1;
         try {
             Thread.sleep(600);
         } catch (InterruptedException e) {
@@ -126,7 +127,6 @@ public class AudioManager implements Disposable {
         sonParado1.stop();
         sonParado2.stop();
 
-        soniAct.dispose();
         sonParado1.dispose();
         sonParado2.dispose();
         sonAcc1.dispose();
