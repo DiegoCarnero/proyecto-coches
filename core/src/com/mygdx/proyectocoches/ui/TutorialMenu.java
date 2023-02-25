@@ -42,12 +42,6 @@ public class TutorialMenu {
         screenH = Gdx.graphics.getHeight();
         int screenW;
         screenW = Gdx.graphics.getWidth();
-        lblTitulo = new Label("Titulo", labelStyle);
-        lblTitulo.setPosition(screenW * 2 / 4f, screenH / 2f - screenH / 10f);
-        lblTitulo.setVisible(false);
-        lblDescip = new Label("Descip", labelStyle);
-        lblDescip.setPosition(screenW * 2 / 4f, screenH / 2f - screenH / 4f);
-        lblDescip.setVisible(false);
 
         I18NBundle locale = am.get("locale/locale");
         titulos[0] = locale.get("tutorial.t1");
@@ -58,6 +52,14 @@ public class TutorialMenu {
         descrips[2] = locale.get("tutorial.d3");
         titulos[3] = locale.get("tutorial.t4");
         descrips[3] = locale.get("tutorial.d4");
+
+        lblTitulo = new Label(titulos[0], labelStyle);
+        lblTitulo.setPosition(screenW * 2 / 4f, screenH / 2f - screenH / 10f);
+        lblTitulo.setVisible(false);
+        lblDescip = new Label(descrips[0], labelStyle);
+        lblDescip.setPosition(screenW * 2 / 4f, -screenH / 10f);
+        lblDescip.setWrap(true);
+        lblDescip.setVisible(false);
 
         sprites = new Sprite[1];
         sprites[0] = new Sprite((Texture) am.get("badlogic.jpg"));
@@ -84,7 +86,7 @@ public class TutorialMenu {
         btnPrev.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                cont = cont == 0 ? 0 : titulos.length - 1;
+                cont = cont == 0 ? titulos.length - 1 : cont - 1;
                 lblTitulo.setText(titulos[cont]);
                 lblDescip.setText(descrips[cont]);
                 // TODO cambia imagen
