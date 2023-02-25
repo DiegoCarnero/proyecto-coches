@@ -10,11 +10,26 @@ import com.badlogic.gdx.physics.box2d.Body;
  */
 public class MiOrthoCam extends OrthographicCamera {
 
+    /**
+     * Zoom de la cámara cuando se escuentra en su mínimo
+     */
     private static final float ZOOM_BAJO = 0.4f;
+    /**
+     * Zoom de la cámara cuando se escuentra en su máximo
+     */
     private static final float ZOOM_ALTO = 0.8f;
+    /**
+     * Velocidad por debajo de la cual no se ajusta la cámara
+     */
     private static final float VELO_LIM_BAJO = 3f;
+    /**
+     * Velocidad por encima de la cual no se ajusta la cámara
+     */
     private static final float VELO_LIM_ALTO = 5f;
 
+    /**
+     * Ultima velocidad recibida para calcular el zoom
+     */
     private float ultimaVelo;
 
     /**

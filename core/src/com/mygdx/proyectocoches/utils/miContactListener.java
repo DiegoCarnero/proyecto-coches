@@ -10,15 +10,58 @@ import com.mygdx.proyectocoches.entidades.Competidor;
 import com.mygdx.proyectocoches.gamemodes.Gamemode;
 import com.mygdx.proyectocoches.gamemodes.TimeTrialManager;
 
+/**
+ * ContactListener personalizado para gestionar contacto con cuerpos de control e informa al {@link Gamemode} asociado de cada contacto relevante
+ *
+ * <ul>
+ *     <li>jugador->meta</li>
+ *     <li>IA->meta</li>
+ *     <li>jugador->sector1</li>
+ *     <li>IA->sector1</li>
+ *     <li>jugador->sector2</li>
+ *     <li>IA->sector2</li>
+ *     <li>jugador->sector3</li>
+ *     <li>IA->sector3</li>
+ *     <li>IA->sensor</li>
+ * </ul>
+ */
 public class miContactListener implements ContactListener {
 
+    /**
+     * Modo de juego al que se le informara de cada contacto relevante
+     */
     Gamemode gm;
 
+    /**
+     * ContactListener personalizado para gestionar contacto con cuerpos de control e informa al {@link Gamemode} asociado de cada contacto relevante
+     *
+     * <ul>
+     *     <li>jugador->meta</li>
+     *     <li>IA->meta</li>
+     *     <li>jugador->sector1</li>
+     *     <li>IA->sector1</li>
+     *     <li>jugador->sector2</li>
+     *     <li>IA->sector2</li>
+     *     <li>jugador->sector3</li>
+     *     <li>IA->sector3</li>
+     *     <li>IA->sensor</li>
+     * </ul>
+     * @param gm modo de juego al que se informara de cada contacto relevante
+     */
     public miContactListener(Gamemode gm) {
         super();
         this.gm = gm;
     }
 
+    /**
+     * Called when two fixtures begin to touch.
+     * Informa al {@link Gamemode} asociado de que tipo de contacto ha ocurrido
+     * <p>
+     *     Si es un uno de los contactos es un {@link CocheIA} contra su sensor, advierte de un cambio a la siguiente posicion
+     * </p>
+     *
+     * @param contact
+     */
     @Override
     public void beginContact(Contact contact) {
 
@@ -28,7 +71,7 @@ public class miContactListener implements ContactListener {
 
         if (((a | b) == 0x5) || ((a | b) == 0xC)) {// jugador->meta || IA->meta
             gm.setCruzandoMeta(true,bUD);
-			
+
             if (!gm.isPrimeraVuelta(bUD) && gm.hasCruzadoS1(bUD) && gm.hasCruzadoS2(bUD)) {
                 gm.CompletadoSector3(bUD);
                 gm.setCruzandoS1(false,bUD);
@@ -59,6 +102,11 @@ public class miContactListener implements ContactListener {
         }
     }
 
+    /**
+     * Called when two fixtures cease to touch.
+     *
+     * @param contact
+     */
     @Override
     public void endContact(Contact contact) {
 

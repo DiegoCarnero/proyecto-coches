@@ -13,17 +13,43 @@ import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
+/**
+ * Sistema de gestiones logicas para el modo de juego 'Contrarreloj'
+ */
 public class TimeTrialManager implements Gamemode {
 
+    /**
+     * Mejor tiempo de vuelta en la sesion actual
+     */
     private float tMejorVuelta = Float.MAX_VALUE;
-
+    /**
+     * Tiempo de vuelta actual
+     */
     private float tVueltaActual;
+    /**
+     * Tiempo en el sector 1
+     */
     private float tSector1;
+    /**
+     * Tiempo en el sector 2
+     */
     private float tSector2;
+    /**
+     * Tiempo en el sector 3
+     */
     private float tSector3;
+    /**
+     * Jugador
+     */
     private final Competidor jugador;
+    /**
+     * Nombre del circuito (no localizado) para gestion interna del programa
+     */
     private final String nomCircuito;
 
+    /**
+     * Guarda el mejor tiempo de vuelta al archivo de records
+     */
     private void GrabaRecords() {
         JsonReader json = new JsonReader();
         JsonValue base;
@@ -49,24 +75,47 @@ public class TimeTrialManager implements Gamemode {
         file.writeString(base.toString(), false);
     }
 
+    /**
+     * Actualiza el tiempo de vuelta actual
+     *
+     * @param delta tiempo pasado desde el ultimo calculo
+     */
     public void update(float delta) {
         tVueltaActual += delta;
     }
 
+    /**
+     * Indica si el Competidor pasado por parametro se encuentra en el Sector1. Si 'true' el Competidor ha cruzado la meta y el sensor del Sector1 en ese orden
+     *
+     * @return true si esta cruzando el Sector1, false si no
+     */
     public boolean isCruzandoS1() {
         return jugador.isCruzandoS1();
     }
 
+    /**
+     * Indica si el competidor se encuentra en el Sector2. Si 'true' el Competidor ha cruzado la meta, el Sector1 y el sensor del Sector2 en ese orden
+     *
+     * @return true si esta cruzando el Sector2, false si no
+     */
     public boolean isCruzandoS2() {
         return jugador.isCruzandoS2();
     }
 
+    /**
+     * Sistema de gestiones logicas para el modo de juego 'Contrarreloj'
+     */
     public TimeTrialManager(Competidor jugador, String nomCircuito) {
         this.jugador = jugador;
         this.nomCircuito = nomCircuito;
     }
 
-    @Override
+    /**
+     * Se lanza cuando el Competidor pasado por parametro cruza la meta. Resetea los valores de tiempos de los sectores y guarda el nuevo tiempo si es mejor que el ultimo obtenido
+     *
+     * @param userData competidor
+     * @param userData
+     */
     public void NuevaVuelta(Competidor userData) {
 
         if (jugador.isEnVuelta() && jugador.hasCruzadoS3() && jugador.hasCruzadoS1() && jugador.hasCruzadoS2()) {
@@ -85,24 +134,11 @@ public class TimeTrialManager implements Gamemode {
 
     }
 
-    public void CompletadoSector3() {
-        jugador.setCruzadoS3(true);
-        tSector3 = tVueltaActual - tSector1 - tSector2;
-
-    }
-
-    public void CompletadoSector2() {
-        jugador.setCruzadoS2(true);
-        tSector2 = tVueltaActual - tSector1;
-
-    }
-
-    public void CompletadoSector1() {
-        jugador.setCruzadoS1(true);
-        tSector1 = tVueltaActual;
-
-    }
-
+    /**
+     * Devuelte el tiempo de vuelta como un {@link String} formateado
+     *
+     * @return tiempo de vuelta
+     */
     public String gettVueltaActualStr() {
 
         String retorno = "";
@@ -113,6 +149,12 @@ public class TimeTrialManager implements Gamemode {
         return retorno;
     }
 
+    /**
+     * Formatea a mm:ss.ddd el valor pasado por parametro
+     *
+     * @param t tiempo a formatear
+     * @return tiempo formateado
+     */
     @SuppressWarnings("DefaultLocale")
     private String getTiempoFormat(float t) {
 
@@ -124,6 +166,11 @@ public class TimeTrialManager implements Gamemode {
         return String.format("%d:%02d.%03d", mins, secs, milis);
     }
 
+    /**
+     * Devuelte el mejor tiempo como un {@link String} formateado
+     *
+     * @return mejor tiempo de vuelta formateado
+     */
     public String gettVueltaMejorStr() {
 
         String retorno = "";
@@ -134,6 +181,11 @@ public class TimeTrialManager implements Gamemode {
         return retorno;
     }
 
+    /**
+     * Devuelte el tiempo en el Sector1 como un {@link String} formateado
+     *
+     * @return tiempo Sector1 formateado
+     */
     public String gettSector1Str() {
         String retorno = "";
         if (isCruzandoS1() && !isCruzandoS2()) {
@@ -145,6 +197,11 @@ public class TimeTrialManager implements Gamemode {
         return retorno;
     }
 
+    /**
+     * Devuelte el tiempo en el Sector2 como un {@link String} formateado
+     *
+     * @return tiempo Sector2 formateado
+     */
     public String gettSector2Str() {
         String retorno = "";
         if (jugador.isCruzandoS2() && !jugador.isCruzandoS3()) {
@@ -156,6 +213,11 @@ public class TimeTrialManager implements Gamemode {
         return retorno;
     }
 
+    /**
+     * Devuelte el tiempo en el Sector3 como un {@link String} formateado
+     *
+     * @return tiempo Sector3 formateado
+     */
     public String gettSector3Str() {
         String retorno = "";
         if (jugador.isCruzandoS3()) {
@@ -165,77 +227,163 @@ public class TimeTrialManager implements Gamemode {
         return retorno;
     }
 
-
+    /**
+     * Establece si el Competidor pasado por parametro ha cruzado la meta
+     *
+     * @param cruzandoMeta si este Competidor ha cruzado la meta
+     * @param userData     competidor
+     */
     @Override
     public void setCruzandoMeta(boolean cruzandoMeta, Competidor userData) {
         userData.setCruzandoMeta(cruzandoMeta);
     }
 
+    /**
+     * Devuelve si el Competidor pasado por parametro se encuentra en su primera vuelta.
+     *
+     * @param userData competidor
+     * @return true si aun no ha cruzado la meta, false si ya la ha cruzado
+     */
     @Override
     public boolean isPrimeraVuelta(Competidor userData) {
         return userData.isPrimeraVuelta();
     }
 
+    /**
+     * Devuelve si el Competidor pasado por parametro ha completado con exito en Sector3
+     *
+     * @param userData competidor
+     * @return true si ha completado el Sector1, false si no
+     */
     @Override
     public boolean hasCruzadoS1(Competidor userData) {
         return userData.hasCruzadoS1();
     }
 
+    /**
+     * Devuelve si el Competidor pasado por parametro ha completado con exito en Sector3
+     *
+     * @param userData competidor
+     * @return true si ha completado el Sector2, false si no
+     */
     @Override
     public boolean hasCruzadoS2(Competidor userData) {
         return userData.hasCruzadoS2();
     }
 
+    /**
+     * Establece si el Competidor pasado por parametro ha completado con exito el Sector1
+     *
+     * @param userData competidor
+     */
     @Override
     public void CompletadoSector3(Competidor userData) {
         userData.CompletadoSector3(true);
     }
 
+    /**
+     * Establece si el Competidor pasado por parametro esta cruzando el Sector1
+     *
+     * @param b        si este Competidor se encuentra en el Sector1
+     * @param userData competidor
+     */
     @Override
     public void setCruzandoS1(boolean b, Competidor userData) {
         userData.setCruzandoS1(b);
     }
 
+    /**
+     * Establece si el Competidor pasado por parametro esta cruzando el Sector2
+     *
+     * @param b        si este Competidor se encuentra en el Sector2
+     * @param userData competidor
+     */
     @Override
     public void setCruzandoS2(boolean b, Competidor userData) {
         userData.setCruzandoS2(b);
     }
 
+    /**
+     * Establece si el Competidor pasado por parametro esta cruzando el Sector3
+     *
+     * @param b        si este Competidor se encuentra en el Sector3
+     * @param userData competidor
+     */
     @Override
     public void setCruzandoS3(boolean b, Competidor userData) {
         userData.setCruzandoS3(b);
     }
 
+    /**
+     * Indica si el Competidor esta cruzando la meta. Se usa para verificar que el Competidor pasado por parametro lleva la direccion correcta cuando cruza el sensor del Sector1
+     *
+     * @param userData competidor
+     * @return
+     */
     @Override
     public boolean isCruzandoMeta(Competidor userData) {
         return userData.isCruzandoMeta();
     }
 
+    /**
+     * Establece si el Competidor pasado por parametro esta en su primera vuelta o no, para las comprobaciones previas a que cruce la meta por primera vez
+     *
+     * @param b        si esta en su primera vuelta
+     * @param userData competidor
+     */
     @Override
     public void setPrimeraVuelta(boolean b, Competidor userData) {
         userData.setPrimeraVuelta(b);
     }
 
+    /**
+     * Indica si el Competidor pasado por parametro se encuentra en el Sector1. Si 'true' el Competidor ha cruzado la meta y el sensor del Sector1 en ese orden
+     *
+     * @param userData competidor
+     * @return true si esta cruzando el Sector1, false si no
+     */
     @Override
     public boolean isCruzandoS1(Competidor userData) {
         return userData.isCruzandoS1();
     }
 
+    /**
+     * Indica si el competidor se encuentra en el Sector2. Si 'true' el Competidor ha cruzado la meta, el Sector1 y el sensor del Sector2 en ese orden
+     *
+     * @param userData competidor
+     * @return true si esta cruzando el Sector2, false si no
+     */
     @Override
     public boolean isCruzandoS2(Competidor userData) {
         return userData.isCruzandoS2();
     }
 
+    /**
+     * Indica si el competidor se encuentra en el Sector3. Si 'true' el Competidor ha cruzado la meta, el Sector1, el Sector2 y el sensor Sector3 en ese orden
+     *
+     * @param userData competidor
+     * @return true si esta cruzando el Sector3, false si no
+     */
     @Override
     public boolean isCruzandoS3(Competidor userData) {
         return userData.isCruzandoS3();
     }
 
+    /**
+     * Establece si este competidor ha completado con exito el Sector1
+     *
+     * @param userData competidor
+     */
     @Override
     public void CompletadoSector1(Competidor userData) {
         userData.CompletadoSector1(true);
     }
 
+    /**
+     * Establece si este competidor ha completado con exito el Sector1
+     *
+     * @param userData competidor
+     */
     @Override
     public void CompletadoSector2(Competidor userData) {
         userData.CompletadoSector2(true);

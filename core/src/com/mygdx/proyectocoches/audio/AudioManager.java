@@ -119,6 +119,7 @@ public class AudioManager implements Disposable {
 
     /**
      * Releases all resources of this object.
+     * Si hay algun sonido reproduciendose lo para
      */
     @Override
     public void dispose() {
