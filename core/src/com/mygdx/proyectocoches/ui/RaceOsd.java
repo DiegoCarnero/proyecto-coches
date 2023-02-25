@@ -25,7 +25,6 @@ public class RaceOsd implements Screen {
     private final Label lblFin;
 
     private final Label lblCountdown;
-    private float contGo;
     private final I18NBundle locale;
     private AssetManager am;
 
