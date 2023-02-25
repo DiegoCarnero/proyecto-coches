@@ -6,8 +6,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -16,12 +18,16 @@ import com.mygdx.proyectocoches.utils.GameSettings;
 
 public class LoadingScreen implements Screen {
 
-    private Stage stage;
-    private GameSettings gs;
-    private Game g;
-    private Skin s;
+    private final Stage stage;
+    private final GameSettings gs;
+    private final Game g;
+    private final Skin s;
     private boolean b = true;
-    private AssetManager am;
+    private float contDelta = 0;
+    private final AssetManager am;
+    private final Sprite[] sprites = new Sprite[4];
+    private int cont = 0;
+    private final SpriteBatch batch;
 
     public LoadingScreen(AssetManager am, Game juego, Skin skin, GameSettings gs, String cargando) {
         this.am = am;
@@ -29,8 +35,13 @@ public class LoadingScreen implements Screen {
         this.g = juego;
         this.s = skin;
         stage = new Stage(new ScreenViewport());
-
+        batch = new SpriteBatch();
         BitmapFont font = am.get("fonts/Designer.otf");
+
+        sprites[0] = new Sprite((Texture) am.get("ui/loading_spin_1.png"));
+        sprites[1] = new Sprite((Texture) am.get("ui/loading_spin_2.png"));
+        sprites[2] = new Sprite((Texture) am.get("ui/loading_spin_3.png"));
+        sprites[3] = new Sprite((Texture) am.get("ui/loading_spin_4.png"));
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = font;
@@ -56,7 +67,8 @@ public class LoadingScreen implements Screen {
      */
     @Override
     public void render(float delta) {
-        if (b) {
+        contDelta += delta;
+        if (contDelta > 2 && b) {
             if (gs.getModo() == 0) {
                 g.setScreen(new TestRace(g, s, gs, am));
             } else if (gs.getModo() == 1) {
@@ -65,11 +77,18 @@ public class LoadingScreen implements Screen {
             b = false;
         }
 
-        Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act();
         stage.draw();
+
+        Sprite s = sprites[cont];
+        s.setBounds(250, 0, 50, 50);
+        batch.begin();
+        s.draw(batch);
+        cont = cont == 3 ? 0 : cont + 1;
+        batch.end();
     }
 
     /**
