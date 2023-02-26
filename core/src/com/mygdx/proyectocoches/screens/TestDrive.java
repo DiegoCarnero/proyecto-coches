@@ -13,6 +13,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,6 +21,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.proyectocoches.audio.AudioManager;
@@ -61,7 +64,7 @@ public class TestDrive implements Screen {
 
     private final Skin skin;
 
-    public TestDrive(Game juego, Skin skin, GameSettings gs, AssetManager am){
+    public TestDrive(Game juego, Skin skin, GameSettings gs, AssetManager am) {
 
         String nomCircuito = gs.getCircuito();
         asM = new AssetManager();
@@ -69,7 +72,21 @@ public class TestDrive implements Screen {
         this.skin = skin;
         osd = new TestOsd(1, juego, skin, gs, am);
 
-        asM.load("vehicles/ford_focus_m.png", Texture.class);
+        JsonReader json = new JsonReader();
+        JsonValue base;
+        FileHandle a = Gdx.files.external("usersettings.json");
+        if (!a.exists()) {
+            JsonValue template = json.parse(Gdx.files.internal("usersettings_template.json"));
+            a.writeString(template.toString(), false);
+        }
+        base = json.parse(Gdx.files.external("usersettings.json"));
+        int rendermode = base.getInt("rendermode");
+
+        if (rendermode == 1) {
+            asM.load("vehicles/cochejugador_HC.png", Texture.class);
+        } else {
+            asM.load("vehicles/ford_focus_m.png", Texture.class);
+        }
         asM.finishLoading();
 
         this.miBatch = new SpriteBatch();
@@ -165,7 +182,7 @@ public class TestDrive implements Screen {
         miBatch.setProjectionMatrix(miCam.combined);
         miBatch.begin();
         circuito.getS().setOrigin(0, 0);
-        circuito.getS().setCenter(circuitoCenterX,circuitoCenterY);
+        circuito.getS().setCenter(circuitoCenterX, circuitoCenterY);
         circuito.getS().setSize(circuitoEscala * 2f, circuitoEscala);
         circuito.getS().setOriginCenter();
         circuito.getS().draw(miBatch);

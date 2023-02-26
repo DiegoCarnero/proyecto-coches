@@ -15,6 +15,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,6 +25,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.proyectocoches.audio.AudioManager;
@@ -69,7 +72,7 @@ public class TestRace implements Screen {
 
     private final Skin skin;
 
-    public TestRace(Game juego, Skin skin, GameSettings gs,AssetManager am) {
+    public TestRace(Game juego, Skin skin, GameSettings gs, AssetManager am) {
         String nomCircuito = gs.getCircuito();
         asM = new AssetManager();
         this.am = new AudioManager(asM);
@@ -81,9 +84,24 @@ public class TestRace implements Screen {
         this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new MiOrthoCam();
 
-        asM.load("vehicles/citroen_xsara_m.png", Texture.class);
-        asM.load("vehicles/ford_escort_rs_m.png", Texture.class);
-        asM.load("vehicles/ford_focus_m.png", Texture.class);
+        JsonReader json = new JsonReader();
+        JsonValue base;
+        FileHandle a = Gdx.files.external("usersettings.json");
+        if (!a.exists()) {
+            JsonValue template = json.parse(Gdx.files.internal("usersettings_template.json"));
+            a.writeString(template.toString(), false);
+        }
+        base = json.parse(Gdx.files.external("usersettings.json"));
+        int rendermode = base.getInt("rendermode");
+
+        if (rendermode == 1) {
+            asM.load("vehicles/cocheia_HC.png", Texture.class);
+            asM.load("vehicles/cochejugador_HC.png", Texture.class);
+        } else {
+            asM.load("vehicles/citroen_xsara_m.png", Texture.class);
+            asM.load("vehicles/ford_escort_rs_m.png", Texture.class);
+            asM.load("vehicles/ford_focus_m.png", Texture.class);
+        }
         asM.finishLoading();
 
         float aspectRatio = Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
@@ -111,7 +129,7 @@ public class TestRace implements Screen {
         this.jugador = circuito.prepararParrilla(gs.getNumOpos(), gs.getNumOpos() + 1);
         this.rm = new RaceManager(circuito.getCompetidores(), circuito.cargarSplineControl(), gs.getnVueltas());
         miWorld.setContactListener(new miContactListener(rm));
-        this.rOsd = new RaceOsd(skin, rm,am);
+        this.rOsd = new RaceOsd(skin, rm, am);
 
         if (Controllers.getControllers().size > 0) {
             pi = new ControllerInput(Controllers.getControllers().get(0));
@@ -156,7 +174,7 @@ public class TestRace implements Screen {
                     am.init();
                     init = false;
                 }
-                if (delta > 1) {
+                if (delta > 0.5) {
                     rm.CuentaAtrasSet();
                 } else if (rm.CuentaAtras(delta)) {
                     update(delta);

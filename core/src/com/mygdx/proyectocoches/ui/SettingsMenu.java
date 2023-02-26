@@ -31,16 +31,21 @@ public class SettingsMenu {
     private final Label lblMusic;
     private final Label lblCam;
     private final Label lblNom;
+    private final Label lblVisuals;
+    private final Label lblVisualsNom;
+    private final Button btnVisuals;
     private final String[] camModes = new String[3];
+    private final String[] visualModes = new String[2];
     private final char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-    private int contLetras = 0;
+    private int contLetras[] = new int[3];
     private int contCam = 0;
+    private int contVisuals = 0;
     private float musicVol = 0;
     private float sfxVol = 0;
     private boolean showing;
     private final AssetManager am;
 
-    public SettingsMenu(final Skin skin, AssetManager am,I18NBundle locale) {
+    public SettingsMenu(final Skin skin, AssetManager am, I18NBundle locale) {
 
         this.am = am;
         Label.LabelStyle labelStyle = new Label.LabelStyle();
@@ -50,6 +55,9 @@ public class SettingsMenu {
         camModes[1] = locale.get("camera.lejos");
         camModes[2] = locale.get("camera.dinamica");
 
+        visualModes[0] = locale.get("settings.visuals.normal");
+        visualModes[1] = locale.get("settings.visuals.HC");
+
         final int screenH = Gdx.graphics.getHeight();
         final int screenW = Gdx.graphics.getWidth();
 
@@ -57,9 +65,9 @@ public class SettingsMenu {
         btnAtras.setSize(screenH / 10f, screenH / 10f);
         btnAtras.setPosition(0, -screenH / 2f + screenH / 10f);
         btnAtras.setVisible(false);
-        btnAtras.addListener(new ClickListener() {
+        btnAtras.addListener(new InputListener() {
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 JsonReader json = new JsonReader();
                 JsonValue base;
                 FileHandle a = Gdx.files.external("usersettings.json");
@@ -83,35 +91,41 @@ public class SettingsMenu {
                 base.remove("sfx");
                 j = new JsonValue(sfxVol);
                 base.addChild("sfx", j);
+                base.remove("rendermode");
+                j = new JsonValue(contVisuals);
+                base.addChild("rendermode", j);
 
                 FileHandle file = Gdx.files.external("usersettings.json");
                 file.writeString(base.toString(), false);
-                super.touchUp(event, x, y, pointer, button);
+                super.touchDown(event, x, y, pointer, button);
+                return true;
             }
 
         });
         compSettings.add(btnAtras);
 
-        int x =20;
+        int x = 20;
         lblNom = new Label(locale.get("settings.nombre"), labelStyle);
         lblNom.setPosition(x, 90 + screenH / 10f);
         lblNom.setAlignment(1);
         lblNom.setVisible(false);
-		compSettings.add(lblNom);
-		
+        compSettings.add(lblNom);
+
         for (int i = 0; i < 3; i++) {
             final Label l = new Label("A", labelStyle);
+            l.setSize(screenH / 10f, screenH / 10f);
             l.setPosition(x, 0);
+            l.setAlignment(1);
             l.setVisible(false);
-
+            final int iaux = i;
             Button b1 = new TextButton("^", skin);
             b1.setPosition(x, 60);
             b1.setSize(screenH / 10f, screenH / 10f);
             b1.addListener(new ClickListener() {
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    contLetras = contLetras == letras.length - 1 ? 0 : contLetras + 1;
-                    String aux = String.valueOf(letras[contLetras]);
+                    contLetras[iaux] = contLetras[iaux] == letras.length - 1 ? 0 : contLetras[iaux] + 1;
+                    String aux = String.valueOf(letras[contLetras[iaux]]);
                     l.setText(aux);
                     super.touchUp(event, x, y, pointer, button);
                 }
@@ -123,8 +137,8 @@ public class SettingsMenu {
             b2.addListener(new ClickListener() {
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    contLetras = contLetras == 0 ? letras.length - 1 : contLetras - 1;
-                    String aux = String.valueOf(letras[contLetras]);
+                    contLetras[iaux] = contLetras[iaux] == 0 ? letras.length - 1 : contLetras[iaux] - 1;
+                    String aux = String.valueOf(letras[contLetras[iaux]]);
                     l.setText(aux);
                     super.touchUp(event, x, y, pointer, button);
                 }
@@ -134,11 +148,11 @@ public class SettingsMenu {
             compSettings.add(l);
             compSettings.add(b1);
             compSettings.add(b2);
-            x += 60;
+            x += 80;
         }
 
         float volX = screenW / 2f;
-        float volY = 0;
+        float volY = screenH / 6f;
         //sfx
         lblSfx = new Label(locale.get("settings.efectos"), labelStyle);
         lblSfx.setPosition(volX, volY);
@@ -215,11 +229,40 @@ public class SettingsMenu {
             });
             volX += 80;
         }
-		
+
+        lblVisuals = new Label(locale.get("settings.visuals"), labelStyle);
+        lblVisuals.setSize(screenW / 10f, screenH / 10f);
+        lblVisuals.setPosition(screenW / 2f, -screenH / 3f);
+        lblVisuals.setAlignment(1);
+        lblVisuals.setVisible(false);
+
+        lblVisualsNom = new Label(visualModes[contVisuals], labelStyle);
+        lblVisualsNom.setSize(screenW / 7f, screenH / 10f);
+        lblVisualsNom.setPosition(screenW / 2f + screenH / 5f, -screenH / 3f);
+        lblVisualsNom.setTouchable(Touchable.disabled);
+        lblVisualsNom.setAlignment(1);
+        lblVisualsNom.setVisible(false);
+
+        btnVisuals = new Button(skin);
+        btnVisuals.setSize(screenW / 7f, screenH / 10f);
+        btnVisuals.setPosition(screenW / 2f + screenH / 5f, -screenH / 3f);
+        btnVisuals.setVisible(false);
+        btnVisuals.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                contVisuals = contVisuals == 1 ? 0 : 1;
+                lblVisualsNom.setText(visualModes[contVisuals]);
+                super.touchUp(event, x, y, pointer, button);
+            }
+        });
+
+        compSettings.add(btnVisuals);
+        compSettings.add(lblVisuals);
+        compSettings.add(lblVisualsNom);
 
         lblCam = new Label(locale.get("settings.camara"), labelStyle);
         lblCam.setSize(screenW / 10f, screenH / 10f);
-        lblCam.setPosition(4*screenW / 10f - screenW / 20f, 4 * screenH / 10f);
+        lblCam.setPosition(4 * screenW / 10f - screenW / 20f, 4 * screenH / 10f);
         lblCam.setAlignment(1);
         lblCam.setVisible(false);
 
@@ -247,7 +290,6 @@ public class SettingsMenu {
         compSettings.add(lblCameroMode);
         compSettings.add(lblCam);
 
-        setDesdeUserSettings();
     }
 
     public void setDesdeUserSettings() {
@@ -262,6 +304,9 @@ public class SettingsMenu {
         base = json.parse(Gdx.files.external("usersettings.json"));
         String nom = base.getString("nom");
 
+        contVisuals = base.getInt("rendermode");
+        lblVisualsNom.setText(visualModes[contVisuals]);
+
         int ndxNom = 0;
         for (Label l : lblsNombre) {
             l.setText(String.valueOf(nom.charAt(ndxNom)));
@@ -271,14 +316,16 @@ public class SettingsMenu {
         contCam = base.getInt("cam");
         lblCameroMode.setText(camModes[contCam]);
 
-        float music = base.getFloat("music");
-        for (int i = 0; i < music * btnsMusic.size(); i++) {
+        musicVol = base.getFloat("music");
+        for (int i = 0; i < musicVol * btnsMusic.size(); i++) {
             btnsMusic.get(i).setChecked(true);
         }
-        float sfx = base.getFloat("sfx");
-        for (int i = 0; i < sfx * btnsSfx.size(); i++) {
+        sfxVol = base.getFloat("sfx");
+        for (int i = 0; i < sfxVol * btnsSfx.size(); i++) {
             btnsSfx.get(i).setChecked(true);
         }
+
+        Gdx.app.log("aqui",sfxVol+" "+musicVol);
 
     }
 
@@ -291,6 +338,10 @@ public class SettingsMenu {
 
         for (Actor a : compSettings) {
             a.setVisible(showing);
+        }
+
+        if (showing){
+            setDesdeUserSettings();
         }
     }
 

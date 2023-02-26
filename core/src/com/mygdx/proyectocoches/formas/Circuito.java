@@ -21,6 +21,7 @@ import static com.mygdx.proyectocoches.Constantes.test_loop_vGrid;
 import static com.mygdx.proyectocoches.Constantes.track_1_ang;
 import static com.mygdx.proyectocoches.Constantes.track_1_vGrid;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -36,6 +37,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.mygdx.proyectocoches.entidades.CocheIA;
 import com.mygdx.proyectocoches.entidades.Competidor;
 import com.mygdx.proyectocoches.entidades.Jugador;
@@ -80,7 +83,7 @@ public class Circuito {
     /**
      * Rutas internas a los sprites para los vehiculos
      */
-    final private String[] sprites = new String[]{"vehicles/citroen_xsara_m.png", "vehicles/ford_escort_rs_m.png", "vehicles/ford_focus_m.png"};
+    private String[] sprites;
     /**
      * AssetManager donde se encuentran los sprites de los vehiculos
      */
@@ -96,6 +99,11 @@ public class Circuito {
     final private Sprite s;
 
     /**
+     * RenderMode. Establece el tipo de archivos que cargar. 0=Normal, 1=HC (High Contrast)
+     */
+    private final int rm;
+
+    /**
      * Genera un nuevo objeto Circuito
      *
      * @param mundo       World a utilizar para crear los polígonos tipo Body que conformarán el circuito
@@ -107,9 +115,24 @@ public class Circuito {
         this.competidores = new ArrayList<>();
         this.nomCircuito = nomCircuito;
         this.am = am;
-        am.load("worlds/" + nomCircuito + "_HR.jpg", Texture.class);
-        am.finishLoadingAsset("worlds/" + nomCircuito + "_HR.jpg");
-        Texture t = (Texture) am.get("worlds/" + nomCircuito + "_HR.jpg");
+
+        JsonValue base;
+        JsonReader json = new JsonReader();
+        base = json.parse(Gdx.files.external("usersettings.json"));
+        rm = base.getInt("rendermode");
+
+        Texture t;
+        if (rm == 1) {
+            am.load("worlds/" + nomCircuito + "_HC.jpg", Texture.class);
+            am.finishLoadingAsset("worlds/" + nomCircuito + "_HC.jpg");
+            t = (Texture) am.get("worlds/" + nomCircuito + "_HC.jpg");
+            sprites = new String[]{"vehicles/cocheia_HC.png", "vehicles/cocheia_HC.png", "vehicles/cochejugador_HC.png"};
+        } else {
+            am.load("worlds/" + nomCircuito + "_HR.jpg", Texture.class);
+            am.finishLoadingAsset("worlds/" + nomCircuito + "_HR.jpg");
+            t = (Texture) am.get("worlds/" + nomCircuito + "_HR.jpg");
+            sprites = new String[]{"vehicles/citroen_xsara_m.png", "vehicles/ford_escort_rs_m.png", "vehicles/ford_focus_m.png"};
+        }
         t.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         s = new Sprite(t);
 

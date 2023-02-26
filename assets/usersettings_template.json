@@ -3,6 +3,7 @@
   "nom": "AAA",
   "cam": 0,
   "music": 1,
-  "sfx": 1
+  "sfx": 1,
+  "rendermode": 0
 
 }

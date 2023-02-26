@@ -260,7 +260,7 @@
   </object>
  </objectgroup>
  <objectgroup id="10" name="Checkpoint1">
-  <object id="63" x="181.242" y="958.878">
+  <object id="63" x="179.242" y="958.878">
    <polygon points="50.6667,-22 49.3333,-154.666 45.25,-154.417 46.0833,-21.6667"/>
   </object>
  </objectgroup>
