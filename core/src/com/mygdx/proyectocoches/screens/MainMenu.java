@@ -7,6 +7,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -24,6 +26,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.I18NBundle;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.proyectocoches.ui.CreditsScreen;
 import com.mygdx.proyectocoches.ui.EventMenu;
@@ -46,7 +50,10 @@ public class MainMenu implements Screen {
     private final CreditsScreen credits;
     private final SpriteBatch batch;
     private final Sprite bg;
+    private final Sprite mm;
     private final int screenW, screenH;
+    private final Music m;
+    private float volMusic;
 
     public MainMenu(final Game miGame) {
 
@@ -61,11 +68,13 @@ public class MainMenu implements Screen {
         am.load("worlds/test_loop_mini.png", Texture.class);
         am.load("badlogic.jpg", Texture.class);
         am.load("locale/locale", I18NBundle.class);
-        am.load("ui/carbon_fiber_bg.png",Texture.class);
+        am.load("ui/carbon_fiber_bg.png", Texture.class);
         am.load("ui/loading_spin_1.png", Texture.class);
         am.load("ui/loading_spin_2.png", Texture.class);
         am.load("ui/loading_spin_3.png", Texture.class);
         am.load("ui/loading_spin_4.png", Texture.class);
+        am.load("ui/mainmenu.png", Texture.class);
+        am.load("audio/music/WolfAsylum-Koord.mp3", Music.class);
 
         FileHandleResolver resolver = new InternalFileHandleResolver();
         am.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
@@ -90,6 +99,7 @@ public class MainMenu implements Screen {
 
         am.finishLoading();
         bg = new Sprite((Texture) am.get("ui/carbon_fiber_bg.png"));
+        mm = new Sprite((Texture) am.get("ui/mainmenu.png"));
         I18NBundle locale = am.get("locale/locale");
 
         stage = new Stage(new ScreenViewport());
@@ -126,7 +136,7 @@ public class MainMenu implements Screen {
         });
         vertOffset++;
 
-        this.mRecords = new RecordsMenu("", skin,am);
+        this.mRecords = new RecordsMenu("", skin, am);
         Label lbl2 = new Label(locale.get("mainmenu.records"), labelStyle);
         lbl2.setTouchable(Touchable.disabled);
         lbl2.setAlignment(1);
@@ -235,6 +245,7 @@ public class MainMenu implements Screen {
                 mTutorial.setShowing(false);
                 mRecords.setShowing(false);
                 mSettings.setShowing(false);
+                volMusic = mSettings.getMusicVolume();
                 credits.setShowing(false);
                 super.touchUp(event, x, y, pointer, button);
             }
@@ -249,6 +260,18 @@ public class MainMenu implements Screen {
         for (Actor a : compMain) {
             stage.addActor(a);
         }
+
+        JsonReader json = new JsonReader();
+        JsonValue base;
+        FileHandle a = Gdx.files.external("usersettings.json");
+        if (!a.exists()) {
+            JsonValue template = json.parse(Gdx.files.internal("usersettings_template.json"));
+            a.writeString(template.toString(), false);
+        }
+        base = json.parse(Gdx.files.external("usersettings.json"));
+        volMusic = base.getFloat("music");
+        m = am.get("audio/music/WolfAsylum-Koord.mp3");
+        m.setLooping(true);
     }
 
     /**
@@ -256,6 +279,7 @@ public class MainMenu implements Screen {
      */
     @Override
     public void show() {
+        m.play();
         Gdx.input.setInputProcessor(multiplexer);
     }
 
@@ -267,14 +291,17 @@ public class MainMenu implements Screen {
     @Override
     public void render(float delta) {
         if (am.update()) {
+            m.setVolume(volMusic);
             batch.begin();
-            batch.draw(bg,0,0,screenW,screenH);
+            batch.draw(bg, 0, 0, screenW, screenH);
             if (mEvento.isShowing()) {
                 Sprite s = mEvento.getS();
-                batch.draw(s, s.getX(), s.getY(),screenH / 2f, screenH / 2f);
+                batch.draw(s, s.getX(), s.getY(), screenH / 2f, screenH / 2f);
             } else if (mTutorial.isShowing()) {
                 Sprite s = mTutorial.getS();
                 batch.draw(s, s.getX(), s.getY(), screenH / 1.5f, screenH / 1.5f);
+            } else if(!mRecords.isShowing() && !mSettings.isShowing() && !credits.isShowing()){
+                batch.draw(mm, screenW / 2f - 7.55f * screenH / 16f, 2 * screenH / 3f, 7.55f * screenH / 8f, screenH / 8f);
             }
             batch.end();
             stage.act();
@@ -322,6 +349,7 @@ public class MainMenu implements Screen {
     public void dispose() {
         stage.dispose();
         am.dispose();
+        m.dispose();
     }
 }
 

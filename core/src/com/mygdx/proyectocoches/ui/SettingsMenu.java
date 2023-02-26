@@ -325,8 +325,6 @@ public class SettingsMenu {
             btnsSfx.get(i).setChecked(true);
         }
 
-        Gdx.app.log("aqui",sfxVol+" "+musicVol);
-
     }
 
     public ArrayList<Actor> getCompSettings() {
@@ -356,5 +354,13 @@ public class SettingsMenu {
 
     public Button getBackBtn() {
         return btnAtras;
+    }
+
+    public boolean isShowing() {
+        return showing;
+    }
+
+    public float getMusicVolume() {
+        return musicVol;
     }
 }
