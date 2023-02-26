@@ -14,7 +14,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -26,8 +25,6 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.proyectocoches.audio.AudioManager;
-import com.mygdx.proyectocoches.entidades.CocheIA;
-import com.mygdx.proyectocoches.entidades.Competidor;
 import com.mygdx.proyectocoches.gamemodes.TimeTrialManager;
 import com.mygdx.proyectocoches.entidades.Jugador;
 import com.mygdx.proyectocoches.formas.Circuito;
@@ -44,7 +41,7 @@ public class TestDrive implements Screen {
 
     private final SpriteBatch miBatch;
     private final World miWorld;
-    private final Box2DDebugRenderer miB2dr;
+//    private final Box2DDebugRenderer miB2dr;
     private final MiOrthoCam miCam;
     private final Viewport miViewport;
     private final Jugador jugador;
@@ -91,7 +88,7 @@ public class TestDrive implements Screen {
 
         this.miBatch = new SpriteBatch();
         this.miWorld = new World(new Vector2(0, 0), true);
-        this.miB2dr = new Box2DDebugRenderer();
+//        this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new MiOrthoCam();
 
         float aspectRatio = Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
@@ -197,7 +194,7 @@ public class TestDrive implements Screen {
         jugador.getS().draw(miBatch);
 
         miBatch.end();
-        miB2dr.render(miWorld, miCam.combined);
+//        miB2dr.render(miWorld, miCam.combined);
     }
 
     @Override
@@ -224,7 +221,7 @@ public class TestDrive implements Screen {
     public void dispose() {
         miBatch.dispose();
         miWorld.dispose();
-        miB2dr.dispose();
+//        miB2dr.dispose();
         osd.dispose();
         ttOsd.dispose();
         am.dispose();

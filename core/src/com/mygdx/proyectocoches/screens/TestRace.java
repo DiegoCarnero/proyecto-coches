@@ -48,7 +48,7 @@ public class TestRace implements Screen {
 
     private final SpriteBatch miBatch;
     private final World miWorld;
-    private final Box2DDebugRenderer miB2dr;
+//    private final Box2DDebugRenderer miB2dr;
     private final MiOrthoCam miCam;
     private final Viewport miViewport;
     private final Circuito circuito;
@@ -81,7 +81,7 @@ public class TestRace implements Screen {
 
         this.miBatch = new SpriteBatch();
         this.miWorld = new World(new Vector2(0, 0), true);
-        this.miB2dr = new Box2DDebugRenderer();
+//        this.miB2dr = new Box2DDebugRenderer();
         this.miCam = new MiOrthoCam();
 
         JsonReader json = new JsonReader();
@@ -249,7 +249,7 @@ public class TestRace implements Screen {
         }
 
         miBatch.end();
-        miB2dr.render(miWorld, miCam.combined);
+//        miB2dr.render(miWorld, miCam.combined);
     }
 
     @Override
@@ -276,7 +276,7 @@ public class TestRace implements Screen {
     public void dispose() {
         miBatch.dispose();
         miWorld.dispose();
-        miB2dr.dispose();
+//        miB2dr.dispose();
         osd.dispose();
         rOsd.dispose();
         asM.dispose();
