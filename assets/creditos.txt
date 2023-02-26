@@ -1,2 +1,24 @@
-Todo por
+Programacion, diseño, efectos de sonido,
 Diego carnero
+
+Texturas adicionales
+'Black carbon fiber' por Creapattern
+Proporcionado por pexels.com
+
+Musica
+"Bounce" por Evan Schaeffer
+"Koord" por WolfAsylum
+Proporcionado por freemusicarchive.org
+This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
+To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+Fuentes
+'Designer' por Yehor Lisnyi
+'Cabin' por Pablo Impallari
+'Segment7Standard' por Cedric Knight
+Copyright (c) 2014, Cedric Knight <fonts@cedders.com>,
+with Reserved Font Name "Segment7".
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
