@@ -7,11 +7,10 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.mygdx.proyectocoches.entidades.Competidor;
-import com.mygdx.proyectocoches.entidades.Jugador;
 
-import java.io.File;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Sistema de gestiones logicas para el modo de juego 'Contrarreloj'
@@ -62,6 +61,7 @@ public class TimeTrialManager implements Gamemode {
         base = json.parse(Gdx.files.external("records.json"));
         JsonValue t = new JsonValue(tMejorVuelta);
         JsonValue trackRecords = base.get(nomCircuito);
+
         if (trackRecords.has(jugador.getNombre())) {
             if (trackRecords.get(jugador.getNombre()).asFloat() > tMejorVuelta) {
                 trackRecords.remove(jugador.getNombre());
@@ -69,6 +69,20 @@ public class TimeTrialManager implements Gamemode {
             }
         } else {
             trackRecords.addChild(jugador.getNombre(), t);
+        }
+
+        HashMap<Float, String> hmRecords = new HashMap<>();
+
+        for (int i = trackRecords.size - 1; i > -1; i--) {
+            hmRecords.put(trackRecords.get(i).asFloat(), trackRecords.get(i).name);
+            trackRecords.remove(i);
+        }
+
+        TreeMap<Float, String> orden = new TreeMap<>(hmRecords);
+
+        for (Map.Entry<Float, String> entry : orden.entrySet()) {
+            JsonValue t1 = new JsonValue(entry.getKey());
+            trackRecords.addChild(entry.getValue(), t1);
         }
 
         FileHandle file = Gdx.files.external("records.json");
