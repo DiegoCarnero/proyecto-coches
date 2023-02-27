@@ -128,7 +128,6 @@ public class TimeTrialManager implements Gamemode {
      * Se lanza cuando el Competidor pasado por parametro cruza la meta. Resetea los valores de tiempos de los sectores y guarda el nuevo tiempo si es mejor que el ultimo obtenido
      *
      * @param userData competidor
-     * @param userData
      */
     public void NuevaVuelta(Competidor userData) {
 
