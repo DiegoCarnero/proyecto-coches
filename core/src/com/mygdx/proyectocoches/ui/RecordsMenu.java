@@ -81,13 +81,17 @@ public class RecordsMenu extends Actor {
                 for (int i = 0; i < base.size; i++) {
                     String circuitNomLocal = locale.get("circuitos."+base.get(i).name);
                     recordsAux += String.format("%s\n", circuitNomLocal);
-                    for (int j = 0; j < base.get(i).size; j++) {
+                    int longi = Math.min(base.get(i).size, 7);
+                    for (int j = 0; j < longi; j++) {
                         recordsAux += String.format("%s      %s\n", base.get(i).get(j).name, getTiempoFormat(base.get(i).get(j).asFloat()));
                     }
                     recordsAux += "\n";
                 }
             } else {
-                for (int i = 0; i < base.get(nomCircuito).size; i++) {
+
+                int longi = Math.min(base.get(nomCircuito).size, 19);
+
+                for (int i = 0; i < longi; i++) {
                     recordsAux += String.format("%s      %s\n", base.get(nomCircuito).get(i).name, getTiempoFormat(base.get(nomCircuito).get(i).asFloat()));
                 }
             }
