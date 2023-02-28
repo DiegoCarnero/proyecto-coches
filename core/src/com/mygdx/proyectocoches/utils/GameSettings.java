@@ -1,7 +1,5 @@
 package com.mygdx.proyectocoches.utils;
 
-import com.badlogic.gdx.utils.I18NBundle;
-
 /**
  * Configuracion del evento
  */
@@ -46,7 +44,7 @@ public class GameSettings {
     /**
      * Devuelve el nombre del circuito (no localizado) para uso interno
      *
-     * @return
+     * @return nombre interno del circuito
      */
     public String getCircuito() {
         return circuito;
@@ -55,7 +53,7 @@ public class GameSettings {
     /**
      * Devuelve el modo de juego
      *
-     * @return entero representado el modo de juego<p>0 = carrera.</p><p>1=contrarreloj</p>
+     * @return entero representado el modo de juego<p>0 = carrera.</p><p>1 = contrarreloj</p>
      */
     public int getModo() {
         return modo;
@@ -64,10 +62,10 @@ public class GameSettings {
     /**
      * Conjunto de valores para establecer un nuevo evento
      *
-     * @param numOpos
-     * @param circuito
-     * @param modo
-     * @param nVueltas
+     * @param numOpos numero de oponentes
+     * @param circuito nombre interno del circuito
+     * @param modo modo de juego. 0 = carrera, 1 = contrarreloj
+     * @param nVueltas numero de vueltas (solo relevante en el modo carrera)
      */
     public GameSettings(int numOpos, String circuito, int modo, int nVueltas) {
         this.numOpos = numOpos;
