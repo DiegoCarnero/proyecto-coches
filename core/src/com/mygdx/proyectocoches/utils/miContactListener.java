@@ -7,22 +7,22 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.proyectocoches.entidades.CocheIA;
 import com.mygdx.proyectocoches.entidades.Competidor;
+import com.mygdx.proyectocoches.formas.Sensor;
 import com.mygdx.proyectocoches.gamemodes.Gamemode;
-import com.mygdx.proyectocoches.gamemodes.TimeTrialManager;
 
 /**
  * ContactListener personalizado para gestionar contacto con cuerpos de control e informa al {@link Gamemode} asociado de cada contacto relevante
  *
  * <ul>
- *     <li>jugador->meta</li>
- *     <li>IA->meta</li>
- *     <li>jugador->sector1</li>
- *     <li>IA->sector1</li>
- *     <li>jugador->sector2</li>
- *     <li>IA->sector2</li>
- *     <li>jugador->sector3</li>
- *     <li>IA->sector3</li>
- *     <li>IA->sensor</li>
+ *     <li>jugador?meta</li>
+ *     <li>IA?meta</li>
+ *     <li>jugador?sector1</li>
+ *     <li>IA?sector1</li>
+ *     <li>jugador?sector2</li>
+ *     <li>IA?sector2</li>
+ *     <li>jugador?sector3</li>
+ *     <li>IA?sector3</li>
+ *     <li>IA?sensor</li>
  * </ul>
  */
 public class miContactListener implements ContactListener {
@@ -36,15 +36,15 @@ public class miContactListener implements ContactListener {
      * ContactListener personalizado para gestionar contacto con cuerpos de control e informa al {@link Gamemode} asociado de cada contacto relevante
      *
      * <ul>
-     *     <li>jugador->meta</li>
-     *     <li>IA->meta</li>
-     *     <li>jugador->sector1</li>
-     *     <li>IA->sector1</li>
-     *     <li>jugador->sector2</li>
-     *     <li>IA->sector2</li>
-     *     <li>jugador->sector3</li>
-     *     <li>IA->sector3</li>
-     *     <li>IA->sensor</li>
+     *     <li>jugador?meta</li>
+     *     <li>IA?meta</li>
+     *     <li>jugador?sector1</li>
+     *     <li>IA?sector1</li>
+     *     <li>jugador?sector2</li>
+     *     <li>IA?sector2</li>
+     *     <li>jugador?sector3</li>
+     *     <li>IA?sector3</li>
+     *     <li>IA?sensor</li>
      * </ul>
      * @param gm modo de juego al que se informara de cada contacto relevante
      */
@@ -60,14 +60,22 @@ public class miContactListener implements ContactListener {
      *     Si es un uno de los contactos es un {@link CocheIA} contra su sensor, advierte de un cambio a la siguiente posicion
      * </p>
      *
-     * @param contact
+     * @param contact contacto
      */
     @Override
     public void beginContact(Contact contact) {
 
         int a = contact.getFixtureA().getFilterData().categoryBits;
         int b = contact.getFixtureB().getFilterData().categoryBits;
-        Competidor bUD = (Competidor) contact.getFixtureB().getUserData();
+        Competidor bUD;
+        Object o;
+        if(a == 0x1 || a == 0x8) {
+            bUD = (Competidor) contact.getFixtureA().getUserData();
+            o = contact.getFixtureB().getUserData();
+        }else{
+            bUD = (Competidor) contact.getFixtureB().getUserData();
+            o = contact.getFixtureA().getUserData();
+        }
 
         if (((a | b) == 0x5) || ((a | b) == 0xC)) {// jugador->meta || IA->meta
             gm.setCruzandoMeta(true,bUD);
@@ -96,8 +104,8 @@ public class miContactListener implements ContactListener {
                 gm.setCruzandoS3(true,bUD);
             }
         } else if ((a | b) == 0x48) {// IA->sensor
-            if (contact.getFixtureA().getUserData() == bUD) {
-                ((CocheIA) contact.getFixtureA().getUserData()).nextDestino();
+            if (o == bUD) {
+                ((CocheIA) bUD).nextDestino();
             }
         }
     }
@@ -105,7 +113,7 @@ public class miContactListener implements ContactListener {
     /**
      * Called when two fixtures cease to touch.
      *
-     * @param contact
+     * @param contact contacto
      */
     @Override
     public void endContact(Contact contact) {
