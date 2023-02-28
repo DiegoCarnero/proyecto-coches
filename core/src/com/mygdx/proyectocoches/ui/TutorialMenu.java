@@ -22,8 +22,8 @@ public class TutorialMenu {
     private final Label lblDescip;
     private final Button btnSig;
     private final Button btnPrev;
-    private final String[] titulos = {"tit1", "tit2", "tit3", "tit4"};
-    private final String[] descrips = {"descrip1", "descrip2", "descrip3", "descrip4"};
+    private final String[] titulos = {"tit1", "tit2", "tit3", "tit4", "tit5"};
+    private final String[] descrips = {"descrip1", "descrip2", "descrip3", "descrip4", "descrip5"};
     private final Sprite[] sprites;
     private int cont = 0;
     private final Button btnAtras;
@@ -52,12 +52,15 @@ public class TutorialMenu {
         descrips[2] = locale.get("tutorial.d3");
         titulos[3] = locale.get("tutorial.t4");
         descrips[3] = locale.get("tutorial.d4");
+        titulos[4] = locale.get("tutorial.t5");
+        descrips[4] = locale.get("tutorial.d5");
 
         lblTitulo = new Label(titulos[0], labelStyle);
         lblTitulo.setPosition(screenW * 2 / 4f, screenH / 2f - screenH / 10f);
         lblTitulo.setVisible(false);
         lblDescip = new Label(descrips[0], labelStyle);
         lblDescip.setPosition(screenW * 2 / 4f, -screenH / 10f);
+        lblDescip.setWidth(screenW * 2 / 5f);
         lblDescip.setWrap(true);
         lblDescip.setVisible(false);
 
