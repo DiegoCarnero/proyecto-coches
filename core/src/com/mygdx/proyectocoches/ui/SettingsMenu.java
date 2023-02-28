@@ -310,6 +310,7 @@ public class SettingsMenu {
         int ndxNom = 0;
         for (Label l : lblsNombre) {
             l.setText(String.valueOf(nom.charAt(ndxNom)));
+            contLetras[ndxNom] = nom.charAt(ndxNom) - 65;
             ndxNom++;
         }
 
