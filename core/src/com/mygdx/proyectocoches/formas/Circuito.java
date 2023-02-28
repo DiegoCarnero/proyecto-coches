@@ -128,13 +128,16 @@ public class Circuito {
             am.finishLoadingAsset("worlds/" + nomCircuito + "_HC.jpg");
             t = (Texture) am.get("worlds/" + nomCircuito + "_HC.jpg");
             sprites = new String[]{"vehicles/cocheia_HC.png", "vehicles/cocheia_HC.png", "vehicles/cochejugador_HC.png"};
+
+            t.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
         } else {
             am.load("worlds/" + nomCircuito + "_HR.jpg", Texture.class);
             am.finishLoadingAsset("worlds/" + nomCircuito + "_HR.jpg");
             t = (Texture) am.get("worlds/" + nomCircuito + "_HR.jpg");
             sprites = new String[]{"vehicles/citroen_xsara_m.png", "vehicles/ford_escort_rs_m.png", "vehicles/ford_focus_m.png"};
+
+            t.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         }
-        t.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         s = new Sprite(t);
 
     }
