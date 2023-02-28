@@ -15,9 +15,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.JsonReader;
@@ -37,32 +37,102 @@ import com.mygdx.proyectocoches.utils.MiOrthoCam;
 import com.mygdx.proyectocoches.utils.PlayerInput;
 import com.mygdx.proyectocoches.utils.miContactListener;
 
+/**
+ * Pantalla de juego para el modo de juego 'Contrarreloj'
+ */
 public class TestDrive implements Screen {
 
+    /**
+     * SpriteBatch que dibuja en pantalla las texturas
+     */
     private final SpriteBatch miBatch;
+    /**
+     * Mundo Box2D donde se insertaran el Body representando el coche del jugador y circuito
+     */
     private final World miWorld;
 //    private final Box2DDebugRenderer miB2dr;
+    /**
+     * Camara ortogonal que se usa para dibujar el mundo y sus cuerpos con la perspectiva correcta
+     */
     private final MiOrthoCam miCam;
+    /**
+     * Calcula como las coordenadas del {@link World} estan asociadas a la pantalla usando {@link MiOrthoCam}
+     */
     private final Viewport miViewport;
+    /**
+     * Jugador
+     */
     private final Jugador jugador;
+    /**
+     * Objeto que contiene todas las entidades en el mundo:
+     * <ul>
+     *   <li>Muros</li>
+     *   <li>Puntos de control</li>
+     *   <li>Linea de meta</li>
+     *   <li>Competidores IA</li>
+     *   <li>Jugador</li>
+     * </ul>
+     * Tiene metodos para generar el número deseado de oponentes, cargar rutas, etc
+     */
     private final Circuito circuito;
+    /**
+     * Gestor de input para que el {@link Jugador} controle el Competidor que le representa
+     */
     private final PlayerInput pi;
+    /**
+     * Elementos de la interfaz: menu de pausa y controles
+     */
     private final TestOsd osd;
+    /**
+     * Elementos de la interfaz con informacion relativa al modo de juego
+     */
     private final TimeTrialOsd ttOsd;
+    /**
+     * Hace que el Body del jugador responda a los inputs del jugador
+     */
     private final InputManager im;
+    /**
+     * Sistema de gestiones logicas para el modo de juego 'Contrarreloj'
+     */
     private final TimeTrialManager ttm;
+    /**
+     * Almacena los sonidos y música, y gestiona el cambio de efectos de sonido durante el gameplay
+     */
     private final AudioManager am;
+    /**
+     * AssetManager donde se cargaran todos los archivos binarios necesarios para el juego
+     */
     private final AssetManager asM;
+    /**
+     * Control de si el {@link AudioManager} ha empezado a reproducir sonido
+     */
     private boolean init = true;
-
+    /**
+     * Posición central de X del {@link Sprite} del circuito
+     */
     private final float circuitoCenterX;
+    /**
+     * Posición central de Y del {@link Sprite} del circuito
+     */
     private final float circuitoCenterY;
+    /**
+     * Proporcion de escalado del {@link Sprite} del circuito
+     */
     private final float circuitoEscala;
-
+    /**
+     * Skin que se aplica a los elementosde la interfaz
+     */
     private final Skin skin;
 
+    /**
+     * Pantalla de juego para el modo de juego 'Contrarreloj'
+     *
+     * @param juego base del proyecto
+     * @param skin  Skin que se aplica a los elementosde la interfaz
+     * @param gs    Configuracion del evento
+     * @param am    AssetManager donde se cargaran todos los archivos binarios necesarios para el juego
+     */
     public TestDrive(Game juego, Skin skin, GameSettings gs, AssetManager am) {
-
         String nomCircuito = gs.getCircuito();
         asM = new AssetManager();
         this.am = new AudioManager(asM);
@@ -136,6 +206,10 @@ public class TestDrive implements Screen {
         osd.getmPausa().setScreen(this);
     }
 
+    /**
+     * Called when the screen should render itself.
+     * @param delta The time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
         if (asM.update()) {
@@ -145,7 +219,7 @@ public class TestDrive implements Screen {
                     am.init();
                     init = false;
                 }
-                update(delta);
+                updateWorld(delta);
                 im.update();
                 ttOsd.render(delta);
             }
@@ -154,6 +228,9 @@ public class TestDrive implements Screen {
         }
     }
 
+    /**
+     * Actualiza la posicion de la camara centrandola en el jugador, y ajusta el zoom si aplicable
+     */
     private void updateCam() {
         switch (osd.camMode()) {
             case 0:
@@ -170,11 +247,18 @@ public class TestDrive implements Screen {
         miCam.update();
     }
 
-    private void update(float delta) {
+    /**
+     * Actualiza un paso en el {@link World}
+     * @param delta Tiempo desde la ultima actualizacion
+     */
+    private void updateWorld(float delta) {
 
         miWorld.step(delta, 6, 2);
     }
 
+    /**
+     * Dibuja los {@link Sprite} del jugador y el circuito, ajustados en posicion y tamaño relativo a una {@link MiOrthoCam}
+     */
     private void draw() {
         miBatch.setProjectionMatrix(miCam.combined);
         miBatch.begin();
@@ -197,26 +281,42 @@ public class TestDrive implements Screen {
 //        miB2dr.render(miWorld, miCam.combined);
     }
 
+    /**
+     * @param width ancho de pantalla en pixeles
+     * @param height alto de pantalla en pixeles
+     */
     @Override
     public void resize(int width, int height) {
         miViewport.update(width, height);
     }
 
+    /**
+     *
+     */
     @Override
     public void pause() {
 
     }
 
+    /**
+     *
+     */
     @Override
     public void resume() {
 
     }
 
+    /**
+     * Called when this screen is no longer the current screen for a {@link Game}.
+     */
     @Override
     public void hide() {
 
     }
 
+    /**
+     * Called when this screen should release all resources.
+     */
     @Override
     public void dispose() {
         miBatch.dispose();

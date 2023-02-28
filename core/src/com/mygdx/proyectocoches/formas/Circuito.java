@@ -65,6 +65,7 @@ enum TipoPoly {
  *   <li>Competidores IA</li>
  *   <li>Jugador</li>
  * </ul>
+ * Tiene metodos para generar el número deseado de oponentes, cargar rutas, etc
  */
 public class Circuito {
 

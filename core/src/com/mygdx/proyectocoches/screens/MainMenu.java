@@ -37,24 +37,80 @@ import com.mygdx.proyectocoches.ui.TutorialMenu;
 
 import java.util.ArrayList;
 
+/**
+ * Pantalla de menu principal donde se selecciona evento, cambian ajustes, ven tutoriales creditos y records
+ */
 public class MainMenu implements Screen {
 
+    /**
+     * Conjunto de todos los elementos {@link Actor} de la interfaz en esta pantalla
+     */
     private final ArrayList<Actor> compMain = new ArrayList<>();
+    /**
+     * Stage que contiene los elementos de la interfaz
+     */
     private final Stage stage;
+    /**
+     * Procesador de inputs
+     */
     private final InputMultiplexer multiplexer;
+    /**
+     * AssetManager donde se cargaran todos los archivos binarios necesarios para el menu principal
+     */
     private final AssetManager am;
+    /**
+     * Menu con todos los {@link Actor} la de pantalla de Records
+     */
     private final RecordsMenu mRecords;
+    /**
+     * Menu con todos los {@link Actor} la de pantalla de Eventos
+     */
     private final EventMenu mEvento;
+    /**
+     * Menu con todos los {@link Actor} la de pantalla de Ajustes
+     */
     private final SettingsMenu mSettings;
+    /**
+     * Menu con todos los {@link Actor} la de pantalla de Tutoriales
+     */
     private final TutorialMenu mTutorial;
+    /**
+     * Menu con todos los {@link Actor} la de pantalla de creditos
+     */
     private final CreditsScreen credits;
+    /**
+     * SpriteBatch que dibuja en pantalla las texturas
+     */
     private final SpriteBatch batch;
+    /**
+     * Sprite de fondo del menu principal
+     */
     private final Sprite bg;
+    /**
+     * Sprite con el logo del menu principal
+     */
     private final Sprite mm;
-    private final int screenW, screenH;
+    /**
+     * Ancho de pantalla pixeles
+     */
+    private final int screenW;
+    /**
+     * Alto de pantalla en pixeles
+     */
+    private final int screenH;
+    /**
+     * Canción de fondo en la pantalla principal
+     */
     private final Music m;
+    /**
+     * Volumen de la musica en pantalla principal, establecido desde la pantalla de ajustes
+     */
     private float volMusic;
 
+    /**
+     * Pantalla de menu principal donde se selecciona evento, cambian ajustes, ven tutoriales creditos y records
+     * @param miGame base del proyecto
+     */
     public MainMenu(final Game miGame) {
 
         Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
@@ -276,6 +332,7 @@ public class MainMenu implements Screen {
 
     /**
      * Called when this screen becomes the current screen for a {@link Game}.
+     * Comiena a reproducir la musica en bucle
      */
     @Override
     public void show() {
@@ -285,7 +342,7 @@ public class MainMenu implements Screen {
 
     /**
      * Called when the screen should render itself.
-     *
+     * Dibuja elementos de la interfaz
      * @param delta The time in seconds since the last render.
      */
     @Override
@@ -310,8 +367,8 @@ public class MainMenu implements Screen {
     }
 
     /**
-     * @param width
-     * @param height
+     * @param width ancho de pantalla en pixeles
+     * @param height alto de pantalla en pixeles
      */
     @Override
     public void resize(int width, int height) {
@@ -347,6 +404,7 @@ public class MainMenu implements Screen {
      */
     @Override
     public void dispose() {
+        batch.dispose();
         stage.dispose();
         am.dispose();
         m.dispose();

@@ -18,17 +18,41 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 
+/**
+ * Componentes de la pantalla de creditos
+ */
 public class CreditsScreen {
 
+    /**
+     * Boton para retroceder al menu anterior
+     */
     private final Button btnAtras;
+    /**
+     * Conjunto de todos los elementos {@link Actor} de la interfaz en esta pantalla
+     */
     private final ArrayList<Actor> compCredits = new ArrayList<>();
+    /**
+     * Texto de creditos
+     */
     private final Label creditos;
+    /**
+     * Si esta pantalla esta mostrandose o no
+     */
     private boolean showing;
 
+    /**
+     * Devuelve el boton para retroceder al menu anterior
+     * @return boton 'Atras'
+     */
     public Actor getBackBtn() {
         return btnAtras;
     }
 
+    /**
+     * Componentes de la pantalla de creditos.
+     * <br>Este objeto tiene un btnAtras, pero la implementacion del InputListener depende de la pantalla donde se implementa.
+     * Invocar getBackBtn() para añadirle un Listener
+     */
     public CreditsScreen(Skin skin) {
         final int screenH = Gdx.graphics.getHeight();
         final int screenW = Gdx.graphics.getWidth();
@@ -64,10 +88,18 @@ public class CreditsScreen {
         compCredits.add(creditos);
     }
 
+    /**
+     * Devuelve un array con los componentes {@link Actor} de esta pantalla
+     * @return array de los componentes de esta pantalla
+     */
     public ArrayList<Actor> getCompCredits() {
         return compCredits;
     }
 
+    /**
+     * Establece si esta pantalla debe mostrarse o no
+     * @param b true si ha de mostrarse, false si no
+     */
     public void setShowing(boolean b) {
         showing = b;
         for (Actor a : compCredits) {
@@ -75,6 +107,10 @@ public class CreditsScreen {
         }
     }
 
+    /**
+     * Devuelve si los componentes de esta pantalla se estan motrando
+     * @return true si se estan mostrando, fals e si no
+     */
     public boolean isShowing() {
         return showing;
     }
