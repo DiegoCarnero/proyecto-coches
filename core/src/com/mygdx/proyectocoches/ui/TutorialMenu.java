@@ -29,8 +29,9 @@ public class TutorialMenu {
     private final Button btnAtras;
     private boolean showing;
 
+    private Sprite s;
     public Sprite getS() {
-        return sprites[0];
+        return s;
     }
 
     public TutorialMenu(final Skin skin, final AssetManager am) {
@@ -64,9 +65,19 @@ public class TutorialMenu {
         lblDescip.setWrap(true);
         lblDescip.setVisible(false);
 
-        sprites = new Sprite[1];
-        sprites[0] = new Sprite((Texture) am.get("badlogic.jpg"));
+        sprites = new Sprite[5];
+        sprites[0] = new Sprite((Texture) am.get("ui/tutorial/tutorial1.jpg"));
         sprites[0].setPosition(screenH / 20f, 5 * screenH / 20f);
+        sprites[1] = new Sprite((Texture) am.get("ui/tutorial/tutorial1.jpg"));
+        sprites[1].setPosition(screenH / 20f, 5 * screenH / 20f);
+        sprites[2] = new Sprite((Texture) am.get("ui/tutorial/tutorial1.jpg"));
+        sprites[2].setPosition(screenH / 20f, 5 * screenH / 20f);
+        sprites[3] = new Sprite((Texture) am.get("ui/tutorial/tutorial1.jpg"));
+        sprites[3].setPosition(screenH / 20f, 5 * screenH / 20f);
+        sprites[4] = new Sprite((Texture) am.get("ui/tutorial/tutorial5.jpg"));
+        sprites[4].setPosition(screenH / 20f, 5 * screenH / 20f);
+
+        s = sprites[0];
 
         btnSig = new TextButton(">", skin);
         btnSig.setSize(screenH / 10f, screenH / 10f);
@@ -77,7 +88,7 @@ public class TutorialMenu {
                 cont = cont == titulos.length - 1 ? 0 : cont + 1;
                 lblTitulo.setText(titulos[cont]);
                 lblDescip.setText(descrips[cont]);
-                // TODO cambia imagen
+                s = sprites[cont];
                 super.touchUp(event, x, y, pointer, button);
             }
         });
@@ -92,7 +103,7 @@ public class TutorialMenu {
                 cont = cont == 0 ? titulos.length - 1 : cont - 1;
                 lblTitulo.setText(titulos[cont]);
                 lblDescip.setText(descrips[cont]);
-                // TODO cambia imagen
+                s = sprites[cont];
                 super.touchUp(event, x, y, pointer, button);
             }
         });
