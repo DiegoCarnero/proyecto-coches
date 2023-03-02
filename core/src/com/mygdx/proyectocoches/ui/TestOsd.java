@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -216,6 +218,12 @@ public class TestOsd implements Screen, PlayerInput {
 
         for (Actor a : compControles) {
             a.setVisible(!isPaused());
+        }
+
+        if(Controllers.getControllers().size > 0){
+            for (Actor a : compControles) {
+                a.setVisible(false);
+            }
         }
 
         UIStage.act();
