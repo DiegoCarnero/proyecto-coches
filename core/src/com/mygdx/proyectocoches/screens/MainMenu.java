@@ -122,6 +122,8 @@ public class MainMenu implements Screen {
         am = new AssetManager();
         am.load("worlds/track_1_mini.png", Texture.class);
         am.load("worlds/test_loop_mini.png", Texture.class);
+        am.load("ui/tutorial/tutorial1.jpg", Texture.class);
+        am.load("ui/tutorial/tutorial5.jpg", Texture.class);
         am.load("badlogic.jpg", Texture.class);
         am.load("locale/locale", I18NBundle.class);
         am.load("ui/carbon_fiber_bg.png", Texture.class);
@@ -170,7 +172,7 @@ public class MainMenu implements Screen {
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = am.get(fuentes[1]);
 
-        this.mEvento = new EventMenu(skin, miGame, am, locale);
+        this.mEvento = new EventMenu(skin, miGame, am, locale, this);
         Label lbl1 = new Label(locale.get("mainmenu.evento"), labelStyle);
         lbl1.setTouchable(Touchable.disabled);
         lbl1.setAlignment(1);
@@ -213,7 +215,7 @@ public class MainMenu implements Screen {
         });
         vertOffset += 2;
 
-        this.mSettings = new SettingsMenu(skin, am, locale);
+        this.mSettings = new SettingsMenu(skin, am, locale, this);
         Label lbl3 = new Label(locale.get("mainmenu.ajustes"), labelStyle);
         lbl3.setTouchable(Touchable.disabled);
         lbl3.setAlignment(1);
@@ -348,7 +350,6 @@ public class MainMenu implements Screen {
     @Override
     public void render(float delta) {
         if (am.update()) {
-            m.setVolume(volMusic);
             batch.begin();
             batch.draw(bg, 0, 0, screenW, screenH);
             if (mEvento.isShowing()) {
@@ -356,7 +357,7 @@ public class MainMenu implements Screen {
                 batch.draw(s, s.getX(), s.getY(), screenH / 2f, screenH / 2f);
             } else if (mTutorial.isShowing()) {
                 Sprite s = mTutorial.getS();
-                batch.draw(s, s.getX(), s.getY(), screenH / 1.5f, screenH / 1.5f);
+                batch.draw(s, s.getX(), s.getY(), 1.777f * screenH / 2f, screenH / 2f);
             } else if(!mRecords.isShowing() && !mSettings.isShowing() && !credits.isShowing()){
                 batch.draw(mm, screenW / 2f - 7.55f * screenH / 16f, 2 * screenH / 3f, 7.55f * screenH / 8f, screenH / 8f);
             }
@@ -408,6 +409,15 @@ public class MainMenu implements Screen {
         stage.dispose();
         am.dispose();
         m.dispose();
+    }
+
+    public void paraMusica(){
+        m.stop();
+        m.dispose();
+    }
+
+    public void setVolMusic(float v){
+        m.setVolume(v);
     }
 }
 

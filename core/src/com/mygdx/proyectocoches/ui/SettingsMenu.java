@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.mygdx.proyectocoches.screens.MainMenu;
 
 import java.util.ArrayList;
 
@@ -45,7 +46,7 @@ public class SettingsMenu {
     private boolean showing;
     private final AssetManager am;
 
-    public SettingsMenu(final Skin skin, AssetManager am, I18NBundle locale) {
+    public SettingsMenu(final Skin skin, AssetManager am, I18NBundle locale, final MainMenu mm) {
 
         this.am = am;
         Label.LabelStyle labelStyle = new Label.LabelStyle();
@@ -224,6 +225,7 @@ public class SettingsMenu {
                         }
                     }
                     musicVol = musicVol / btnsMusic.size();
+                    mm.setVolMusic(musicVol);
                     super.touchUp(event, x, y, pointer, button);
                 }
             });

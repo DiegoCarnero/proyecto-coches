@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.mygdx.proyectocoches.screens.LoadingScreen;
+import com.mygdx.proyectocoches.screens.MainMenu;
 import com.mygdx.proyectocoches.utils.GameSettings;
 
 import java.util.ArrayList;
@@ -58,13 +59,11 @@ public class EventMenu {
         return s;
     }
 
-    public EventMenu(final Skin skin, final Game g, final AssetManager am, final I18NBundle bundle) {
+    public EventMenu(final Skin skin, final Game g, final AssetManager am, final I18NBundle locale, final MainMenu mm) {
         this.am = am;
         s = new Sprite((Texture) am.get("worlds/test_loop_mini.png"));
         s.setPosition(screenW / 2f, 2 * screenH / 5f);
         s.setSize(screenH / 17f, screenH / 17f);
-
-        final I18NBundle locale = am.get("locale/locale");
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = am.get("fonts/Cabin-Regular.ttf");
@@ -230,6 +229,7 @@ public class EventMenu {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 GameSettings gs = new GameSettings(numOpos, circuitos[contCircuito], contModo, numVueltas);
                 setShowing(false);
+                mm.paraMusica();
                 g.setScreen(new LoadingScreen(am, g, skin, gs));
                 super.touchUp(event, x, y, pointer, button);
             }
