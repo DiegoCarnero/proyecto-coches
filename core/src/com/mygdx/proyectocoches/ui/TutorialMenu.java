@@ -68,7 +68,7 @@ public class TutorialMenu {
         sprites = new Sprite[5];
         sprites[0] = new Sprite((Texture) am.get("ui/tutorial/tutorial1.jpg"));
         sprites[0].setPosition(screenH / 20f, 5 * screenH / 20f);
-        sprites[1] = new Sprite((Texture) am.get("ui/tutorial/tutorial1.jpg"));
+        sprites[1] = new Sprite((Texture) am.get("ui/tutorial/tutorial2.jpg"));
         sprites[1].setPosition(screenH / 20f, 5 * screenH / 20f);
         sprites[2] = new Sprite((Texture) am.get("ui/tutorial/tutorial1.jpg"));
         sprites[2].setPosition(screenH / 20f, 5 * screenH / 20f);

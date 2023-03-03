@@ -123,6 +123,7 @@ public class MainMenu implements Screen {
         am.load("worlds/track_1_mini.png", Texture.class);
         am.load("worlds/test_loop_mini.png", Texture.class);
         am.load("ui/tutorial/tutorial1.jpg", Texture.class);
+        am.load("ui/tutorial/tutorial2.jpg", Texture.class);
         am.load("ui/tutorial/tutorial5.jpg", Texture.class);
         am.load("badlogic.jpg", Texture.class);
         am.load("locale/locale", I18NBundle.class);
