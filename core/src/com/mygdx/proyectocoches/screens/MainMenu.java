@@ -358,7 +358,7 @@ public class MainMenu implements Screen {
                 batch.draw(s, s.getX(), s.getY(), screenH / 2f, screenH / 2f);
             } else if (mTutorial.isShowing()) {
                 Sprite s = mTutorial.getS();
-                batch.draw(s, s.getX(), s.getY(), 1.777f * screenH / 2f, screenH / 2f);
+                batch.draw(s, s.getX(), s.getY(), 1.777f * screenH / 2.3f, screenH / 2.3f);
             } else if(!mRecords.isShowing() && !mSettings.isShowing() && !credits.isShowing()){
                 batch.draw(mm, screenW / 2f - 7.55f * screenH / 16f, 2 * screenH / 3f, 7.55f * screenH / 8f, screenH / 8f);
             }
