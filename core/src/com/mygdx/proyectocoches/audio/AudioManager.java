@@ -113,9 +113,9 @@ public class AudioManager implements Disposable {
 
         sonParado1.loop(sfxVol);
         sonParado2.loop(sfxVol);
-        cancion.setVolume(musicVol);
         cancion.setLooping(true);
         cancion.play();
+        cancion.setVolume(musicVol);
     }
 
     /**
@@ -126,6 +126,9 @@ public class AudioManager implements Disposable {
     public void dispose() {
         sonParado1.stop();
         sonParado2.stop();
+        sonAcc1.stop();
+        sonEmbr1.stop();
+        sonMedio1.stop();
 
         sonParado1.dispose();
         sonParado2.dispose();
