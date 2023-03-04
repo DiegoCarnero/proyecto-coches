@@ -88,7 +88,7 @@ public class LoadingScreen implements Screen {
         labelStyle.font = font;
 
         Label lblLoading = new Label(locale.get("cargando") , labelStyle);
-        lblLoading.setPosition(0, 0);
+        lblLoading.setPosition(60, 0);
 
         stage.addActor(lblLoading);
 
@@ -125,7 +125,7 @@ public class LoadingScreen implements Screen {
         stage.draw();
 
         Sprite s = sprites[ndxSprite];
-        s.setBounds(250, 0, 50, 50);
+        s.setBounds(0, 0, 50, 50);
         batch.begin();
         s.draw(batch);
         ndxSprite = ndxSprite == 3 ? 0 : ndxSprite + 1;
