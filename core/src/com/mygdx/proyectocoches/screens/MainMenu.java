@@ -123,7 +123,9 @@ public class MainMenu implements Screen {
         am.load("worlds/track_1_mini.png", Texture.class);
         am.load("worlds/test_loop_mini.png", Texture.class);
         am.load("ui/tutorial/tutorial1.jpg", Texture.class);
-        am.load("ui/tutorial/tutorial2.jpg", Texture.class);
+        am.load("ui/tutorial/tutorial2.png", Texture.class);
+        am.load("ui/tutorial/tutorial3.jpg", Texture.class);
+        am.load("ui/tutorial/tutorial4.jpg", Texture.class);
         am.load("ui/tutorial/tutorial5.jpg", Texture.class);
         am.load("badlogic.jpg", Texture.class);
         am.load("locale/locale", I18NBundle.class);
@@ -330,6 +332,7 @@ public class MainMenu implements Screen {
         base = json.parse(Gdx.files.external("usersettings.json"));
         volMusic = base.getFloat("music");
         m = am.get("audio/music/WolfAsylum-Koord.mp3");
+        m.setVolume(volMusic);
         m.setLooping(true);
     }
 
