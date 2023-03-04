@@ -133,8 +133,8 @@ public class LoadingScreen implements Screen {
     }
 
     /**
-     * @param width
-     * @param height
+     * @param width ancho de pantalla en pixeles
+     * @param height alto de pantalla en pixeles
      */
     @Override
     public void resize(int width, int height) {

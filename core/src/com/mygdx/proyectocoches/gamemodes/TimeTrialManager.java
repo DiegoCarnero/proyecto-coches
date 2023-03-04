@@ -118,6 +118,9 @@ public class TimeTrialManager implements Gamemode {
 
     /**
      * Sistema de gestiones logicas para el modo de juego 'Contrarreloj'
+     *
+     * @param jugador jugador
+     * @param nomCircuito nombre interno del circuito
      */
     public TimeTrialManager(Competidor jugador, String nomCircuito) {
         this.jugador = jugador;
@@ -331,7 +334,7 @@ public class TimeTrialManager implements Gamemode {
      * Indica si el Competidor esta cruzando la meta. Se usa para verificar que el Competidor pasado por parametro lleva la direccion correcta cuando cruza el sensor del Sector1
      *
      * @param userData competidor
-     * @return
+     * @return 'true' si el Competidor esta cruzando la meta, 'false' si no
      */
     @Override
     public boolean isCruzandoMeta(Competidor userData) {

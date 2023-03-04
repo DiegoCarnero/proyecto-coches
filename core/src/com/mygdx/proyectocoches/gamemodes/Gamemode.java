@@ -71,7 +71,7 @@ public interface Gamemode {
      * Indica si el Competidor esta cruzando la meta. Se usa para verificar que el Competidor pasado por parametro lleva la direccion correcta cuando cruza el sensor del Sector1
      *
      * @param userData competidor
-     * @return
+     * @return si esta cruzando la meta
      */
     boolean isCruzandoMeta(Competidor userData);
 

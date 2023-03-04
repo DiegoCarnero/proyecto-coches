@@ -143,7 +143,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
 
     /**
      * Aplica las nuevas fuerzas calculadas al cuerpo
-     * @param delta
+     * @param delta tiempo pasado desde el ultimo calculo
      */
     private void applySteering(float delta) {
 
@@ -236,7 +236,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
      * Sets the threshold below which the linear speed can be considered zero. It must be a small positive value near to zero.
      * Usually it is used to avoid updating the orientation when the velocity vector has a negligible length.
      *
-     * @param value
+     * @param value ZeroLinearSpeedThreshold
      */
     @Override
     public void setZeroLinearSpeedThreshold(float value) {
@@ -254,7 +254,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
     /**
      * Sets the maximum linear speed.
      *
-     * @param maxLinearSpeed
+     * @param maxLinearSpeed maximum linear speed.
      */
     @Override
     public void setMaxLinearSpeed(float maxLinearSpeed) {
@@ -272,7 +272,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
     /**
      * Sets the maximum linear acceleration.
      *
-     * @param maxLinearAcceleration
+     * @param maxLinearAcceleration maximum linear acceleration.
      */
     @Override
     public void setMaxLinearAcceleration(float maxLinearAcceleration) {
@@ -290,7 +290,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
     /**
      * Sets the maximum angular speed.
      *
-     * @param maxAngularSpeed
+     * @param maxAngularSpeed the maximum angular speed.
      */
     @Override
     public void setMaxAngularSpeed(float maxAngularSpeed) {
@@ -308,7 +308,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
     /**
      * Sets the maximum angular acceleration.
      *
-     * @param maxAngularAcceleration
+     * @param maxAngularAcceleration the maximum angular acceleration.
      */
     @Override
     public void setMaxAngularAcceleration(float maxAngularAcceleration) {
@@ -374,7 +374,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
 
     /**
      * Establece el Steering Behavior que se debe usar con este {@link CocheIA}
-     * @param steeringBehavior
+     * @param steeringBehavior nuevo Steering Behavior
      */
     public void setSteeringBehavior(SteeringBehavior<Vector2> steeringBehavior) {
         this.behavior = steeringBehavior;
@@ -414,7 +414,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
 
     /**
      * Devuelve el Sensor asociado a este {@link CocheIA}
-     * @return
+     * @return el Sensor asociado a este {@link CocheIA}
      */
     public Sensor getDestinoSensor() {
         return destinoSensor;
@@ -432,7 +432,7 @@ public class CocheIA extends Competidor implements Steerable<Vector2> {
 
     /**
      * Devuelve el indice en el {@link com.badlogic.gdx.math.CatmullRomSpline} en el que se encuentra el {@link Sensor}
-     * @return
+     * @return indices del spline de donde esta el siguiente destino
      */
     public int getDestinoActualNdx() {
         return destinoActualNdx;

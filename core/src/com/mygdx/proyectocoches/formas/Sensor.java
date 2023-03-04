@@ -114,7 +114,7 @@ public class Sensor implements Steerable {
      * Sets the threshold below which the linear speed can be considered zero. It must be a small positive value near to zero.
      * Usually it is used to avoid updating the orientation when the velocity vector has a negligible length.
      *
-     * @param value
+     * @param value ZeroLinearSpeedThreshold
      */
     @Override
     public void setZeroLinearSpeedThreshold(float value) {
@@ -132,7 +132,7 @@ public class Sensor implements Steerable {
     /**
      * Sets the maximum linear speed.
      *
-     * @param maxLinearSpeed
+     * @param maxLinearSpeed the maximum linear speed.
      */
     @Override
     public void setMaxLinearSpeed(float maxLinearSpeed) {
@@ -150,7 +150,7 @@ public class Sensor implements Steerable {
     /**
      * Sets the maximum linear acceleration.
      *
-     * @param maxLinearAcceleration
+     * @param maxLinearAcceleration the maximum linear acceleration.
      */
     @Override
     public void setMaxLinearAcceleration(float maxLinearAcceleration) {
@@ -168,7 +168,7 @@ public class Sensor implements Steerable {
     /**
      * Sets the maximum angular speed.
      *
-     * @param maxAngularSpeed
+     * @param maxAngularSpeed the maximum angular speed.
      */
     @Override
     public void setMaxAngularSpeed(float maxAngularSpeed) {
@@ -186,7 +186,7 @@ public class Sensor implements Steerable {
     /**
      * Sets the maximum angular acceleration.
      *
-     * @param maxAngularAcceleration
+     * @param maxAngularAcceleration the maximum angular acceleration.
      */
     @Override
     public void setMaxAngularAcceleration(float maxAngularAcceleration) {

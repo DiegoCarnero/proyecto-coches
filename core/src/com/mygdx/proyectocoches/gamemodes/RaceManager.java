@@ -51,7 +51,7 @@ public class RaceManager implements Gamemode {
     /**
      * Devuelve el tiempo actual de la cuenta atras
      *
-     * @return
+     * @return tiempo de la cuenta atras
      */
     public float getCuentaAtras() {
         return cuentaAtras;
@@ -108,6 +108,10 @@ public class RaceManager implements Gamemode {
 
     /**
      * Sistema de gestiones logicas para el modo de juego 'Carrera'
+     *
+     * @param competidores lista de competidores
+     * @param s spline de control de posiciones
+     * @param nVueltas numero de vueltas
      */
     public RaceManager(ArrayList<Competidor> competidores, CatmullRomSpline<Vector2> s, int nVueltas) {
         this.competidores = new HashMap<>();
@@ -221,7 +225,7 @@ public class RaceManager implements Gamemode {
      * Indica si el Competidor esta cruzando la meta. Se usa para verificar que el Competidor pasado por parametro lleva la direccion correcta cuando cruza el sensor del Sector1
      *
      * @param userData competidor
-     * @return
+     * @return 'true' si el Competidor esta cruzando la meta, 'false' si no
      */
     @Override
     public boolean isCruzandoMeta(Competidor userData) {
@@ -233,7 +237,6 @@ public class RaceManager implements Gamemode {
      * Actualiza el numero de vuelta del jugador si el parametro 'userData' de tipo 'Jugador'
      *
      * @param userData competidor
-     * @param userData
      */
     @Override
     public void NuevaVuelta(Competidor userData) {
@@ -372,7 +375,7 @@ public class RaceManager implements Gamemode {
     /**
      * Devuelve la posicion del jugador en la clasificacion
      *
-     * @return
+     * @return posicion del jugador en la clasificacion
      */
     public int getPosJugador() {
         return posJugador;

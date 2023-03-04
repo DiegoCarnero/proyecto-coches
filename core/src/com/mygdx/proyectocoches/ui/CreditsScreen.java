@@ -52,6 +52,8 @@ public class CreditsScreen {
      * Componentes de la pantalla de creditos.
      * <br>Este objeto tiene un btnAtras, pero la implementacion del InputListener depende de la pantalla donde se implementa.
      * Invocar getBackBtn() para añadirle un Listener
+     *
+     * @param skin skin para los actores
      */
     public CreditsScreen(Skin skin) {
         final int screenH = Gdx.graphics.getHeight();

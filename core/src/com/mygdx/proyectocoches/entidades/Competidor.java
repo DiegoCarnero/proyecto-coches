@@ -130,7 +130,7 @@ public class Competidor {
 
     /**
      * Indica si el Competidor está cruzando la meta. Se usa para verificar que el Competidor lleva la dirección correcta cuando cruza el sensor del Sector1
-     * @return
+     * @return si el Competidor está cruzando la meta
      */
     public boolean isCruzandoMeta() {
         return cruzandoMeta;
