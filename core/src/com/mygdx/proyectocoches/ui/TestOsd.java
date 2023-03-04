@@ -21,25 +21,69 @@ import com.mygdx.proyectocoches.utils.PlayerInput;
 
 import java.util.ArrayList;
 
+/**
+ * Interfaz de usuario para controlar el juego
+ */
 public class TestOsd implements Screen, PlayerInput {
 
+    /**
+     * Si se esta acelerando o no
+     */
     private boolean acelerando = false;
+    /**
+     * Sentido de la marcha. 'true' si adelante, 'false' si atras
+     */
     private boolean adelante = true;
+    /**
+     * Si se esta frenando
+     */
     private boolean frenando = false;
+    /**
+     * Stage donde se ponen los Actores de esta interfaz
+     */
     private final Stage UIStage;
-
+    /**
+     * Multiplexor para procesar los inputs del jugador
+     */
     private final InputMultiplexer multiplexer;
-
+    /**
+     * Control de la aceleracion
+     */
     private final Slider accSlider;
+    /**
+     * Control de la direccion
+     */
     private final Slider steerSlider;
-
+    /**
+     * Boton seleccionar marcha adelante
+     */
     private final Button btnD;
+    /**
+     * Boton seleccionar marcha atras
+     */
     private final Button btnR;
+    /**
+     * Boton frenar
+     */
     private final Button btnB;
-
+    /**
+     * Menu de pausa
+     */
     private final PauseMenu mPausa;
+    /**
+     * Conjunto de todos los elementos {@link Actor} de la interfaz en esta pantalla
+     */
     private final ArrayList<Actor> compControles = new ArrayList<>();
 
+    /**
+     * Interfaz de usuario para controlar el juego
+     *
+     * @param modo modo de juego para determinar que elementos mostrar
+     * @param miGame base del proyecto para salir de la partida
+     * @param skin skin para los botones
+     * @param gs Configuracion del evento
+     * @param am AssetManager con los archivos necesarios ya cargados
+     */
     public TestOsd(int modo, Game miGame, Skin skin, GameSettings gs, AssetManager am) {
 
         UIStage = new Stage(new ScreenViewport());
@@ -58,6 +102,15 @@ public class TestOsd implements Screen, PlayerInput {
         btnD.setWidth(screenH * 0.1f);
         btnD.setPosition(14 * screenW / 15f, screenH / 4f);
         btnD.addListener(new InputListener() {
+            /**
+             * Pone la marcha hacia delante
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             * @param button button
+             */
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 adelante = true;
@@ -72,6 +125,15 @@ public class TestOsd implements Screen, PlayerInput {
         btnR.setWidth(screenH * 0.1f);
         btnR.setPosition(14 * screenW / 15f, screenH / 4f - screenH * 0.13f);
         btnR.addListener(new InputListener() {
+            /**
+             * Pone la marcha atras
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             * @param button button
+             */
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 adelante = false;
@@ -85,6 +147,15 @@ public class TestOsd implements Screen, PlayerInput {
         btnB.setWidth(screenH * 0.1f);
         btnB.setPosition(14 * screenW / 15f, screenH / 4f - screenH * 0.4f);
         btnB.addListener(new InputListener() {
+            /**
+             * Establece el 
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             * @param button button
+             */
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 frenando = true;
@@ -104,12 +175,29 @@ public class TestOsd implements Screen, PlayerInput {
         accSlider.setPosition(13 * screenW / 20f, -screenH / 2f);
 
         accSlider.addListener(new InputListener() {
+            /**
+             * Establece el control como 'acelerando'
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             */
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 acelerando = true;
                 super.touchDragged(event, x, y, pointer);
             }
 
+            /**
+             * Establece 'acelerando' a false y pone el slider a 0
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             * @param button button
+             */
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 accSlider.setValue(0.0f);
@@ -117,6 +205,15 @@ public class TestOsd implements Screen, PlayerInput {
                 super.touchUp(event, x, y, pointer, button);
             }
 
+            /**
+             * Establece el control como 'acelerando'
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             * @param button button
+             */
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 acelerando = true;
@@ -132,17 +229,43 @@ public class TestOsd implements Screen, PlayerInput {
         steerSlider.setValue(50.0f);
 
         steerSlider.addListener(new InputListener() {
+            /**
+             * Monitoriza el control
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             */
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 super.touchDragged(event, x, y, pointer);
             }
 
+            /**
+             * Centra el control a mitad del slider
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             * @param button button
+             */
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 steerSlider.setValue(50.0f);
                 super.touchUp(event, x, y, pointer, button);
             }
 
+            /**
+             * Empieza a monitorizar el control
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             * @param button button
+             */
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
@@ -195,24 +318,46 @@ public class TestOsd implements Screen, PlayerInput {
         return frenando;
     }
 
+    /**
+     * Devuelve el valor de la aceleracion formalizado entre 0 y 1
+     * @return valor del slider normalizadoentre 0 y 1
+     */
     public float getAccValue() {
         return accSlider.getValue() / 100f;
     }
 
+    /**
+     * Devuelve el valor de giro, normalizado entre -50 y 50
+     *
+     * @return valor de giro entre -50 y 50
+     */
     public float getSteerValue() {
         return -(steerSlider.getValue() - 50.0f);
     }
 
+    /**
+     * Devuelve el multiplexor de esta interfaz
+     * @return multiplexor de esta interfaz
+     */
     public InputMultiplexer getMultiplexer() {
         return multiplexer;
     }
 
+    /**
+     * Called when this screen becomes the current screen for a Game
+     * Establece el multiplexor y pone el juego fuera de pausa
+     */
     @Override
     public void show() {
         mPausa.setPaused(false);
         Gdx.input.setInputProcessor(multiplexer);
     }
 
+    /**
+     * Called when the screen should render itself.
+     *
+     * @param delta The time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
 
@@ -231,26 +376,42 @@ public class TestOsd implements Screen, PlayerInput {
 
     }
 
+
+    /**
+     * @param width ancho pantalla en pixeles
+     * @param height alto pantalla en pixeles
+     */
     @Override
     public void resize(int width, int height) {
 
     }
 
+    /**
+     */
     @Override
     public void pause() {
 
     }
 
+    /**
+     */
     @Override
     public void resume() {
 
     }
 
+    /**
+     * Called when this screen is no longer the current screen for a Game
+     */
     @Override
     public void hide() {
 
     }
 
+
+    /**
+     * Called when this screen should release all resources.
+     */
     @Override
     public void dispose() {
         UIStage.dispose();

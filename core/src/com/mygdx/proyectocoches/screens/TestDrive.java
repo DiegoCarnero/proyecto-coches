@@ -185,7 +185,7 @@ public class TestDrive implements Screen {
         }
 
         this.ttm = new TimeTrialManager(this.jugador, nomCircuito);
-        this.ttOsd = new TimeTrialOsd(skin, ttm, am);
+        this.ttOsd = new TimeTrialOsd(ttm, am);
         miWorld.setContactListener(new miContactListener(ttm));
 
         if (Controllers.getControllers().size > 0) {

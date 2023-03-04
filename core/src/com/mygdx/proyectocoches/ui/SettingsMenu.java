@@ -19,33 +19,117 @@ import com.mygdx.proyectocoches.screens.MainMenu;
 
 import java.util.ArrayList;
 
+/**
+ * Componentes del menu 'Ajustes'
+ */
 public class SettingsMenu {
+    /**
+     * Conjunto de todos los elementos {@link Actor} de la interfaz en esta pantalla
+     */
     private final ArrayList<Actor> compSettings = new ArrayList<>();
+    /**
+     * Lista de labels para el nombre del jugador
+     */
     private final ArrayList<Label> lblsNombre = new ArrayList<>();
+    /**
+     * Lista de botones para ajustar el volumen de los efectos de sonido
+     */
     private final ArrayList<Button> btnsSfx = new ArrayList<>();
+    /**
+     * Lista de botones para ajustar el volumen de la musica
+     */
     private final ArrayList<Button> btnsMusic = new ArrayList<>();
-
+    /**
+     * Boton para retroceder al menu anterior
+     */
     private final Button btnAtras;
+    /**
+     * Boton selector de camara
+     */
     private final Button btnCameraMode;
+    /**
+     * Texto representando la camara seleccionada
+     */
     private final Label lblCameroMode;
+    /**
+     * Texto denotando el control de volumen de efectos de sonido
+     */
     private final Label lblSfx;
+    /**
+     * Texto denotando el control de volumen de musica
+     */
     private final Label lblMusic;
+    /**
+     * Texto denotando el control de cambio de camara
+     */
     private final Label lblCam;
+    /**
+     * Texto denotando el control para establecer el nombre del jugador
+     */
     private final Label lblNom;
+    /**
+     * Texto denotando el control de seleccion de modo de renderizado
+     */
     private final Label lblVisuals;
+    /**
+     * Texto mostrando el modo de renderizado seleccionado actualmente
+     */
     private final Label lblVisualsNom;
+    /**
+     * Boton para cambar el modo de renderizado
+     */
     private final Button btnVisuals;
+    /**
+     * Lista con los nombres localziados de modos de camara disponibles
+     */
     private final String[] camModes = new String[3];
+    /**
+     * Lista con los nombres localziados de modos de renderizado disponibles
+     */
     private final String[] visualModes = new String[2];
+    /**
+     * Lista de letras disponibles para establecer el nombre del jugador
+     */
     private final char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+    /**
+     * Indices de las letras para establecer el nombre del jugador
+     */
     private int contLetras[] = new int[3];
+    /**
+     * Modo de camara seleccionado actualmente
+     */
     private int contCam = 0;
+    /**
+     * Modo de renderizado seleccionado actualmente
+     */
     private int contVisuals = 0;
+    /**
+     * Volumen de musica seleccionado actualmente
+     */
     private float musicVol = 0;
+    /**
+     * Volumen de efectos de sonido seleccionado actualmente
+     */
     private float sfxVol = 0;
+    /**
+     * Si este menu se esta mostrando o no
+     */
     private boolean showing;
+    /**
+     * AssetManager con los archivos relevantas ya cargados
+     */
     private final AssetManager am;
 
+    /**
+     * Componentes del menu 'Ajustes'
+     * <br>Este objeto tiene un btnAtras, pero la implementacion del InputListener depende de la pantalla donde se implementa.
+     * Invocar getBackBtn() para añadirle un Listener
+     *
+     * @param skin   skin para los botones
+     * @param am     AssetManager con los archivos relevantas ya cargados
+     * @param locale bundle con los textos localizados
+     * @param mm     menu principal donde se incorporan los componetes de este SettingsMenu
+     */
     public SettingsMenu(final Skin skin, AssetManager am, I18NBundle locale, final MainMenu mm) {
 
         this.am = am;
@@ -123,6 +207,15 @@ public class SettingsMenu {
             b1.setPosition(x, 60);
             b1.setSize(screenH / 10f, screenH / 10f);
             b1.addListener(new ClickListener() {
+            /**
+             * Pasa a seleccionar el siguiente circuito de la lista
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             * @param button button
+             */
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     contLetras[iaux] = contLetras[iaux] == letras.length - 1 ? 0 : contLetras[iaux] + 1;
@@ -294,6 +387,9 @@ public class SettingsMenu {
 
     }
 
+    /**
+     * Establece los controles con los valores guardados por ultima vez
+     */
     public void setDesdeUserSettings() {
 
         JsonReader json = new JsonReader();
@@ -330,10 +426,20 @@ public class SettingsMenu {
 
     }
 
+    /**
+     * Devuelve los componentes de este submenu
+     *
+     * @return lista con los componentes
+     */
     public ArrayList<Actor> getCompSettings() {
         return compSettings;
     }
 
+    /**
+     * Establece si esta pantalla ha de mostrarse o no
+     *
+     * @param showing 'true' si la pantalla se muestra, 'false' si no
+     */
     public void setShowing(boolean showing) {
         this.showing = showing;
 
@@ -341,11 +447,16 @@ public class SettingsMenu {
             a.setVisible(showing);
         }
 
-        if (showing){
+        if (showing) {
             setDesdeUserSettings();
         }
     }
 
+    /**
+     * Devuelve el nombre del jugador, de tres letras de largo, establecido por las letras en lblsNobre
+     *
+     * @return el nombre del jugador
+     */
     private String getName() {
         String retorno = "";
         for (Label a : lblsNombre) {
@@ -355,14 +466,28 @@ public class SettingsMenu {
         return retorno;
     }
 
+    /**
+     * Devuelve el boton para retroceder al menu anterior
+     *
+     * @return btnAtras
+     */
     public Button getBackBtn() {
         return btnAtras;
     }
 
+    /**
+     * Si este menu se esta mostrando o no
+     *
+     * @return 'true' si la pantalla se muestra, 'false' si no
+     */
     public boolean isShowing() {
         return showing;
     }
 
+    /**
+     * Devuelve el volumen de la musica establecido por su respectivo control
+     * @return volumen de la musica, entre 0.25 y 1
+     */
     public float getMusicVolume() {
         return musicVol;
     }

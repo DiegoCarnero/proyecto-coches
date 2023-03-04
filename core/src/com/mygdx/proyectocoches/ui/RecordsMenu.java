@@ -15,15 +15,45 @@ import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.ArrayList;
 
+/**
+ * Componentes del submenu de Records
+ */
 public class RecordsMenu extends Actor {
-
+    /**
+     * Si este menu se esta mostrando o no
+     */
     private boolean showing;
+    /**
+     * Texto donde se mostraran los records
+     */
     private final Label lblRecords;
+    /**
+     * Boton para retroceder al menu anterior
+     */
     private final Button btnAtras;
+    /**
+     * Conjunto de todos los elementos {@link Actor} de la interfaz en esta pantalla
+     */
     private final ArrayList<Actor> compRecords = new ArrayList<>();
+    /**
+     * Nombre interno del circuito
+     */
     private final String nomCircuito;
+    /**
+     * Bundle de texto localizado
+     */
     private final I18NBundle locale;
 
+    /**
+     * Componentes del submenu de Records
+     * <br>Se muestran los records del circuito pasado por parametro.
+     * <br>Este objeto tiene un btnAtras, pero la implementacion del InputListener depende de la pantalla donde se implementa.
+     * Invocar getBackBtn() para añadirle un Listener
+     *
+     * @param nomCircuito nombre interno del circuito cuyos records se muestran. Si es una cadena vacia se muestran todos los records con los nombres de sus respectivos circuitos
+     * @param skin        skin para la interfaz
+     * @param am          AssetManager con los ttf necesarios
+     */
     public RecordsMenu(String nomCircuito, Skin skin, AssetManager am) {
 
         locale = am.get("locale/locale");
@@ -52,14 +82,24 @@ public class RecordsMenu extends Actor {
         compRecords.add(btnAtras);
     }
 
+    /**
+     * Devuelve los componentes de este submenu
+     * @return lista con los componentes
+     */
     public ArrayList<Actor> getCompRecords() {
         return compRecords;
     }
-
+    /**
+     * Si este menu se esta mostrando o no
+     * @return 'true' si la pantalla se muestra, 'false' si no
+     */
     public boolean isShowing() {
         return showing;
     }
-
+    /**
+     * Establece si esta pantalla ha de mostrarse o no
+     * @param showing 'true' si la pantalla se muestra, 'false' si no
+     */
     public void setShowing(boolean showing) {
         this.showing = showing;
         for (Actor a : compRecords) {
@@ -79,7 +119,7 @@ public class RecordsMenu extends Actor {
             String recordsAux = "";
             if (nomCircuito.equals("")) {
                 for (int i = 0; i < base.size; i++) {
-                    String circuitNomLocal = locale.get("circuitos."+base.get(i).name);
+                    String circuitNomLocal = locale.get("circuitos." + base.get(i).name);
                     recordsAux += String.format("%s\n", circuitNomLocal);
                     int longi = Math.min(base.get(i).size, 7);
                     for (int j = 0; j < longi; j++) {
@@ -99,6 +139,12 @@ public class RecordsMenu extends Actor {
         }
     }
 
+    /**
+     * Formatea a mm:ss.ddd el valor pasado por parametro
+     *
+     * @param t tiempo a formatear
+     * @return tiempo formateado
+     */
     @SuppressWarnings("DefaultLocale")
     private String getTiempoFormat(float t) {
 
@@ -109,7 +155,10 @@ public class RecordsMenu extends Actor {
 
         return String.format("%d:%02d.%03d", mins, secs, milis);
     }
-
+    /**
+     * Devuelve el boton para retroceder al menu anterior
+     * @return btnAtras
+     */
     public Actor getBackBtn() {
         return btnAtras;
     }

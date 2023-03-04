@@ -15,19 +15,55 @@ import com.mygdx.proyectocoches.gamemodes.RaceManager;
 
 import java.util.Locale;
 
+/**
+ * Interfaz con la informacion del modo de juego carrera
+ */
 public class RaceOsd implements Screen {
 
+    /**
+     * Stage donde se ponen los Actores de esta interfaz
+     */
     private final Stage UIStage;
+    /**
+     * Gestor de logica del modo de juego carrera
+     */
     private final RaceManager rm;
+    /**
+     * Texto mostrando la clasificacion de competidores
+     */
     private final Label lblLista;
+    /**
+     * Texto mostrando la posicion actual de jugador
+     */
     private final Label lblPosicion;
+    /**
+     * Texto mostrando la vuelta actual del jugador
+     */
     private final Label lblVuelta;
+    /**
+     * Texto del final de la partida
+     */
     private final Label lblFin;
-
+    /**
+     * Texto mostrando la cuenta atras antes de que empieze la carrera
+     */
     private final Label lblCountdown;
+    /**
+     * Bundle de texto localizado
+     */
     private final I18NBundle locale;
+    /**
+     * AssetManagercon los archivos necesarios ya cargados
+     */
     private AssetManager am;
 
+    /**
+     * Interfaz con la informacion del modo de juego carrera
+     *
+     * @param skin skin para la lista de competidores
+     * @param rm control de la logica del modo de juego carrera
+     * @param am AssetManager con los archivos necesarios ya cargados
+     */
     public RaceOsd(Skin skin, RaceManager rm, AssetManager am) {
         this.am = am;
         Label.LabelStyle labelStyle = new Label.LabelStyle();
@@ -82,6 +118,9 @@ public class RaceOsd implements Screen {
         UIStage.addActor(lblFin);
     }
 
+    /**
+     * Called when this screen becomes the current screen for a Game
+     */
     @Override
     public void show() {
 
@@ -89,7 +128,7 @@ public class RaceOsd implements Screen {
 
     /**
      * Called when the screen should render itself.
-     *
+     * Actualiza las posiciones
      * @param delta The time in seconds since the last render.
      */
     @SuppressWarnings("DefaultLocale")
@@ -128,25 +167,37 @@ public class RaceOsd implements Screen {
         UIStage.draw();
     }
 
+    /**
+     * @param width ancho pantalla en pixeles
+     * @param height alto pantalla en pixeles
+     */
     @Override
     public void resize(int width, int height) {
 
     }
 
+    /**
+     */
     @Override
     public void pause() {
 
     }
 
+    /**
+     */
     @Override
     public void resume() {
 
     }
 
+    /**
+     * Called when this screen is no longer the current screen for a Game
+     */
     @Override
     public void hide() {
 
     }
+
 
     /**
      * Called when this screen should release all resources.

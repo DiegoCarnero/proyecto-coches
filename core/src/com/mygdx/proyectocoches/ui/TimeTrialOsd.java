@@ -9,18 +9,51 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.proyectocoches.gamemodes.TimeTrialManager;
 
+/**
+ * Interfaz con la informacion del modo de juego contrarreloj
+ */
 public class TimeTrialOsd implements Screen {
 
+    /**
+     * Stage donde se ponen los Actores de esta interfaz
+     */
     private final Stage UIStage;
+    /**
+     * Texto con el tiempo en el primer sector
+     */
     private final Label lblSector1;
+    /**
+     * Texto con el tiempo en el segundo sector
+     */
     private final Label lblSector2;
+    /**
+     * Texto con el tiempo en el tercer sector
+     */
     private final Label lblSector3;
+    /**
+     * Texto con el tiempo totalde la vuelta actual
+     */
     private final Label lblVueltaActual;
+    /**
+     * Texto con el mejor tiempo de la sesion
+     */
     private final Label lblMejorVuelta;
+    /**
+     * Gestor de logica del modo de juego contrarreloj
+     */
     private final TimeTrialManager ttm;
+    /**
+     * AssetManager con los archivos necesarios ya cargados
+     */
     private AssetManager am;
 
-    public TimeTrialOsd(Skin skin, TimeTrialManager ttm, AssetManager am) {
+    /**
+     * Interfaz con la informacion del modo de juego contrarreloj
+     *
+     * @param ttm Gestor de logica del modo de juego contrarreloj
+     * @param am  AssetManager con los archivos necesarios ya cargados
+     */
+    public TimeTrialOsd(TimeTrialManager ttm, AssetManager am) {
 
         this.am = am;
         Label.LabelStyle labelStyle = new Label.LabelStyle();
@@ -52,11 +85,19 @@ public class TimeTrialOsd implements Screen {
         UIStage.addActor(lblMejorVuelta);
     }
 
+    /**
+     * Called when this screen becomes the current screen for a Game
+     */
     @Override
     public void show() {
 
     }
 
+    /**
+     * Called when the screen should render itself.
+     * Actualiza los tiempso
+     * @param delta The time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
         ttm.update(delta);
@@ -69,26 +110,43 @@ public class TimeTrialOsd implements Screen {
         UIStage.draw();
     }
 
+    /**
+     * @param width  ancho pantalla en pixeles
+     * @param height alto pantalla en pixeles
+     */
     @Override
     public void resize(int width, int height) {
 
     }
 
+    /**
+     *
+     */
     @Override
     public void pause() {
 
     }
 
+    /**
+     *
+     */
     @Override
     public void resume() {
 
     }
 
+    /**
+     * Called when this screen is no longer the current screen for a Game
+     */
     @Override
     public void hide() {
 
     }
 
+
+    /**
+     * Called when this screen should release all resources.
+     */
     @Override
     public void dispose() {
         UIStage.dispose();

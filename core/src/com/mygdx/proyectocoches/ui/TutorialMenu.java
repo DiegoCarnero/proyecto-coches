@@ -15,25 +15,76 @@ import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayList;
 
+/**
+ * Componentes de la pantalla de tutoriales
+ */
 public class TutorialMenu {
 
+    /**
+     * Conjunto de todos los elementos {@link Actor} de la interfaz en esta pantalla
+     */
     private ArrayList<Actor> compTutorial = new ArrayList<>();
+    /**
+     * Texto con el titulo del tutorial actual
+     */
     private final Label lblTitulo;
+    /**
+     * Texto con la descruipcion del tutorial actual
+     */
     private final Label lblDescip;
+    /**
+     * Boton para mostrar el siguiente tutorial
+     */
     private final Button btnSig;
+    /**
+     * Boton para mostrar el tutorial anterior
+     */
     private final Button btnPrev;
+    /**
+     * Lista de titulos localizados
+     */
     private final String[] titulos = {"tit1", "tit2", "tit3", "tit4", "tit5"};
+    /**
+     * Lista de descripciones licalziadas
+     */
     private final String[] descrips = {"descrip1", "descrip2", "descrip3", "descrip4", "descrip5"};
+    /**
+     * Lista de sprites que acompañan a los tutoriales
+     */
     private final Sprite[] sprites;
+    /**
+     * indice del tutorial actual
+     */
     private int cont = 0;
+    /**
+     * Boton para retroceder al menu anterior
+     */
     private final Button btnAtras;
+    /**
+     * Si este menu se esta mostrando o no
+     */
     private boolean showing;
-
+    /**
+     * Sprite del tutorial actual
+     */
     private Sprite s;
+
+    /**
+     * Devuelve el sprite del tutorial actual
+     * @return sprite del tutorial actual
+     */
     public Sprite getS() {
         return s;
     }
 
+    /**
+     * Componentes de la pantalla selector de eventos
+     * <br>Este objeto tiene un btnAtras, pero la implementacion del InputListener depende de la pantalla donde se implementa.
+     * Invocar getBackBtn() para añadirle un Listener
+     *
+     * @param skin skin para los botones
+     * @param am AssetManager con los archivos relevantas ya cargados
+     */
     public TutorialMenu(final Skin skin, final AssetManager am) {
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
@@ -83,6 +134,15 @@ public class TutorialMenu {
         btnSig.setSize(screenH / 10f, screenH / 10f);
         btnSig.setPosition(15 * screenW / 20f, -screenH / 2f + screenH / 10f);
         btnSig.addListener(new ClickListener() {
+            /**
+             * Pasa a mostrar el siguiente tutorial de la lista
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             * @param button button
+             */
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 cont = cont == titulos.length - 1 ? 0 : cont + 1;
@@ -98,6 +158,15 @@ public class TutorialMenu {
         btnPrev.setSize(screenH / 10f, screenH / 10f);
         btnPrev.setPosition(15 * screenW / 20f - 2 * screenH / 10f, -screenH / 2f + screenH / 10f);
         btnPrev.addListener(new ClickListener() {
+            /**
+             * Pasa a mostrar el tutorial previo en la lista
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             * @param button button
+             */
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 cont = cont == 0 ? titulos.length - 1 : cont - 1;
@@ -122,14 +191,26 @@ public class TutorialMenu {
 
     }
 
+    /**
+     * Devuelve el boton para retroceder al menu anterior
+     * @return btnAtras
+     */
     public Button getBackBtn() {
         return btnAtras;
     }
 
+    /**
+     * Devuelve los componentes de este submenu
+     * @return lista con los componentes
+     */
     public ArrayList<Actor> getCompTutorial() {
         return compTutorial;
     }
 
+    /**
+     * Establece si esta pantalla ha de mostrarse o no
+     * @param b 'true' si la pantalla se muestra, 'false' si no
+     */
     public void setShowing(boolean b) {
         showing = b;
         for (Actor a : compTutorial) {
@@ -137,6 +218,10 @@ public class TutorialMenu {
         }
     }
 
+    /**
+     * Si este menu se esta mostrando o no
+     * @return 'true' si la pantalla se muestra, 'false' si no
+     */
     public boolean isShowing() {
         return showing;
     }

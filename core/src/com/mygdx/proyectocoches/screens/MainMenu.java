@@ -185,6 +185,9 @@ public class MainMenu implements Screen {
         btn1.setSize(screenW / 10f, screenH / 10f);
         btn1.setPosition(screenW / 4f - screenW / 20f, -screenH / 10f);
         btn1.addListener(new ClickListener() {
+			/**
+			* Lanza el submenu de eventos y oculta lo demas
+			*/
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 
@@ -207,6 +210,9 @@ public class MainMenu implements Screen {
         btn2.setSize(screenW / 10f, screenH / 10f);
         btn2.setPosition(3 * screenW / 4f - screenW / 20f, -screenH / 10f);
         btn2.addListener(new ClickListener() {
+			/**
+			* Lanza el submenu de records y oculta lo demas
+			*/
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 for (Actor a : compMain) {
@@ -228,6 +234,9 @@ public class MainMenu implements Screen {
         btn3.setSize(screenW / 10f, screenH / 10f);
         btn3.setPosition(screenW / 4f - screenW / 20f, -vertOffset * screenH / 10f);
         btn3.addListener(new ClickListener() {
+			/**
+			* Lanza el submenu de ajustes y oculta lo demas
+			*/
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 
@@ -249,6 +258,9 @@ public class MainMenu implements Screen {
         btn4.setSize(screenW / 10f, screenH / 10f);
         btn4.setPosition(3 * screenW / 4f - screenW / 20f, -vertOffset * screenH / 10f);
         btn4.addListener(new ClickListener() {
+			/**
+			* Lanza el submenu de tutoriales y oculta lo demas
+			*/
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 for (Actor a : compMain) {
@@ -270,6 +282,9 @@ public class MainMenu implements Screen {
         btn5.setSize(screenW / 10f, screenH / 10f);
         btn5.setPosition(screenW / 2f - screenW / 20f, -vertOffset * screenH / 10f);
         btn5.addListener(new ClickListener() {
+			/**
+			* Lanza el submenu de creditos y oculta lo demas
+			*/
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 for (Actor a : compMain) {
@@ -297,6 +312,9 @@ public class MainMenu implements Screen {
         compMain.addAll(credits.getCompCredits());
 
         ClickListener backBtnList = new ClickListener() {
+			/**
+			* Oculta el submenu al que se le asocia y muestra el menu principal
+			*/
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 for (Actor a : compMain) {

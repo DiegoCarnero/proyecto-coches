@@ -19,39 +19,92 @@ import com.mygdx.proyectocoches.screens.MainMenu;
 
 import java.util.ArrayList;
 
+/**
+ * Componentes menu de pausa
+ */
 public class PauseMenu extends Actor {
 
+    /**
+     * Conjunto de todos los elementos {@link Actor} de la interfaz en esta pantalla
+     */
     private final ArrayList<Actor> compPausa = new ArrayList<>();
+    /**
+     * Conjunto de todos los elementos {@link Actor} deñ submenu 'Records'
+     */
     private final ArrayList<Actor> compRecords = new ArrayList<>();
+    /**
+     * Boton continua, sale del menu de pausa
+     */
     private final Button btnContinua;
+    /**
+     * Boton selector de camara
+     */
     private final Button btnCameraMode;
+    /**
+     * Boton para salir de la partida
+     */
     private final Button btnSalir;
+    /**
+     * Boton para mostrar los records en el circuito actual
+     */
     private final Button btnRecords;
+    /**
+     * Texto representando la camara seleccionada
+     */
     private final Label lblCameroMode;
+    /**
+     * Texto representando btnContinua
+     */
     private final Label lblContinua;
+    /**
+     * Texto representando btnRecords
+     */
     private final Label lblRecords;
+    /**
+     * Texto representando btnSalir
+     */
     private final Label lblSalir;
+    /**
+     * Boton para pausar el juego y mostrar este menu
+     */
     private final Button btnPausa;
+    /**
+     * Submenu de records
+     */
     private final RecordsMenu mRecords;
+    /**
+     * Si el juego está pausado o no
+     */
     private boolean paused;
-
-    public boolean isRecordShowing() {
-        return recordShowing;
-    }
-
-    public void setRecordShowing(boolean recordShowing) {
-        this.recordShowing = recordShowing;
-    }
-
-    private boolean recordShowing = false;
+    /**
+     * Texto de los tipos de camara localizados
+     */
     private final String[] camModes = {"Cerca", "Lejos", "Dinamica"};
+    /**
+     * Contador modo de camara
+     */
     private int cont;
+    /**
+     * {@link Screen} en la que se pone este menu de pausa
+     */
     private Screen screen;
 
+    /**
+     * Establece la {@link Screen} en la que se pone este menu de pausa
+     * @param screen pantalla
+     */
     public void setScreen(Screen screen) {
         this.screen = screen;
     }
 
+    /**
+     * Componentes menu de pausa
+     * @param game base del proyecto
+     * @param modo modo de juego paramostrar o no el boton de records
+     * @param skin skin para los botones
+     * @param nomCircuito nombre interno del circuito actual
+     * @param am AssetManager con los ttf para los textos
+     */
     public PauseMenu(final Game game, int modo, final Skin skin, String nomCircuito, AssetManager am) {
 
         int screenW, screenH;
@@ -80,6 +133,15 @@ public class PauseMenu extends Actor {
         btnContinua.setSize(screenW / 7f, screenH / 10f);
         btnContinua.setPosition(screenW / 2f - screenW / 14f, 0);
         btnContinua.addListener(new InputListener() {
+            /**
+             * Sale de la pausa y coninua el juego
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             * @param button button
+             */
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 paused = !paused;
@@ -109,6 +171,15 @@ public class PauseMenu extends Actor {
         btnCameraMode.setSize(screenW / 7f, screenH / 10f);
         btnCameraMode.setPosition(screenW / 2f - screenW / 14f, -vertOffset * screenH / 10f);
         btnCameraMode.addListener(new InputListener() {
+            /**
+             * Pasa a seleccionar el siguiente modo de camara de la lista
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             * @param button button
+             */
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 cont = cont == 2 ? 0 : cont + 1;
@@ -135,6 +206,15 @@ public class PauseMenu extends Actor {
         btnRecords.setSize(screenW / 7f, screenH / 10f);
         btnRecords.setPosition(screenW / 2f - screenW / 14f, -vertOffset * screenH / 10f);
         btnRecords.addListener(new InputListener() {
+            /**
+             * Muestra el menu de tiempos record para este circuito
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             * @param button button
+             */
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
@@ -161,6 +241,15 @@ public class PauseMenu extends Actor {
         btnSalir.setSize(screenW / 7f, screenH / 10f);
         btnSalir.setPosition(screenW / 2f - screenW / 14f, -vertOffset * screenH / 10f);
         btnSalir.addListener(new InputListener() {
+            /**
+             * Sale de la partida
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             * @param button button
+             */
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 screen.dispose();
@@ -174,6 +263,15 @@ public class PauseMenu extends Actor {
         btnPausa.setSize(screenH / 10f, screenH / 10f);
         btnPausa.setPosition(0, screenH / 2f - screenH / 10f);
         btnPausa.addListener(new InputListener() {
+            /**
+             * Pausa el juego y muestra el menu
+             *
+             * @param event event
+             * @param x x
+             * @param y y
+             * @param pointer pointer
+             * @param button button
+             */
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 paused = !paused;
