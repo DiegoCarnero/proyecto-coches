@@ -226,7 +226,7 @@ public class SettingsMenu {
             });
             b1.setVisible(false);
             Button b2 = new TextButton("v", skin);
-            b2.setPosition(x, -80);
+            b2.setPosition(x, 60-screenH / 6f);
             b2.setSize(screenH / 10f, screenH / 10f);
             b2.addListener(new ClickListener() {
                 @Override
@@ -242,7 +242,7 @@ public class SettingsMenu {
             compSettings.add(l);
             compSettings.add(b1);
             compSettings.add(b2);
-            x += 80;
+            x += screenH / 10f;
         }
 
         float volX = screenW / 2f;
@@ -252,7 +252,7 @@ public class SettingsMenu {
         lblSfx.setPosition(volX, volY);
         compSettings.add(lblSfx);
         lblSfx.setVisible(false);
-        volX += 120;
+        volX += screenW / 12f;
         for (int i = 0; i < 4; i++) {
             final Button b = new Button(skin, "toggle");
             b.setPosition(volX, volY);
@@ -289,7 +289,7 @@ public class SettingsMenu {
         //music
         lblMusic = new Label(locale.get("settings.music"), labelStyle);
         lblMusic.setPosition(volX, volY);
-        volX += 120;
+        volX += screenW / 12f;
         compSettings.add(lblMusic);
         lblMusic.setVisible(false);
         for (int i = 0; i < 4; i++) {
