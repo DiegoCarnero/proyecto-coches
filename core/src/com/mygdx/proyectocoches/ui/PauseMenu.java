@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -18,6 +19,9 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.mygdx.proyectocoches.screens.MainMenu;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Componentes menu de pausa
@@ -91,6 +95,7 @@ public class PauseMenu extends Actor {
 
     /**
      * Establece la {@link Screen} en la que se pone este menu de pausa
+     *
      * @param screen pantalla
      */
     public void setScreen(Screen screen) {
@@ -99,11 +104,12 @@ public class PauseMenu extends Actor {
 
     /**
      * Componentes menu de pausa
-     * @param game base del proyecto
-     * @param modo modo de juego paramostrar o no el boton de records
-     * @param skin skin para los botones
+     *
+     * @param game        base del proyecto
+     * @param modo        modo de juego paramostrar o no el boton de records
+     * @param skin        skin para los botones
      * @param nomCircuito nombre interno del circuito actual
-     * @param am AssetManager con los ttf para los textos
+     * @param am          AssetManager con los ttf para los textos
      */
     public PauseMenu(final Game game, int modo, final Skin skin, String nomCircuito, AssetManager am) {
 
@@ -184,6 +190,19 @@ public class PauseMenu extends Actor {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 cont = cont == 2 ? 0 : cont + 1;
                 lblCameroMode.setText(camModes[cont]);
+
+                JsonReader json = new JsonReader();
+                JsonValue base;
+
+                base = json.parse(Gdx.files.external("usersettings.json"));
+                JsonValue c = new JsonValue(cont);
+
+                base.remove("cam");
+                base.addChild("cam", c);
+
+                FileHandle file = Gdx.files.external("usersettings.json");
+                file.writeString(base.toString(), false);
+
                 return true;
             }
         });
