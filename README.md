@@ -1,7 +1,8 @@
 # proyecto-coches
 
-Proyecto COCHES, juego de carreras en vista cenital para Android, desarrollado como parte del Ciclo Superior de Desarrollo de Aplicaciones Multiplataforma.
+Proyecto COCHES, top-down racing game for Android, developed as part of my Degree in Multiplatform Application Development.
 
-Este programa utiliza:
+This project makes use of:
 * libGDX 
 * JBox2D
+* Steering Behavior-based AI
